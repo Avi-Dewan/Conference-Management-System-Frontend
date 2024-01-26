@@ -1,7 +1,7 @@
 <script>
   import Navbar from "/src/components/navbar.svelte";
 
-  let researchFields = ["aa", "ab", "ac"];
+  let researchFields = [];
   let addfield = "";
   let formData = {
     conference_title: "",
@@ -17,7 +17,6 @@
   }
 
   function handleAdd() {
-    console.log("hello");
     if (addfield != "") {
       researchFields = [...researchFields, String(addfield)];
       addfield = "";
