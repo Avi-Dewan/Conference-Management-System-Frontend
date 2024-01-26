@@ -1,6 +1,23 @@
 <script>
   import Navbar from "/src/components/navbar.svelte";
   import Card from "/src/components/card.svelte";
+  import { onMount } from "svelte";
+
+  async function doPost() {
+    const req = await fetch("http://localhost:3000/trial", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: 3,
+        name: "rakib",
+      }),
+    });
+    console.log(100);
+    // const json = await res.json();
+    // result = JSON.stringify(json);
+  }
 </script>
 
 <main>
@@ -9,9 +26,9 @@
     <h1>Conferences</h1>
   </div>
 
+  <button type="button" on:click={doPost}> Post it. </button>
   <nav>
     <a href="/conference/conference_list/all">All</a>
-    <a href="/conference/conference_list/upcoming">Upcoming</a>
     <a href="/conference/conference_list/open_for_submission"
       >Open for submission</a
     >
@@ -43,7 +60,7 @@
     float: left;
     position: relative;
     margin: 1% 0%;
-    width: 420px;
+    width: 280px;
     height: 50px;
     background: #34495e;
     border-radius: 8px;
@@ -81,18 +98,11 @@
     left: 0;
   }
   nav a:nth-child(2) {
-    width: 110px;
+    width: 180px;
   }
   nav a:nth-child(2):hover ~ .animation {
-    width: 110px;
+    width: 180px;
     left: 100px;
-  }
-  nav a:nth-child(3) {
-    width: 200px;
-  }
-  nav a:nth-child(3):hover ~ .animation {
-    width: 200px;
-    left: 210px;
   }
 
   main {
@@ -100,7 +110,7 @@
     margin: 2% auto;
   }
   .cards {
-    margin: 8% 0%;
+    margin: 10% 0%;
     display: block;
     flex-direction: column; /* Display elements vertically */
   }

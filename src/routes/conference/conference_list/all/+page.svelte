@@ -29,7 +29,6 @@
   <button type="button" on:click={doPost}> Post it. </button>
   <nav>
     <a href="/conference/conference_list/all">All</a>
-    <a href="/conference/conference_list/upcoming">Upcoming</a>
     <a href="/conference/conference_list/open_for_submission"
       >Open for submission</a
     >
@@ -61,7 +60,7 @@
     float: left;
     position: relative;
     margin: 1% 0%;
-    width: 420px;
+    width: 280px;
     height: 50px;
     background: #34495e;
     border-radius: 8px;
@@ -99,18 +98,11 @@
     left: 0;
   }
   nav a:nth-child(2) {
-    width: 110px;
+    width: 180px;
   }
   nav a:nth-child(2):hover ~ .animation {
-    width: 110px;
+    width: 180px;
     left: 100px;
-  }
-  nav a:nth-child(3) {
-    width: 200px;
-  }
-  nav a:nth-child(3):hover ~ .animation {
-    width: 200px;
-    left: 210px;
   }
 
   main {
