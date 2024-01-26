@@ -3,48 +3,64 @@
   import Card from "/src/components/card.svelte";
   import { onMount } from "svelte";
 
-  async function doPost() {
-    const req = await fetch("http://localhost:3000/trial", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: 3,
-        name: "rakib",
-      }),
-    });
-    console.log(100);
-    // const json = await res.json();
-    // result = JSON.stringify(json);
-  }
+  let data = [];
+
+  let url = `http://localhost:3000/conference/all`;
+
+  const currentDate = new Date();
+
+  onMount(async () => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      data = await response.json();
+
+      for (let i = 0; i < data.length; i++) {
+        const submissionDeadline = new Date(
+          `${data[i].submission_deadline.date}T${data[i].submission_deadline.time}`
+        );
+        if (submissionDeadline < currentDate) data[i].status = "Closed";
+        else data[i].status = "Open";
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
-<main>
-  <Navbar />
-  <div class="header">
-    <h1>Conferences</h1>
-  </div>
+{#if data != null}
+  <main>
+    <Navbar />
 
-  <button type="button" on:click={doPost}> Post it. </button>
-  <nav>
-    <a href="/conference/conference_list/all">All</a>
-    <a href="/conference/conference_list/open_for_submission"
-      >Open for submission</a
-    >
-    <div class="animation start-home"></div>
-  </nav>
-  <div class="cards">
-    {#each { length: 3 } as _, i}
-      <Card>
-        <h1>Conference Name</h1>
-        <h1>Conference details</h1>
-        <h1>Conference details</h1>
-        <h1>Conference details</h1>
-      </Card>
-    {/each}
-  </div>
-</main>
+    <div class="header">
+      <h1>Conferences</h1>
+    </div>
+
+    <nav>
+      <a href="/conference/conference_list/all">All</a>
+      <a href="/conference/conference_list/open_for_submission"
+        >Open for submission</a
+      >
+      <div class="animation start-home"></div>
+    </nav>
+    <div class="cards">
+      {#each data as item}
+        <Card>
+          <h2>{item.conference_title}</h2>
+          <h3>Related Fields: {item.related_fields}</h3>
+          <h3>Webpage: {item.conference_webpage}</h3>
+          <h3>Status: {item.status}</h3>
+          <a href="/conference/conference_list/all/{item.conference_id}"
+            >View Details</a
+          >
+        </Card>
+      {/each}
+    </div>
+  </main>
+{/if}
 
 <style>
   @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
