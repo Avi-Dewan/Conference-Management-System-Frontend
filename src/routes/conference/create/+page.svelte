@@ -1,23 +1,47 @@
 <script>
   import Navbar from "/src/components/navbar.svelte";
 
+  async function createConference() {
+
+    const req = await fetch("http://localhost:3000/conference/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+  }
+
   let researchFields = ["aa", "ab", "ac"];
   let addfield = "";
   let formData = {
     conference_title: "",
-    webpage: "",
+    conference_description: "",
+    conference_webpage: "",
     venue: "",
     start_date: null,
     end_date: null,
     submission_deadline: null,
+    related_fields: null,
   };
 
+  let submission_deadline_date = "";
+  let submission_deadline_time = "";
+
+
   function handleSubmit() {
-    alert(JSON.stringify(formData, null, 2));
+    formData.related_fields = researchFields;
+    formData.submission_deadline = {
+          date: submission_deadline_date,
+          time: submission_deadline_time,
+    }
+
+    createConference();
+    // alert(JSON.stringify(formData, null, 2));
   }
 
   function handleAdd() {
-    console.log("hello");
+    // console.log("hello");
     if (addfield != "") {
       researchFields = [...researchFields, String(addfield)];
       addfield = "";
@@ -35,13 +59,18 @@
 
   <div class="form">
     <div class="form-control">
-      <label for="conference_title">Conference Title:</label>
-      <input type="text" id="conference_title" bind:value={formData.name} />
+      <label for="conference_title">Title:</label>
+      <input type="text" id="conference_title" bind:value={formData.conference_title} />
+    </div>
+
+    <div class="form-control">
+      <label for="conference_description">Description:</label>
+      <input type="text" id="conference_title" bind:value={formData.conference_description} />
     </div>
 
     <div class="form-control">
       <label for="webpage">Webpage:</label>
-      <input type="text" id="webpage" bind:value={formData.webpage} />
+      <input type="text" id="webpage" bind:value={formData.conference_webpage} />
     </div>
 
     <div class="form-control">
@@ -66,7 +95,7 @@
         <input
           type="date"
           id="submission_deadline_date"
-          bind:value={formData.submission_deadline}
+          bind:value={submission_deadline_date}
         />
       </div>
 
@@ -75,7 +104,7 @@
         <input
           type="time"
           id="submission_deadline_time"
-          bind:value={formData.submission_deadline}
+          bind:value={submission_deadline_time}
         />
       </div>
     </div>
