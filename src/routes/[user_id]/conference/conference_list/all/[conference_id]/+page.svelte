@@ -44,7 +44,9 @@
     <div>
       <h1>Conference Title: {data.conference_title}</h1>
       <h3>Venue: {data.venue}</h3>
-      <h3>Webpage: {data.conference_webpage}</h3>
+      <h3>
+        Webpage: <a href={data.conference_webpage}>{data.conference_webpage}</a>
+      </h3>
       <h2>Research Areas: {data.related_fields}</h2>
       <h3>Start date: {data.start_date}</h3>
       <h3>End date: {data.end_date}</h3>
@@ -62,7 +64,9 @@
       </h3>
       <h3>Description: {data.conference_description}</h3>
 
-      <a href="/conference/submitPaper/{conference_id}">Submit a Paper</a>
+      <a href="/{user_id}/conference/submitPaper/{conference_id}"
+        >Submit a Paper</a
+      >
     </div>
   </main>
 {/if}

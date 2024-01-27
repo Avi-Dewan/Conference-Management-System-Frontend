@@ -73,6 +73,7 @@
 
     <div class="form-control">
       <label for="conference_description">Description:</label>
+
       <input
         type="text"
         id="conference_title"
@@ -284,5 +285,8 @@
   }
   .redFont {
     color: red;
+  }
+  .desc input {
+    height: 150px;
   }
 </style>

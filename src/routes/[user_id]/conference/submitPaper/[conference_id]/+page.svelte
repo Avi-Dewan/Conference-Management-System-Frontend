@@ -1,15 +1,108 @@
 <script>
-  import { page } from "$app/stores";
-
-  const conference_id = $page.params.conference_id;
-
+  import { createClient } from "@supabase/supabase-js";
   import Navbar from "/src/components/navbar.svelte";
 
-  import { createClient } from "@supabase/supabase-js";
+  import { page } from "$app/stores";
+
+  import { onMount } from "svelte";
 
   let user_id;
 
   $: user_id = $page.params.user_id;
+
+  $: filterText = "";
+
+  let addfield = "";
+  let formData = {
+    paper_id: "",
+    paper_title: "",
+    abstract: "",
+    pdf_link: "",
+    related_fields: null,
+    file: null,
+    co_authors: null,
+  };
+
+  let url = `http://localhost:3000/user/all`;
+
+  let data = null;
+
+  let wholeData = null;
+
+  let file_path;
+  let files;
+
+  let authors = [];
+
+  let researchFields = [];
+
+  let paper_abstract = "";
+
+  async function submitPaper() {
+    const req = await fetch("http://localhost:3000/trial", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    console.log(formData);
+  }
+
+  onMount(async () => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      data = await response.json();
+      wholeData = data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
+
+  function handleSubmit() {
+    formData.related_fields = researchFields;
+    formData.co_authors = authors;
+
+    formData.file = files[0];
+
+    formData.main_author_id = user_id;
+
+    submitPaper();
+    // alert(JSON.stringify(formData, null, 2));
+  }
+
+  let show = false;
+  function authorSelect() {
+    if (data != null) {
+      show = true;
+    }
+  }
+
+  function handleAdd(name) {
+    // console.log("hello");
+
+    authors = [...authors, name];
+    show = false;
+  }
+
+  function removeItem(index) {
+    authors = authors.filter((_, i) => i != index);
+  }
+
+  function handleAddReserach() {
+    // console.log("hello");
+    if (addfield != "") {
+      researchFields = [...researchFields, String(addfield)];
+      addfield = "";
+    }
+  }
+  function removeItemResearch(index) {
+    researchFields = researchFields.filter((_, i) => i != index);
+  }
 
   // Create Supabase client
   const supabase = createClient(
@@ -17,36 +110,290 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyaHB2Z2h6YWFzaGl2a2VtemZzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNjExNjk0NywiZXhwIjoyMDIxNjkyOTQ3fQ.StJztxPxeUe1LjwqLjuQTWzcc1sQ7g85LO0Pykd11T0"
   );
 
-  let file_path = "";
-  let files;
   // Upload file using standard upload
   async function uploadFile() {
-    console.log(files[0]);
-    alert(file_path);
     const { data, error } = await supabase.storage
-      .from("test2")
-      .upload("okok/haha.txt", files[0]);
+      .from("submission")
+      .upload("file_path.py", files[0]);
     if (error) {
       // Handle error
     } else {
       // Handle success
     }
   }
-  async function getPath() {
-    alert(file_path);
-    console.log(files[0]);
-  }
-  async function downloadFile() {
-    const { data } = supabase.storage.from("test2").getPublicUrl("test/bodox");
-
-    console.log(data);
-  }
 </script>
 
-<form>
-  <label for="file">File</label>
-  <input id="file" type="file" bind:value={file_path} bind:files />
-  <button on:click={uploadFile}>Upload</button>
-</form>
+<main>
+  <Navbar />
 
-<button on:click={downloadFile}></button>
+  {#if data != null}
+    <h1>Submit a Paper</h1>
+
+    <div class="form">
+      <div class="form-control">
+        <h2>Paper Title</h2>
+        <input type="text" id="paper_title" bind:value={formData.paper_title} />
+      </div>
+
+      <div class="form-control">
+        <h2>Paper Authors</h2>
+
+        {#if show == false}
+          <div class="two-column">
+            {#each authors as item, index (item)}
+              <div class="two-column">
+                <div>
+                  <label style="width: 1px;"><h4>{item.full_name}</h4></label>
+                </div>
+                <div>
+                  <button
+                    on:click={() => removeItem(index)}
+                    style="background-color:red;"
+                  >
+                    Remove</button
+                  >
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+        {#if show == true}
+          <div class="scrollable-window">
+            <input
+              type="text"
+              placeholder="Filter by name"
+              bind:value={filterText}
+              style="max-width: 80%;margin-left:5%"
+              on:input={() => {
+                data = wholeData.filter(
+                  (item) =>
+                    item.full_name
+                      .toLowerCase()
+                      .toLowerCase()
+                      .indexOf(filterText.toLowerCase()) !== -1
+                );
+
+                if (filterText == "") {
+                  data = wholeData;
+                }
+              }}
+            />
+            {#each data as item (item.user_id)}
+              <div>
+                <div class="card">
+                  <h3>Name: {item.full_name}</h3>
+                  <h4>Affliation: {item.current_institution}</h4>
+                  <h4>Expertise: {item.expertise}</h4>
+                  <button
+                    on:click={handleAdd({
+                      full_name: item.full_name,
+                      user_id: item.user_id,
+                    })}>Add</button
+                  >
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+        <button on:click={authorSelect}>Choose Authors</button>
+      </div>
+
+      <div class="form-control">
+        <h3 style="margin-top: 8%;">Related Fields</h3>
+        <div class="two-column">
+          {#each researchFields as item, index (item)}
+            <div class="two-column">
+              <div>
+                <label style="width: 1px;"><h3>{item}</h3></label>
+              </div>
+              <div>
+                <button
+                  on:click={() => removeItemResearch(index)}
+                  style="background-color:red;"
+                >
+                  Remove</button
+                >
+              </div>
+            </div>
+          {/each}
+        </div>
+
+        <div class="form-control">
+          <input type="text" bind:value={addfield} style="width:30%" />
+          <button
+            on:click={handleAddReserach}
+            style="margin-left: 3%;height:40px;"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-top: 5%;">
+        <h3>Abstract</h3>
+        <textarea
+          style="height: 150px; width:700px;border-radius:1em"
+          bind:value={formData.abstract}
+        ></textarea>
+      </div>
+
+      <form class="form-control">
+        <h3>Attach Paper</h3>
+        <input
+          id="file"
+          type="file"
+          bind:value={formData.file_path}
+          bind:files
+        />
+      </form>
+      <div class="form-control" style="display: block;">
+        <button on:click={handleSubmit}>Submit</button>
+      </div>
+    </div>
+  {/if}
+</main>
+
+<style>
+  .card button {
+    position: relative;
+    left: 40%;
+    bottom: 10px;
+  }
+  .two-column {
+    margin-top: -1%;
+    column-count: 2; /* Split into two columns */
+    column-gap: 30%; /* Adjust gap between columns */
+  }
+  .two-column button {
+    margin-left: -10%;
+  }
+  .two-column div {
+    break-inside: avoid; /* Prevent breaking elements between columns */
+  }
+  input {
+    height: 50px;
+    width: 500px;
+  }
+  main {
+    max-width: 90%;
+    margin: 2% auto;
+  }
+
+  h1 {
+  }
+  .card {
+    margin-left: 5%;
+    margin-top: 2%;
+    border: 1px solid grey;
+    max-width: 80%;
+    text-align: center;
+  }
+
+  .form {
+    width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    float: left;
+  }
+
+  .form-control {
+    margin-bottom: 10px;
+    min-height: 20px;
+    min-width: 50px;
+    clear: both;
+  }
+
+  .form-control label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-control input,
+  .form-control select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  .form-control button {
+    margin-top: 5%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .form-control button:hover {
+    background-color: #0056b3;
+  }
+
+  .form-control-submission {
+    margin-bottom: 20px;
+  }
+
+  .form-control-submission label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-control-submission input,
+  .form-control-submission select {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+  .column {
+    float: left;
+    width: 50%;
+  }
+  .column-field {
+    align-items: flex-start;
+    float: left;
+    width: 50%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+  }
+  .column button {
+    margin-left: 18%;
+    margin-top: 1%;
+    background-color: green;
+    height: 40px;
+  }
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .redFont {
+    color: red;
+  }
+
+  .scrollable-window {
+    height: 300px; /* Adjust height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+</style>

@@ -59,7 +59,8 @@
           <h3>Related Fields: {item.related_fields}</h3>
           <h3>Webpage: {item.conference_webpage}</h3>
           <h3>Status: {item.status}</h3>
-          <a href="/conference/conference_list/all/{item.conference_id}"
+          <a
+            href="/{user_id}/conference/conference_list/all/{item.conference_id}"
             >View Details</a
           >
         </Card>
