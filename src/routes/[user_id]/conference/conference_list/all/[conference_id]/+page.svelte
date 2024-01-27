@@ -8,6 +8,10 @@
 
   import { onMount } from "svelte";
 
+  let user_id;
+
+  $: user_id = $page.params.user_id;
+
   let data = [];
 
   let url = `http://localhost:3000/conference/${conference_id}`;

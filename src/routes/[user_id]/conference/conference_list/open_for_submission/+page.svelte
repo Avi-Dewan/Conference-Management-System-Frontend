@@ -2,8 +2,13 @@
   import Navbar from "/src/components/navbar.svelte";
   import Card from "/src/components/card.svelte";
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
 
   let data = [];
+
+  let user_id;
+
+  $: user_id = $page.params.user_id;
 
   let url = `http://localhost:3000/conference/open`;
 
@@ -38,8 +43,8 @@
   </div>
 
   <nav>
-    <a href="/conference/conference_list/all">All</a>
-    <a href="/conference/conference_list/open_for_submission"
+    <a href="/{user_id}/conference/conference_list/all">All</a>
+    <a href="/{user_id}/conference/conference_list/open_for_submission"
       >Open for submission</a
     >
     <div class="animation start-home"></div>
@@ -51,7 +56,7 @@
         <h3>Related Fields: {item.related_fields}</h3>
         <h3>Webpage: {item.conference_webpage}</h3>
         <h3>Status: {item.status}</h3>
-        <a href="/conference/conference_list/all/{item.conference_id}"
+        <a href="/{user_id}/conference/conference_list/all/{item.conference_id}"
           >View Details</a
         >
       </Card>

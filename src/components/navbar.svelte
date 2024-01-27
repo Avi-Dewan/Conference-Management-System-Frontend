@@ -1,4 +1,9 @@
 <script>
+  import { page } from "$app/stores";
+
+  let user_id;
+
+  $: user_id = $page.params.user_id;
 </script>
 
 <header>
@@ -7,9 +12,11 @@
 
     <nav>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/conference/conference_list/all">Conferences</a></li>
-        <li><a href="/conference/create">Create a conference</a></li>
+        <li><a href="/{user_id}/home">Home</a></li>
+        <li>
+          <a href="/{user_id}/conference/conference_list/all">Conferences</a>
+        </li>
+        <li><a href="/{user_id}/conference/create">Create a conference</a></li>
         <li><a href="#">My Request</a></li>
         <li><a href="#">My Profile</a></li>
         <li><a href="#">Log out</a></li>

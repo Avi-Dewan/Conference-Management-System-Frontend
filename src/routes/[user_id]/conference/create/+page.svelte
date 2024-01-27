@@ -1,6 +1,8 @@
 <script>
   import Navbar from "/src/components/navbar.svelte";
 
+  import { page } from "$app/stores";
+
   async function createConference() {
     const req = await fetch("http://localhost:3000/conference/create", {
       method: "POST",
@@ -10,6 +12,10 @@
       body: JSON.stringify(formData),
     });
   }
+
+  let user_id;
+
+  $: user_id = $page.params.user_id;
 
   let researchFields = [];
   let addfield = "";

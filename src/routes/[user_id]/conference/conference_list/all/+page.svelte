@@ -5,6 +5,12 @@
 
   let data = [];
 
+  import { page } from "$app/stores";
+
+  let user_id;
+
+  $: user_id = $page.params.user_id;
+
   let url = `http://localhost:3000/conference/all`;
 
   const currentDate = new Date();
@@ -40,8 +46,8 @@
     </div>
 
     <nav>
-      <a href="/conference/conference_list/all">All</a>
-      <a href="/conference/conference_list/open_for_submission"
+      <a href="/{user_id}/conference/conference_list/all">All</a>
+      <a href="/{user_id}/conference/conference_list/open_for_submission"
         >Open for submission</a
       >
       <div class="animation start-home"></div>
