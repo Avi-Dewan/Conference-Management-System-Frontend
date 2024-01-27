@@ -9,6 +9,7 @@
   let user_id;
 
   $: user_id = $page.params.user_id;
+  $: conference_id = $page.params.conference_id;
 
   $: filterText = "";
 
@@ -39,13 +40,14 @@
   let paper_abstract = "";
 
   async function submitPaper() {
-    const req = await fetch("http://localhost:3000/trial", {
+    const req = await fetch("http://localhost:3000/paper/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
+
     console.log(formData);
   }
 
@@ -62,18 +64,6 @@
       console.error("Error fetching data:", error);
     }
   });
-
-  function handleSubmit() {
-    formData.related_fields = researchFields;
-    formData.co_authors = authors;
-
-    formData.file = files[0];
-
-    formData.main_author_id = user_id;
-
-    submitPaper();
-    // alert(JSON.stringify(formData, null, 2));
-  }
 
   let show = false;
   function authorSelect() {
@@ -112,14 +102,41 @@
 
   // Upload file using standard upload
   async function uploadFile() {
+    file_path = file_path.split(".").pop();
+
+    console.log(file_path);
+
+    file_path = conference_id + "/" + Date.now() + "." + file_path;
+
+    formData.pdf_link = supabase.storage
+      .from("submission")
+      .getPublicUrl(file_path).data.publicUrl;
+
     const { data, error } = await supabase.storage
       .from("submission")
-      .upload("file_path.py", files[0]);
+      .upload(file_path, files[0]);
     if (error) {
       // Handle error
     } else {
       // Handle success
     }
+  }
+
+  function handleSubmit() {
+    formData.related_fields = researchFields;
+    formData.co_authors = authors;
+
+    formData.file = files[0];
+
+    formData.main_author_id = user_id;
+
+    formData.conference_id = conference_id;
+    console.log(user_id);
+
+    uploadFile();
+
+    submitPaper();
+    // alert(JSON.stringify(formData, null, 2));
   }
 </script>
 
@@ -239,12 +256,7 @@
 
       <form class="form-control">
         <h3>Attach Paper</h3>
-        <input
-          id="file"
-          type="file"
-          bind:value={formData.file_path}
-          bind:files
-        />
+        <input id="file" type="file" bind:value={file_path} bind:files />
       </form>
       <div class="form-control" style="display: block;">
         <button on:click={handleSubmit}>Submit</button>
