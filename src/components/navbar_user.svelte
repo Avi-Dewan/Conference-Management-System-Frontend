@@ -17,7 +17,7 @@
             <a href="/{user_id}/conference/conference_list/all">Conferences</a>
           </li>
           <li><a href="#">My Request</a></li>
-          <li><a href="#">My Review</a></li>
+          <li><a href="/{user_id}/review">My Review</a></li>
           <li><a href="#">My Profile</a></li>
           <li><a href="/">Log out</a></li>
         </ul>
