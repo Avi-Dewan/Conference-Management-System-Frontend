@@ -63,8 +63,6 @@
 
       paper_author_details = await response.json();
       paper_author_details = paper_author_details;
-
-      console.log(paper_author_details);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -180,11 +178,17 @@
     <NavbarChair />
     <div>
       <h1>Title: {paper_details.paper_title}</h1>
-      <h3>Authors: {paper_author_details}</h3>
-      <h3>Related Field: {paper_details.related_fields}</h3>
+      <hr />
+      <h2>Authors:</h2>
+      {#each paper_author_details as item}
+        <h3>{item.full_name} , {item.current_institution}</h3>
+      {/each}
+      <hr />
+      <h2>Related Field: {paper_details.related_fields}</h2>
+      <hr />
     </div>
     <div>
-      <h1 style="color:red">Already Requested Reviewer</h1>
+      <h3 style="color:red">Already Requested Reviewer</h3>
       <div>
         <div class="two-column">
           {#each alreadyRequestedReviewer as item, index (item.user_id)}
@@ -204,19 +208,19 @@
         </div>
       </div>
     </div>
+    <hr />
 
     <div>
-      <h1 style="color: green;">Already Assigned Reviewer</h1>
+      <h3 style="color: green;">Already Assigned Reviewer</h3>
 
-      <div class="two-column" style="margin-left: 0px;">
-        {#each alreadyAssignedReviewer as item, index (item.user_id)}
-          <div>
-            <h3>Name: {item.full_name}</h3>
-            <h4>Expertise: {item.expertise}</h4>
-            <h4>Affliation: {item.current_institution}</h4>
-          </div>
-        {/each}
-      </div>
+      {#each alreadyAssignedReviewer as item, index (item.user_id)}
+        <div>
+          <h3>Name: {item.full_name}</h3>
+          <h4>Expertise: {item.expertise}</h4>
+          <h4>Affliation: {item.current_institution}</h4>
+          <hr />
+        </div>
+      {/each}
     </div>
     <div style="margin-top: 10%;">
       <h2>Reviewer Suggestion:</h2>
