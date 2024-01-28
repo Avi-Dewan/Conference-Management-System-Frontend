@@ -28,6 +28,18 @@
 </script>
 
 <main>
+  <div >
+    <h1>Conference Management System</h1>
+    <h3>Manage your conference 
+      easily and effectively 
+      with our conference management software </h3>
+  </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+
   <div class="form">
     <div class="form-control">
       <label for="email">Email:</label>
