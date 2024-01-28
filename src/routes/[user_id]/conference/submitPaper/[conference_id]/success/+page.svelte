@@ -1,6 +1,8 @@
 <script>
   import { createClient } from "@supabase/supabase-js";
-  import Navbar from "/src/components/navbar.svelte";
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
+
 
   import { page } from "$app/stores";
 

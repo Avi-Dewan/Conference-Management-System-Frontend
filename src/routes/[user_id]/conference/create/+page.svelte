@@ -1,5 +1,6 @@
 <script>
-  import Navbar from "/src/components/navbar.svelte";
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
 
   import { page } from "$app/stores";
 
@@ -15,7 +16,7 @@
 
   let user_id;
 
-  $: user_id = $page.params.user_id;
+  user_id = $page.params.user_id;
 
   let researchFields = [];
   let addfield = "";
@@ -57,7 +58,7 @@
 </script>
 
 <main>
-  <Navbar />
+  <NavbarChair />
 
   <h1>Create a conference</h1>
 
