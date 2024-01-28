@@ -12,7 +12,7 @@
 
   let user_id, user_type;
 
-  $: user_id = $page.params.user_id;
+  user_id = $page.params.user_id;
 
   let data = [];
 
@@ -75,6 +75,9 @@
 
       <a href="/{user_id}/conference/submitPaper/{conference_id}"
         >Submit a Paper</a
+      >
+      <a href="/{user_id}/conference/viewSubmission/{conference_id}"
+        >View Submissions</a
       >
     </div>
   </main>

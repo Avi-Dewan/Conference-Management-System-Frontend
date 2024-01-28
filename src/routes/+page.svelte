@@ -2,6 +2,8 @@
   import Navbar from "/src/components/navbar.svelte";
   import { goto } from "$app/navigation";
 
+  import { onMount } from "svelte";
+
 
   
   let email, password, user_id;
@@ -12,51 +14,38 @@
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({"email": email, "password": password}),
+      body: JSON.stringify({ email: email, password: password }),
     });
 
     let data = await response.json();
     user_id = data.user_id;
-    
-    if(user_id) {
+
+    if (user_id) {
       goto(`/${user_id}/home`);
     } else {
-      alert("Wrong password")
+      alert("Wrong password");
     }
-
   }
 </script>
 
 <main>
-
   <div class="form">
     <div class="form-control">
       <label for="email">Email:</label>
-      <input
-        type="text"
-        id="email"
-        bind:value={email}
-      />
+      <input type="text" id="email" bind:value={email} />
     </div>
 
     <div class="form-control">
       <label for="pasword">Password:</label>
 
-      <input
-        type="password"
-        id="password"
-        bind:value={password}
-      />
+      <input type="password" id="password" bind:value={password} />
     </div>
-
   </div>
 
   <div class="form-control" style="display: block;">
     <button on:click={handleLogIn}>Log in</button>
   </div>
 </main>
-
-
 
 <style>
   .two-column {
