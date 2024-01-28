@@ -3,25 +3,51 @@
 
 <main>
   <div>
-    <button>Show Success</button>
-
     <div class="success-dialog">
-      <p>Success! Your action was completed.</p>
+      <h3 style="color: black;">Success! Your File was submitted.</h3>
+
+      <button>Ok</button>
     </div>
   </div>
 </main>
 
 <style>
+  /* Styles for the button */
+  button {
+    padding: 10px 20px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #2980b9;
+  }
+
+  /* Styles for the success dialogue box */
   .success-dialog {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #4caf50;
+    background-color: #2ecc71;
     color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     z-index: 9999;
+  }
+
+  .success-dialog p {
+    margin: 0;
+  }
+
+  /* Animation to fade in and out the success dialogue */
+  .success-dialog.show {
+    opacity: 0.5;
   }
 </style>
