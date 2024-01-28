@@ -6,10 +6,12 @@
 
   import { onMount } from "svelte";
 
-  let user_id;
+  import { goto } from "$app/navigation";
 
-  $: user_id = $page.params.user_id;
-  $: conference_id = $page.params.conference_id;
+  let user_id = $page.params.user_id;
+  let conference_id = $page.params.conference_id;
+
+  console.log(conference_id);
 
   $: filterText = "";
 
@@ -25,8 +27,13 @@
   };
 
   let url = `http://localhost:3000/user/all`;
+  let conf_url = `http://localhost:3000/conference/${conference_id}`;
 
   let data = null;
+
+  let conf_data = null;
+
+  let conf_track = [];
 
   let wholeData = null;
 
@@ -39,6 +46,12 @@
 
   let paper_abstract = "";
 
+  let selectedTrack = "";
+
+  let show = false;
+
+  let submitted = false;
+
   async function submitPaper() {
     const req = await fetch("http://localhost:3000/paper/submit", {
       method: "POST",
@@ -47,8 +60,6 @@
       },
       body: JSON.stringify(formData),
     });
-
-    console.log(formData);
   }
 
   onMount(async () => {
@@ -65,7 +76,20 @@
     }
   });
 
-  let show = false;
+  onMount(async () => {
+    try {
+      const response = await fetch(conf_url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      conf_data = await response.json();
+      conf_track = conf_data.related_fields;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
+
   function authorSelect() {
     if (data != null) {
       show = true;
@@ -123,7 +147,7 @@
   }
 
   function handleSubmit() {
-    formData.related_fields = researchFields;
+    formData.related_fields = selectedTrack;
     formData.co_authors = authors;
 
     formData.file = files[0];
@@ -131,11 +155,16 @@
     formData.main_author_id = user_id;
 
     formData.conference_id = conference_id;
-    console.log(user_id);
+    console.log(conference_id);
 
     uploadFile();
 
     submitPaper();
+
+    submitted = true;
+
+    goto(`/${user_id}/conference/submitPaper/${conference_id}/success`);
+
     // alert(JSON.stringify(formData, null, 2));
   }
 </script>
@@ -143,7 +172,7 @@
 <main>
   <Navbar />
 
-  {#if data != null}
+  {#if data != null && conf_data != null}
     <h1>Submit a Paper</h1>
 
     <div class="form">
@@ -174,6 +203,7 @@
             {/each}
           </div>
         {/if}
+
         {#if show == true}
           <div class="scrollable-window">
             <input
@@ -216,33 +246,14 @@
       </div>
 
       <div class="form-control">
-        <h3 style="margin-top: 8%;">Related Fields</h3>
-        <div class="two-column">
-          {#each researchFields as item, index (item)}
-            <div class="two-column">
-              <div>
-                <label style="width: 1px;"><h3>{item}</h3></label>
-              </div>
-              <div>
-                <button
-                  on:click={() => removeItemResearch(index)}
-                  style="background-color:red;"
-                >
-                  Remove</button
-                >
-              </div>
-            </div>
-          {/each}
-        </div>
+        <h3 style="margin-top: 8%;">Research Track</h3>
 
-        <div class="form-control">
-          <input type="text" bind:value={addfield} style="width:30%" />
-          <button
-            on:click={handleAddReserach}
-            style="margin-left: 3%;height:40px;"
-          >
-            Add
-          </button>
+        <div>
+          <select bind:value={selectedTrack}>
+            {#each conf_track as item}
+              <option value={item}>{item}</option>
+            {/each}
+          </select>
         </div>
       </div>
 

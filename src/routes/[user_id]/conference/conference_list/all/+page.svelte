@@ -52,18 +52,16 @@
       >
       <div class="animation start-home"></div>
     </nav>
+
     <div class="cards">
       {#each data as item}
-        <Card>
-          <h2>{item.conference_title}</h2>
-          <h3>Related Fields: {item.related_fields}</h3>
-          <h3>Webpage: {item.conference_webpage}</h3>
-          <h3>Status: {item.status}</h3>
-          <a
-            href="/{user_id}/conference/conference_list/all/{item.conference_id}"
-            >View Details</a
-          >
-        </Card>
+        <h2>{item.conference_title}</h2>
+        <h3>Related Fields: {item.related_fields}</h3>
+        <h3>Webpage: {item.conference_webpage}</h3>
+        <h3>Status: {item.status}</h3>
+        <a href="/{user_id}/conference/conference_list/all/{item.conference_id}"
+          >View Details</a
+        >
       {/each}
     </div>
   </main>
@@ -133,7 +131,7 @@
     margin: 2% auto;
   }
   .cards {
-    margin: 10% 0%;
+    margin: 120px 0%;
     display: block;
     flex-direction: column; /* Display elements vertically */
   }
