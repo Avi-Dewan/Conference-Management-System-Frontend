@@ -25,6 +25,10 @@
       alert("Wrong password");
     }
   }
+
+  function handleSignUp() {
+    goto(`/signup`);
+  }
 </script>
 
 <main>
@@ -55,7 +59,11 @@
 
   <div class="form-control" style="display: block;">
     <button on:click={handleLogIn}>Log in</button>
+
+    <button on:click={handleSignUp}>Sign Up</button>
+
   </div>
+
 </main>
 
 <style>
