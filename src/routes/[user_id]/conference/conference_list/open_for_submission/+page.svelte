@@ -1,12 +1,14 @@
 <script>
-  import Navbar from "/src/components/navbar.svelte";
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
+
   import Card from "/src/components/card.svelte";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
 
   let data = [];
 
-  let user_id;
+  let user_id, user_type;
 
   $: user_id = $page.params.user_id;
 
@@ -16,6 +18,9 @@
 
   onMount(async () => {
     try {
+
+      user_type = sessionStorage.getItem("user_type");
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -37,7 +42,11 @@
 </script>
 
 <main>
-  <Navbar />
+  {#if user_type == JSON.stringify('chair')}
+      <NavbarChair/>
+    {:else}
+      <NavbarUser/>
+  {/if}
   <div class="header">
     <h1>Conferences</h1>
   </div>

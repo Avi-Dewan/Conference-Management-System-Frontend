@@ -1,5 +1,7 @@
 <script>
-  import Navbar from "/src/components/navbar.svelte";
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
+
 
   import { page } from "$app/stores";
 
@@ -57,7 +59,7 @@
 </script>
 
 <main>
-  <Navbar />
+  <NavbarChair />
 
   <h1>Create a conference</h1>
 

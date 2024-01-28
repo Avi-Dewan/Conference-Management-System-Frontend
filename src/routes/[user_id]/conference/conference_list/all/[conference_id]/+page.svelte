@@ -4,11 +4,13 @@
 
   const conference_id = $page.params.conference_id;
 
-  import Navbar from "/src/components/navbar.svelte";
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
+
 
   import { onMount } from "svelte";
 
-  let user_id;
+  let user_id, user_type;
 
   $: user_id = $page.params.user_id;
 
@@ -20,6 +22,9 @@
 
   onMount(async () => {
     try {
+      
+      user_type = sessionStorage.getItem("user_type");
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -40,7 +45,11 @@
 
 {#if data != ""}
   <main>
-    <Navbar />
+    {#if user_type == JSON.stringify('chair')}
+      <NavbarChair/>
+    {:else}
+      <NavbarUser/>
+    {/if}
     <div>
       <h1>Conference Title: {data.conference_title}</h1>
       <h3>Venue: {data.venue}</h3>

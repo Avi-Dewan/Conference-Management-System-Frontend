@@ -1,6 +1,8 @@
 <script>
   import { createClient } from "@supabase/supabase-js";
-  import Navbar from "/src/components/navbar.svelte";
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
+
 
   import { page } from "$app/stores";
 
@@ -8,7 +10,7 @@
 
   import { goto } from "$app/navigation";
 
-  let user_id = $page.params.user_id;
+  let user_id = $page.params.user_id, user_type;
   let conference_id = $page.params.conference_id;
 
   console.log(conference_id);
@@ -64,6 +66,8 @@
 
   onMount(async () => {
     try {
+      user_type = sessionStorage.getItem("user_type");
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -170,7 +174,7 @@
 </script>
 
 <main>
-  <Navbar />
+  <NavbarUser />
 
   {#if data != null && conf_data != null}
     <h1>Submit a Paper</h1>

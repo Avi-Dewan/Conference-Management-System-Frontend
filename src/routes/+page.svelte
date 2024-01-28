@@ -2,8 +2,10 @@
   import Navbar from "/src/components/navbar.svelte";
   import { goto } from "$app/navigation";
 
-  let email, password, user_id;
 
+  
+  let email, password, user_id;
+  
   async function handleLogIn() {
     const response = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
