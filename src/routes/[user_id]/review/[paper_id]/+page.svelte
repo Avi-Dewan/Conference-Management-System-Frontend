@@ -1,60 +1,61 @@
 <script>
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
   import { goto } from "$app/navigation";
 
-  import { onMount } from "svelte";
+  import { page } from "$app/stores";
 
+  let user_id, paper_id;
 
-  
-  let email, password, user_id;
-  
-  async function handleLogIn() {
-    const response = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
+  user_id = $page.params.user_id;
+  paper_id = $page.params.paper_id;
+
+  let rating, review;
+
+  async function handleSubmit() {
+    const response = await fetch("http://localhost:3000/reviewer/review", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: email, password: password }),
+      body: JSON.stringify({user_id: user_id, paper_id: paper_id, rating: rating, review: review}),
     });
 
-    let data = await response.json();
-    user_id = data.user_id;
-
-    if (user_id) {
-      goto(`/${user_id}/home`);
-    } else {
-      alert("Wrong password");
-    }
+    goto(`/${user_id}/review`);
   }
+
+  
+
+
 </script>
 
 <main>
-  <div >
-    <h1>Conference Management System</h1>
-    <h3>Manage your conference 
-      easily and effectively 
-      with our conference management software </h3>
-  </div>
+  <NavbarUser/>
 
-  <br>
-  <br>
-  <br>
-  <br>
+  <h1>Write review </h1>
 
   <div class="form">
     <div class="form-control">
-      <label for="email">Email:</label>
-      <input type="text" id="email" bind:value={email} />
+      <label for="rating">Rating:</label>
+      <input
+        type="text"
+        id="rating"
+        bind:value={rating}
+      />
     </div>
 
     <div class="form-control">
-      <label for="pasword">Password:</label>
+      <label for="review">Review:</label>
 
-      <input type="password" id="password" bind:value={password} />
+      <textarea style="height: 200px; width:890px;border-radius:.3em"
+        id="review"
+        bind:value={review}
+      />
     </div>
-  </div>
 
-  <div class="form-control" style="display: block;">
-    <button on:click={handleLogIn}>Log in</button>
+    <div class="form-control" style="display: block;">
+      <button on:click={handleSubmit}>Submit</button>
+    </div>
   </div>
 </main>
 

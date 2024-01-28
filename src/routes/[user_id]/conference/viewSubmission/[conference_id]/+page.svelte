@@ -10,7 +10,7 @@
   user_id = $page.params.user_id;
   let url = `http://localhost:3000/conference/${conference_id}/papersWithAuthors`;
   let conference_url = `http://localhost:3000/conference/${conference_id}`;
-  let data = null;
+  let papers = null;
   let conf_data = null;
 
   onMount(async () => {
@@ -20,9 +20,9 @@
         throw new Error("Failed to fetch data");
       }
 
-      data = await response.json();
+      papers = await response.json();
 
-      console.log(data);
+      console.log(papers);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -43,19 +43,36 @@
 </script>
 
 <main>
-  {#if data != null && conf_data != null}
+  {#if papers != null && conf_data != null}
     <NavbarChair />
     <div>
       <h1>{conf_data.conference_title}</h1>
-      {#each data as item}
+      {#each papers as item}
+        <hr>
         <div style="margin-top: 70px;">
           <h2>Paper Title: {item.paper_title}</h2>
-          <p>Author: {item.authors}</p>
-          <p>Track: {item.related_fields}</p>
-          <p>Abstract: {item.abstract}</p>
-          <p>Assigned Reviewer:</p>
-          <p>Requested Reviewer:</p>
-          <p>Re:</p>
+          <p> <b>Author:</b> {item.authors}</p>
+          <p> <b>Track:</b> {item.related_fields}</p>
+          <p> <b>Abstract:</b> {item.abstract}</p>
+          <p> <b>Requested Reviewer:</b> {item.requestedReviewers}</p>
+          <p> <b> <u> Assigned Reviewers and reviews: </u></b></p>
+          
+          {#each item.reviews as rev} 
+            <div>
+              <b>{rev.full_name}</b>
+              {#if rev.rating != null}
+                <p> rating: {rev.rating}</p>
+                <p> review: {rev.review}</p>
+              {:else}
+                <p style="color:red"> Not given review yet </p>
+                <a href="#"> notify "{rev.full_name}"" to write review</a>
+                <br>
+                <br>
+              {/if}
+                <br>
+            </div>
+
+          {/each}
           <a href={item.pdf_link}>View file</a>
           <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
             Assign
