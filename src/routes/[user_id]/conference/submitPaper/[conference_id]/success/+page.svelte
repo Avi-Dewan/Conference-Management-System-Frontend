@@ -1,4 +1,18 @@
 <script>
+  import { createClient } from "@supabase/supabase-js";
+  import Navbar from "/src/components/navbar.svelte";
+
+  import { page } from "$app/stores";
+
+  import { onMount } from "svelte";
+
+  import { goto } from "$app/navigation";
+
+  let user_id = $page.params.user_id;
+  let conference_id = $page.params.conference_id;
+  function goBack() {
+    goto(`/${user_id}/conference/conference_list/all`);
+  }
 </script>
 
 <main>
@@ -6,7 +20,7 @@
     <div class="success-dialog">
       <h3 style="color: black;">Success! Your File was submitted.</h3>
 
-      <button>Ok</button>
+      <button on:click={goBack}>Ok</button>
     </div>
   </div>
 </main>
