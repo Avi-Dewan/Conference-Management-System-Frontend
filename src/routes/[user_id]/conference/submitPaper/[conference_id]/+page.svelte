@@ -3,14 +3,14 @@
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
 
-
   import { page } from "$app/stores";
 
   import { onMount } from "svelte";
 
   import { goto } from "$app/navigation";
 
-  let user_id = $page.params.user_id, user_type;
+  let user_id = $page.params.user_id,
+    user_type;
   let conference_id = $page.params.conference_id;
 
   console.log(conference_id);
@@ -96,7 +96,7 @@
 
   function authorSelect() {
     if (data != null) {
-      show = true;
+      show = !show;
     }
   }
 
