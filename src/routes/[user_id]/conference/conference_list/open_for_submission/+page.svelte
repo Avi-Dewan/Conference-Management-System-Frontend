@@ -42,7 +42,7 @@
 </script>
 
 <main>
-  {#if user_type == JSON.stringify('chair')}
+  {#if user_type == "chair"}
       <NavbarChair/>
     {:else}
       <NavbarUser/>

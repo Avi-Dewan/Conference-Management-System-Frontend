@@ -43,7 +43,7 @@
 
 {#if data != ""}
   <main>
-    {#if user_type == JSON.stringify("chair")}
+    {#if user_type == "chair"}
       <NavbarChair />
     {:else}
       <NavbarUser />
@@ -71,7 +71,7 @@
       </h3>
       <h3>Description: {data.conference_description}</h3>
 
-      {#if user_type == JSON.stringify("chair")}
+      {#if user_type == "chair"}
         <a href="/{user_id}/conference/viewSubmission/{conference_id}"
           >View Submissions</a
         >

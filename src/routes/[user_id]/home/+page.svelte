@@ -31,8 +31,7 @@
 
 {#if user != null}
   <main>
-    
-    {#if user.user_type == JSON.stringify('chair')}
+    {#if user.user_type == 'chair'}
       <NavbarChair/>
     {:else}
       <NavbarUser/>
