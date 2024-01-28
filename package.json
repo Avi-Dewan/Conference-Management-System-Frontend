@@ -16,6 +16,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@svelte-plugins/datepicker": "^1.0.2"
+		"@svelte-plugins/datepicker": "^1.0.2",
+		"axios": "^1.6.7",
+		"google-auth-library": "^9.5.0",
+		"googleapis": "^131.0.0"
 	}
 }
