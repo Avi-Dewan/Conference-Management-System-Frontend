@@ -7,7 +7,6 @@
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
 
-
   import { onMount } from "svelte";
 
   let user_id, user_type;
@@ -22,7 +21,6 @@
 
   onMount(async () => {
     try {
-      
       user_type = sessionStorage.getItem("user_type");
 
       const response = await fetch(url);
@@ -45,10 +43,10 @@
 
 {#if data != ""}
   <main>
-    {#if user_type == JSON.stringify('chair')}
-      <NavbarChair/>
+    {#if user_type == JSON.stringify("chair")}
+      <NavbarChair />
     {:else}
-      <NavbarUser/>
+      <NavbarUser />
     {/if}
     <div>
       <h1>Conference Title: {data.conference_title}</h1>
@@ -73,16 +71,14 @@
       </h3>
       <h3>Description: {data.conference_description}</h3>
 
-      {#if user_type == JSON.stringify('chair')}
+      {#if user_type == JSON.stringify("chair")}
         <a href="/{user_id}/conference/viewSubmission/{conference_id}"
-        >View Submissions</a>
-
-        <a href="#"
-        >Assign Reviewer</a
-      >
+          >View Submissions</a
+        >
       {:else}
         <a href="/{user_id}/conference/submitPaper/{conference_id}"
-        >Submit a Paper</a>
+          >Submit a Paper</a
+        >
       {/if}
     </div>
   </main>

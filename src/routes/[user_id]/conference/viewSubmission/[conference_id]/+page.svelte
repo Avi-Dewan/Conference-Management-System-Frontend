@@ -5,6 +5,9 @@
   import NavbarUser from "/src/components/navbar_user.svelte";
 
   const conference_id = $page.params.conference_id;
+  let user_id;
+
+  user_id = $page.params.user_id;
   let url = `http://localhost:3000/conference/${conference_id}/papersWithAuthors`;
   let conference_url = `http://localhost:3000/conference/${conference_id}`;
   let data = null;
@@ -41,7 +44,7 @@
 
 <main>
   {#if data != null && conf_data != null}
-    <NavbarChair/>
+    <NavbarChair />
     <div>
       <h1>{conf_data.conference_title}</h1>
       {#each data as item}
@@ -50,7 +53,13 @@
           <p>Author: {item.authors}</p>
           <p>Track: {item.related_fields}</p>
           <p>Abstract: {item.abstract}</p>
+          <p>Assigned Reviewer:</p>
+          <p>Requested Reviewer:</p>
+          <p>Re:</p>
           <a href={item.pdf_link}>View file</a>
+          <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
+            Assign
+          </a>
         </div>
       {/each}
     </div>
