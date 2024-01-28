@@ -73,12 +73,17 @@
       </h3>
       <h3>Description: {data.conference_description}</h3>
 
-      <a href="/{user_id}/conference/submitPaper/{conference_id}"
-        >Submit a Paper</a
+      {#if user_type == JSON.stringify('chair')}
+        <a href="/{user_id}/conference/viewSubmission/{conference_id}"
+        >View Submissions</a>
+
+        <a href="#"
+        >Assign Reviewer</a
       >
-      <a href="/{user_id}/conference/viewSubmission/{conference_id}"
-        >View Submissions</a
-      >
+      {:else}
+        <a href="/{user_id}/conference/submitPaper/{conference_id}"
+        >Submit a Paper</a>
+      {/if}
     </div>
   </main>
 {/if}

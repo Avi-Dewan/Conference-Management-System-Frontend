@@ -1,5 +1,4 @@
 <script>
-  import Navbar from "/src/components/navbar.svelte";
   import { goto } from "$app/navigation";
 
   import { onMount } from "svelte";

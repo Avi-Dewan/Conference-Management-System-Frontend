@@ -1,13 +1,15 @@
 <script>
   import { page } from "$app/stores";
   import { onMount } from "svelte";
-  import Navbar from "/src/components/navbar.svelte";
+  import NavbarChair from "/src/components/navbar_chair.svelte";
+  import NavbarUser from "/src/components/navbar_user.svelte";
 
   const conference_id = $page.params.conference_id;
   let url = `http://localhost:3000/conference/${conference_id}/papersWithAuthors`;
   let conference_url = `http://localhost:3000/conference/${conference_id}`;
   let data = null;
   let conf_data = null;
+
   onMount(async () => {
     try {
       const response = await fetch(url);
@@ -39,7 +41,7 @@
 
 <main>
   {#if data != null && conf_data != null}
-    <Navbar />
+    <NavbarChair/>
     <div>
       <h1>{conf_data.conference_title}</h1>
       {#each data as item}
