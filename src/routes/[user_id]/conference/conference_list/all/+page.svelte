@@ -65,9 +65,14 @@
     <div class="cards">
       {#each data as item}
         <h2>{item.conference_title}</h2>
-        <h3>Related Fields: {item.related_fields}</h3>
-        <h3>Webpage: {item.conference_webpage}</h3>
-        <h3>Status: {item.status}</h3>
+        <h3 style="color:black">Related Fields: {item.related_fields}</h3>
+        <h4>Webpage:</h4>
+        <a href={item.conference_webpage}>{item.conference_webpage}</a>
+        {#if item.status == "Open"}
+          <h3 style="color: green;">Status: {item.status}</h3>
+        {:else}
+          <h3 style="color: red;">Status: {item.status}</h3>
+        {/if}
         <a href="/{user_id}/conference/conference_list/all/{item.conference_id}"
           >View Details</a
         >
