@@ -4,7 +4,7 @@
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
 
-  const user_id = $page.params.user_id;
+  const main_user_id = $page.params.user_id;
   const paper_id = $page.params.paper_id;
 
   let paper_details_url = `http://localhost:3000/paper/${paper_id}`;
@@ -38,9 +38,11 @@
   let alreadyAssignedReviewer = null;
 
   let showManual = false;
+  let user_type;
   //paper details
   onMount(async () => {
     try {
+      user_type = sessionStorage.getItem("user_type");
       const response = await fetch(paper_details_url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -143,7 +145,9 @@
     });
 
     const thisPage = window.location.pathname;
-    goto(`/${user_id}/home`).then(() => goto(thisPage));
+
+    console.log(user_type, "before");
+    goto(`/${main_user_id}/home`).then(() => goto(thisPage));
   }
   async function removeRequest(paper_id, user_id) {
     const response = await fetch(request_delete_url, {
@@ -155,7 +159,7 @@
     });
 
     const thisPage = window.location.pathname;
-    goto(`/${user_id}/home`).then(() => goto(thisPage));
+    goto(`/${main_user_id}/home`).then(() => goto(thisPage));
   }
 
   function suggestionSelect() {

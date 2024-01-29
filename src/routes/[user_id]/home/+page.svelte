@@ -3,7 +3,6 @@
   import NavbarUser from "/src/components/navbar_user.svelte";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
-  
 
   let user_id, user;
 
@@ -12,7 +11,7 @@
   onMount(async () => {
     try {
       let url = `http://localhost:3000/user/${user_id}`;
-      
+
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -20,9 +19,9 @@
       }
 
       user = await response.json();
+      console.log(user, "in home");
 
-      sessionStorage.setItem("user_type", user.user_type)
-
+      sessionStorage.setItem("user_type", user.user_type);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -31,18 +30,18 @@
 
 {#if user != null}
   <main>
-    {#if user.user_type == 'chair'}
-      <NavbarChair/>
+    {#if user.user_type == "chair"}
+      <NavbarChair />
     {:else}
-      <NavbarUser/>
+      <NavbarUser />
     {/if}
 
     <h1>Welcome to Conference Management System</h1>
     <p>
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde ipsum,
       numquam aspernatur earum dolore, libero pariatur voluptatibus itaque qui
-      illo alias, tempore ullam? Perferendis mollitia obcaecati pariatur molestias
-      exercitationem. Nam?
+      illo alias, tempore ullam? Perferendis mollitia obcaecati pariatur
+      molestias exercitationem. Nam?
     </p>
   </main>
 {/if}

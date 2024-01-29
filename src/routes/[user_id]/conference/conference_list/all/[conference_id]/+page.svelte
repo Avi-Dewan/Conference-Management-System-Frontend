@@ -23,6 +23,8 @@
     try {
       user_type = sessionStorage.getItem("user_type");
 
+      console.log(user_type);
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
