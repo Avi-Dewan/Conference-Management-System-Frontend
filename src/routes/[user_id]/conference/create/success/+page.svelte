@@ -10,17 +10,17 @@
   import { goto } from "$app/navigation";
 
   let user_id = $page.params.user_id;
-  let conference_id = $page.params.conference_id;
+
   function goBack() {
     goto(`/${user_id}/conference/conference_list/all`);
   }
 </script>
 
 <main>
-  <NavbarUser />
+  <NavbarChair />
   <div>
     <div class="success-dialog">
-      <h3 style="color: black;">Success! Your File was submitted.</h3>
+      <h3 style="color: black;">Success! Your conference created.</h3>
 
       <button on:click={goBack}>Ok</button>
     </div>
@@ -66,6 +66,7 @@
   .success-dialog.show {
     opacity: 0.5;
   }
+
   main {
     max-width: 90%;
     margin: 2% auto;

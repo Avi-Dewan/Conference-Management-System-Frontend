@@ -1,6 +1,7 @@
 <script>
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
+  import { goto } from "$app/navigation";
 
   import { page } from "$app/stores";
 
@@ -43,6 +44,7 @@
 
     createConference();
     // alert(JSON.stringify(formData, null, 2));
+    goto(`/${user_id}/conference/create/success`);
   }
 
   function handleAdd() {

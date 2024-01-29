@@ -18,7 +18,6 @@
 
   onMount(async () => {
     try {
-
       user_type = sessionStorage.getItem("user_type");
 
       const response = await fetch(url);
@@ -43,9 +42,9 @@
 
 <main>
   {#if user_type == "chair"}
-      <NavbarChair/>
-    {:else}
-      <NavbarUser/>
+    <NavbarChair />
+  {:else}
+    <NavbarUser />
   {/if}
   <div class="header">
     <h1>Conferences</h1>
@@ -69,6 +68,7 @@
           >View Details</a
         >
       </Card>
+      <hr />
     {/each}
   </div>
 </main>

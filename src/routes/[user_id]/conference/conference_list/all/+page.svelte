@@ -19,8 +19,7 @@
 
   onMount(async () => {
     try {
-
-      user_type = sessionStorage.getItem('user_type')
+      user_type = sessionStorage.getItem("user_type");
 
       const response = await fetch(url);
       if (!response.ok) {
@@ -28,8 +27,6 @@
       }
 
       data = await response.json();
-
-
 
       for (let i = 0; i < data.length; i++) {
         const submissionDeadline = new Date(
@@ -46,10 +43,10 @@
 
 {#if data != null}
   <main>
-    {#if user_type == 'chair'}
-      <NavbarChair/>
+    {#if user_type == "chair"}
+      <NavbarChair />
     {:else}
-      <NavbarUser/>
+      <NavbarUser />
     {/if}
 
     <div class="header">
@@ -73,6 +70,7 @@
         <a href="/{user_id}/conference/conference_list/all/{item.conference_id}"
           >View Details</a
         >
+        <hr />
       {/each}
     </div>
   </main>
