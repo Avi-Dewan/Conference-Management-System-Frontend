@@ -77,7 +77,7 @@
         <a href="/{user_id}/conference/viewSubmission/{conference_id}"
           >View Submissions</a
         >
-      {:else}
+      {:else if data.status == "Open"}
         <a href="/{user_id}/conference/submitPaper/{conference_id}"
           >Submit a Paper</a
         >
