@@ -39,6 +39,7 @@
 
   function handleSubmit() {
     formData.related_fields = researchFields;
+    formData.conference_id = conference_id;
 
     createWorkshop();
     // alert(JSON.stringify(formData, null, 2));
