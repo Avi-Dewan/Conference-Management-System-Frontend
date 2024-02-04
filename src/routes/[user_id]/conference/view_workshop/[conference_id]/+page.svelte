@@ -14,9 +14,7 @@
   user_id = $page.params.user_id;
 </script>
 
-<main>
-  <h1>{conference_id}</h1>
-</main>
+<main></main>
 
 <style>
 </style>

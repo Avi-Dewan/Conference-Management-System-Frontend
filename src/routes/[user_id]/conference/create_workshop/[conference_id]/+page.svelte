@@ -1,6 +1,7 @@
 <script>
   import { page } from "$app/stores";
   import { DatePicker } from "@svelte-plugins/datepicker";
+  import { goto } from "$app/navigation";
 
   const conference_id = $page.params.conference_id;
 
@@ -19,22 +20,31 @@
     workshop_title: "",
     workshop_description: "",
     workshop_webpage: "",
+    related_fields: null,
     workshop_length: "",
   };
 
   let submission_deadline_date = "";
   let submission_deadline_time = "";
 
+  async function createWorkshop() {
+    const req = await fetch("http://localhost:3000/workshop/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+  }
+
   function handleSubmit() {
     formData.related_fields = researchFields;
-    formData.submission_deadline = {
-      date: submission_deadline_date,
-      time: submission_deadline_time,
-    };
 
-    createConference();
+    createWorkshop();
     // alert(JSON.stringify(formData, null, 2));
-    goto(`/${user_id}/conference/create/success`);
+    goto(`/${user_id}/conference/create_workshop/${conference_id}/success`);
+
+    console.log(user_id);
   }
 
   function handleAdd() {
@@ -79,7 +89,7 @@
       <input
         type="text"
         id="workshop_length"
-        bind:value={formData.workshop_description}
+        bind:value={formData.workshop_length}
       />
     </div>
 
