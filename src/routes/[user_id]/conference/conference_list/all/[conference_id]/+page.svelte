@@ -77,6 +77,12 @@
         <a href="/{user_id}/conference/viewSubmission/{conference_id}"
           >View Submissions</a
         >
+        <a href="/{user_id}/conference/create_workshop/{conference_id}"
+          >Create a workshop</a
+        >
+        <a href="/{user_id}/conference/view_workshop/{conference_id}"
+          >View Workshops</a
+        >
       {:else if data.status == "Open"}
         <a href="/{user_id}/conference/submitPaper/{conference_id}"
           >Submit a Paper</a
