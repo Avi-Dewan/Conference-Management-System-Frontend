@@ -1,15 +1,19 @@
 <script>
   import { page } from "$app/stores";
   import { DatePicker } from "@svelte-plugins/datepicker";
-
+  import { goto } from "$app/navigation";
   const conference_id = $page.params.conference_id;
+  const main_user_id = $page.params.user_id;
 
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
+  
 
   import { onMount } from "svelte";
 
   let user_id, user_type;
+
+  let workshop_time, workshop_date;
 
   user_id = $page.params.user_id;
 
@@ -17,7 +21,7 @@
 
   let allWorkshops = null;
 
-  let instructorFetchUrl = `http://localhost:3000/workshop/suggestTeachers`;
+  // let instructor_auto_url = `http://localhost:3000/workshop/suggestTeachers`;
 
   let suggestedInstructors = null;
 
@@ -25,6 +29,14 @@
   let showAuto = false;
 
   let filteredSuggestedInstructor = null;
+
+
+  let request_instructor_url = `http://localhost:3000/workshop/request`;
+
+
+  let instructor_auto_url = `http://localhost:3000/workshop/auto_suggest`;
+
+  let updateData_url = `http://localhost:3000/workshop/updateData`
 
   onMount(async () => {
     try {
@@ -42,6 +54,7 @@
       if (allWorkshops != null) {
         for (let i = 0; i < allWorkshops.length; i++) {
           allWorkshops[i].showSuggest = false;
+          allWorkshops[i].workshop_time = JSON.parse(allWorkshops[i].workshop_time);
         }
 
         console.log(allWorkshops);
@@ -56,7 +69,7 @@
       related_fields: related_fields,
       workshop_id: workshop_id,
     };
-    const req = await fetch(instructorFetchUrl, {
+    const req = await fetch(instructor_auto_url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,10 +87,46 @@
     console.log(data);
   }
 
-  async function requestInstructor(workshop_id, user_id) {
+  async function requestInstructor(workshop_id, user_id) { // identical to requestReviewer
     console.log(workshop_id);
     console.log(user_id);
+    
+    const response = await fetch(request_instructor_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ workshop_id: workshop_id, user_id: user_id }),
+    });
+
+    const thisPage = window.location.pathname;
+
+    console.log(user_type, "before");
+    goto(`/${main_user_id}/home`).then(() => goto(thisPage));
+
   }
+
+  async function updateData(workshop_id) { 
+
+    
+    const response = await fetch(updateData_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({workshop_id: workshop_id,  workshop_time: workshop_time, workshop_date: workshop_date }),
+    });
+
+    const thisPage = window.location.pathname;
+
+    console.log(user_type, "before");
+    goto(`/${main_user_id}/home`).then(() => goto(thisPage));
+
+  }
+
+
+
+
 </script>
 
 <main>
@@ -93,6 +142,7 @@
         <h3 style="color:black">Related Fields: {item.related_fields}</h3>
         <h4>Description: {item.workshop_description}</h4>
 
+        <h3>Interested People: {item.count}</h3>
         {#if item.workshop_time != null}
           <h4>Time: {item.workshop_time.time}</h4>
           <h4>Date: {item.workshop_time.date}</h4>
@@ -100,13 +150,15 @@
           <h4 style="color: red;">Time: Not yet assigned</h4>
           <h4 style="color: red;">Date: Not yet assigned</h4>
 
+          
+
           <h3>
             Assign time:
-            <input type="time" id="workshop_time" />
+            <input type="time" bind:value={workshop_time} />
           </h3>
           <h3>
             Assign Date:
-            <input type="date" id="workshop_date" />
+            <input type="date" bind:value={workshop_date} />
           </h3>
 
           <h3>
@@ -157,7 +209,7 @@
             {/if}
           </div>
 
-          <button>Update</button>
+          <button on:click= {updateData(item.workshop_id)}>Update</button>
         {/if}
 
         <hr />
