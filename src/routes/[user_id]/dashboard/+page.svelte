@@ -27,6 +27,16 @@
       console.error("Error fetching data:", error);
     }
   });
+
+  function handleUnassignedReviewer(conference_id) {
+    goto(`/${user_id}/conference/viewUnassignedPapers/${conference_id}`);
+  }
+  function handlePendingReview(conference_id) {
+    goto(`/${user_id}/conference/viewPendingReviewPapers/${conference_id}`);
+  }
+  function handleViewConference(conference_id) {
+    goto(`/${user_id}/conference/conference_list/all/${conference_id}`);
+  }
 </script>
 
 <main>
@@ -46,10 +56,29 @@
         <h4 style="color: red;">
           Total Papers with pending reviews: {item.paper_count_with_pending_review}
         </h4>
+        <h4 style="color: black;">
+          Total workshops: {item.workshop_count}
+        </h4>
 
-        <button>View Conference</button>
-        <button>View papers with unassigned reviewer</button>
-        <button>View papers with pending reviews</button>
+        <button
+          on:click={() => {
+            handleViewConference(item.conference_id);
+          }}>View Conference</button
+        >
+        {#if item.paper_count_with_no_reviewer_assigned != 0}
+          <button
+            on:click={() => {
+              handleUnassignedReviewer(item.conference_id);
+            }}>View papers with unassigned reviewer</button
+          >
+        {/if}
+        {#if item.paper_count_with_pending_review != 0}
+          <button
+            on:click={() => {
+              handlePendingReview(item.conference_id);
+            }}>View papers with pending reviews</button
+          >
+        {/if}
       </div>
       <hr />
     {/each}
