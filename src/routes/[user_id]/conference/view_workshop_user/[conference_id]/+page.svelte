@@ -17,13 +17,15 @@
     user_id = $page.params.user_id;
   
     let getAllWorkshopURL = `http://localhost:3000/workshop/all/${conference_id}`;
+
+    let getInterstedPeople =`http://localhost:3000/workshop/interested/${conference_id}/${user_id}`;
   
     let allWorkshops = null;
 
 
     let getAllworkshopInterestURL = `http://localhost:3000/workshop/interested/${conference_id}`;
 
-    let allworkshopInterest = null;
+    let interested_workshops = null;
 
 
   
@@ -58,6 +60,27 @@
         }
 
 
+        const interest_response = await fetch(getInterstedPeople);
+
+        if (!interest_response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        data = await interest_response.json();
+        interested_workshops = data;
+
+        console.log(interested_workshops);  
+
+        allWorkshops = allWorkshops.map(item =>{
+          const found = interested_workshops.some(element => element.workshop_id === item.workshop_id);
+          return { ...item , interest: found ? "yes" : "no"};
+        });
+
+        console.log(allWorkshops);
+
+
+
+
         // const interest_response = await fetch(getAllworkshopInterestURL);
         // if(!interest_response.ok){
         //     throw new Error("Failed to fetch interest data");
@@ -77,7 +100,7 @@
     });
 
 
-    async function updateValue(workshop_id) {
+    async function updateValue(workshop_id, button_label) {
 
 
       let updateData;
@@ -85,6 +108,7 @@
 
         updateData = {
             workshop_id : workshop_id,
+            user_id: user_id,
             value:"1",
         }
         
@@ -92,7 +116,8 @@
       else{
         updateData = {
             workshop_id : workshop_id,
-            value:"1",
+            user_id: user_id,
+            value:"0",
         }
       }
         const req = await fetch(getAllworkshopInterestURL, {
@@ -218,8 +243,14 @@
                 </div>
               {/if}
             </div> -->
+
+            {#if item.interest == "no"}
+              <button on:click={updateValue(item.workshop_id , "Interested")} >Interested</button>
+            {:else}
+            <button on:click={updateValue(item.workshop_id , "no")} >Not Interested</button>
+            {/if}
   
-            <button on:click={updateValue(item.workshop_id)} >{button_label}</button>
+            <!-- <button on:click={updateValue(item.workshop_id)} >Not Interested</button> -->
           {/if}
   
           <hr />
