@@ -225,7 +225,7 @@
         {:else}
           <h4 style="color: red;">Time: Not yet assigned</h4>
           <h4 style="color: red;">Date: Not yet assigned</h4>
-
+        {/if}
           
 
           <h3>
@@ -286,7 +286,7 @@
           </div>
 
           <button on:click= {updateData(item.workshop_id)}>Update</button>
-        {/if}
+        <!-- {/if} -->
 
         <hr />
       {/each}
