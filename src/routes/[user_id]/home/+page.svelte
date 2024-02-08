@@ -6,10 +6,21 @@
 
   let user_id, user;
 
-  user_id = $page.params.user_id;
 
   onMount(async () => {
     try {
+
+      const tokenResponse = await fetch("http://localhost:3000/auth", {
+        headers: {
+            "Content-Type": "application/json",
+          },
+        credentials: "include",
+      });
+
+      let tokenData = await tokenResponse.json();
+      user_id = tokenData.user_id;
+
+
       let url = `http://localhost:3000/user/${user_id}`;
 
       const response = await fetch(url);
@@ -19,7 +30,7 @@
       }
 
       user = await response.json();
-      console.log(user, "in home");
+      // console.log(user, "in home");
 
       sessionStorage.setItem("user_type", user.user_type);
     } catch (error) {

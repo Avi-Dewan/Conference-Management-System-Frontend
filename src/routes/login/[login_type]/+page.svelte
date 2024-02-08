@@ -1,14 +1,69 @@
 <script>
   import { goto } from "$app/navigation";
-
+  import { page } from "$app/stores";
   import { onMount } from "svelte";
+
+
+  
+  let email, password;
+  let login_type, user_id;
+
+
+
+
+  onMount(async () => {
+    try {
+      login_type = $page.params.login_type;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
+  
+  async function handleLogIn() {
+    const response = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ email: email, password: password }),
+    });
+
+    let {message, error} = await response.json();
+    
+    if(error) {
+      alert(error);
+      
+    } else {
+      
+      const tokenResponse = await fetch("http://localhost:3000/auth", {
+        headers: {
+            "Content-Type": "application/json",
+          },
+        credentials: "include",
+      });
+
+      let tokenData = await tokenResponse.json();
+      user_id = tokenData.user_id;
+
+      if(login_type == 'normal') {
+        goto(`/${user_id}/home`);
+      } else {
+        alert("special case");
+      }
+
+    
+    }
+
+    // if (user_id) {
+    //   goto(`/${user_id}/home`);
+    // } else {
+    //   alert("Wrong password");
+    // }
+  }
 
   function handleSignUp() {
     goto(`/signup`);
-  }
-
-  function handleLogIn() {
-    goto(`/login/normal`);
   }
 </script>
 
@@ -18,8 +73,6 @@
     <h3>Manage your conference 
       easily and effectively 
       with our conference management software </h3>
-    
-    
   </div>
 
   <br>
@@ -27,14 +80,25 @@
   <br>
   <br>
 
- 
+  <div class="form">
+    <div class="form-control">
+      <label for="email">Email:</label>
+      <input type="text" id="email" bind:value={email} />
+    </div>
+
+    <div class="form-control">
+      <label for="pasword">Password:</label>
+
+      <input type="password" id="password" bind:value={password} />
+    </div>
+  </div>
 
   <div class="form-control" style="display: block;">
+    
+    <button on:click={handleLogIn}>Log in</button>
 
     <button on:click={handleSignUp}>Sign Up</button>
-    
-    <button on:click={handleLogIn}>Login Trial</button>
-
+  
   </div>
 
 </main>
