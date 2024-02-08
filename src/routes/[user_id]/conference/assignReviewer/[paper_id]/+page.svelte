@@ -39,6 +39,8 @@
 
   let showManual = false;
   let user_type;
+
+  let paper_title = null;
   //paper details
   onMount(async () => {
     try {
@@ -135,13 +137,17 @@
     }
   });
 
-  async function requestReviewer(paper_id, user_id) {
+  async function requestReviewer(paper_id, user_id, paper_title) {
     const response = await fetch(request_reviwer_url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ paper_id: paper_id, user_id: user_id }),
+      body: JSON.stringify({
+        paper_id: paper_id,
+        user_id: user_id,
+        paper_title: paper_title,
+      }),
     });
 
     const thisPage = window.location.pathname;
@@ -155,7 +161,10 @@
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ paper_id: paper_id, user_id: user_id }),
+      body: JSON.stringify({
+        paper_id: paper_id,
+        user_id: user_id,
+      }),
     });
 
     const thisPage = window.location.pathname;
@@ -256,8 +265,12 @@
                   <h3>Name: {item.full_name}</h3>
                   <h4>Affliation: {item.current_institution}</h4>
                   <h4>Expertise: {item.expertise}</h4>
-                  <button on:click={requestReviewer(paper_id, item.user_id)}
-                    >Request</button
+                  <button
+                    on:click={requestReviewer(
+                      paper_id,
+                      item.user_id,
+                      paper_details.paper_title
+                    )}>Request</button
                   >
                 </div>
               </div>

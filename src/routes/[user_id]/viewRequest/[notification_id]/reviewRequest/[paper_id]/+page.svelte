@@ -9,11 +9,13 @@
 
   let user_id, user, data;
 
+  let paper_id = $page.params.paper_id;
+  let notification_id = $page.params.notification_id;
   user_id = $page.params.user_id;
 
   onMount(async () => {
     try {
-      let url = `http://localhost:3000/request/${user_id}`;
+      let url = `http://localhost:3000/request/paper/${paper_id}`;
 
       const response = await fetch(url);
 
@@ -74,7 +76,7 @@
 
     console.log(notification_json);
 
-    goto(`/${user_id}/home`).then(() => goto(thisPage));
+    goto(`/${user_id}/notification`);
   }
 
   async function handleAccept(paper_id) {
@@ -129,7 +131,7 @@
 
     const thisPage = window.location.pathname;
 
-    goto(`/${user_id}/home`).then(() => goto(thisPage));
+    goto(`/${user_id}/notification`);
   }
 </script>
 

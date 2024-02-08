@@ -17,6 +17,7 @@
           <a href="/{user_id}/conference/conference_list/all">Conferences</a>
         </li>
         <li><a href="/{user_id}/conference/create">Create a conference</a></li>
+        <li><a href="/{user_id}/notification">My notification</a></li>
         <li><a href="/{user_id}/dashboard">Dashboard</a></li>
         <li><a href="#">My Profile</a></li>
         <li><a href="/">Log out</a></li>
