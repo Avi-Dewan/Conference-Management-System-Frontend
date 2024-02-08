@@ -155,6 +155,8 @@
     console.log(user_type, "before");
     goto(`/${main_user_id}/home`).then(() => goto(thisPage));
   }
+
+  
   async function removeRequest(paper_id, user_id) {
     const response = await fetch(request_delete_url, {
       method: "POST",

@@ -17,7 +17,7 @@
 
     const data = await response.json();
 
-    goto(`/${data.user_id}/home`);
+    goto(`/login/normal`);
   }
 
   let user_id;
