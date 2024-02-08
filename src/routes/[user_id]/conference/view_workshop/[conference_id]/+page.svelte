@@ -38,6 +38,8 @@
 
   let updateData_url = `http://localhost:3000/workshop/updateData`
 
+  
+
   onMount(async () => {
     try {
       user_type = sessionStorage.getItem("user_type");
@@ -55,6 +57,51 @@
         for (let i = 0; i < allWorkshops.length; i++) {
           allWorkshops[i].showSuggest = false;
           allWorkshops[i].workshop_time = JSON.parse(allWorkshops[i].workshop_time);
+
+
+          let already_sent_request_url = `http://localhost:3000/workshop/sent_request/${allWorkshops[i].workshop_id}`;
+          const workshop_response = await fetch(already_sent_request_url);
+          if (!workshop_response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+
+          let alreadyRequestedInstructor = await workshop_response.json();
+
+
+          let already_assigned_reviewer_url = `http://localhost:3000/workshop/accepted_request/${allWorkshops[i].workshop_id}`;
+          const accepted_response = await fetch(already_assigned_reviewer_url);
+          if (!accepted_response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+
+          let alreadyAssignedInstructor = await accepted_response.json();
+
+          console.log(alreadyAssignedInstructor);
+
+
+
+
+
+          console.log(alreadyRequestedInstructor);
+
+          allWorkshops[i]["requested"] = [];
+          allWorkshops[i]["assigned"] = [];
+
+          alreadyRequestedInstructor.forEach((obj, index) => {
+              allWorkshops[i]["requested"].push(obj.full_name)
+          });
+
+          alreadyAssignedInstructor.forEach((obj, index) => {
+              allWorkshops[i]["assigned"].push(obj.full_name)
+          });
+
+          console.log("hahahahahahahahahahahahah")
+
+          
+
+
+
+
         }
 
         console.log(allWorkshops);
@@ -63,6 +110,28 @@
       console.error("Error fetching data:", error);
     }
   });
+
+
+
+  //   //kader kader request kora hoise
+  //   onMount(async () => {
+  //   try {
+
+  //     let already_sent_request_url = `http://localhost:3000/assign/sent_request/${paper_id}`;
+  //     const response = await fetch(already_sent_request_url);
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch data");
+  //     }
+
+  //     alreadyRequestedReviewer = await response.json();
+
+  //     console.log(alreadyRequestedReviewer);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // });
+
+
 
   async function handleAssign(related_fields, workshop_id, item) {
     let formData = {
@@ -143,6 +212,13 @@
         <h4>Description: {item.workshop_description}</h4>
 
         <h3>Interested People: {item.count}</h3>
+
+        <h3>Requested Instructor: {item.requested} </h3>
+        <h3>Assigned Instructor: {item.assigned} </h3>
+        <!-- {#each item.requested as requested}
+          <h3>{requested.full_name} , {requested.current_institution}</h3>
+        {/each} -->
+        
         {#if item.workshop_time != null}
           <h4>Time: {item.workshop_time.time}</h4>
           <h4>Date: {item.workshop_time.date}</h4>
