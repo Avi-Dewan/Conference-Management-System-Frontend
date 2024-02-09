@@ -20,6 +20,7 @@
         <li><a href="/{user_id}/workshop_request">Workshop Request</a></li>
         <li><a href="/{user_id}/author_request">co_authors Request</a></li>
         <li><a href="/{user_id}/review">My Review</a></li>
+        <li><a href="/{user_id}/notification">My notification</a></li>
         <li><a href="#">My Profile</a></li>
         <li><a href="/">Log out</a></li>
       </ul>
