@@ -3,13 +3,14 @@
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
-  import { goto } from "$app/navigation";
 
   const conference_id = $page.params.conference_id;
   let user_id;
 
   user_id = $page.params.user_id;
-  let url = `http://localhost:3000/conference/${conference_id}/viewPendingReviewPapers`;
+  const paper_id = $page.params.paper_id;
+
+  let url = `http://localhost:3000/conference/${conference_id}/papersWithAuthors/${paper_id}`;
   let conference_url = `http://localhost:3000/conference/${conference_id}`;
   let papers = null;
   let conf_data = null;
@@ -41,35 +42,6 @@
       console.error("Error fetching data:", error);
     }
   });
-
-  async function handleNotify(reviewer_id, paper_id, paper_title) {
-    let notification_body = `You have a pending review for Paper title ${paper_title}`;
-
-    let notification_json = {
-      type: "notify_reviewer",
-      paper_id: paper_id,
-    };
-
-    console.log(reviewer_id);
-
-    let response = await fetch("http://localhost:3000/notification/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: reviewer_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
-
-    const thisPage = window.location.pathname;
-
-    console.log(notification_json);
-
-    goto(`/${user_id}/home`).then(() => goto(thisPage));
-  }
 </script>
 
 <main>
@@ -95,11 +67,7 @@
                 <p>review: {rev.review}</p>
               {:else}
                 <p style="color:red">Not given review yet</p>
-                <button
-                  on:click={() => {
-                    handleNotify(rev.user_id, item.paper_id, item.paper_title);
-                  }}>Notify {rev.full_name}</button
-                >
+                <a href="#"> notify "{rev.full_name}"" to write review</a>
                 <br />
                 <br />
               {/if}

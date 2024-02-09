@@ -2,6 +2,7 @@
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
   import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
 
   import { page } from "$app/stores";
 
@@ -9,54 +10,125 @@
 
   user_id = $page.params.user_id;
   paper_id = $page.params.paper_id;
+  let user_type;
+  let data = null;
 
   let rating, review;
 
-  async function handleSubmit() {
-    const response = await fetch("http://localhost:3000/reviewer/review", {
+  let url = `http://localhost:3000/paper/${paper_id}`;
+
+  onMount(async () => {
+    try {
+      user_type = sessionStorage.getItem("user_type");
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      data = await response.json();
+      data = data[0];
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
+
+  async function handleSubmit(paper_title) {
+    let response = await fetch(
+      `http://localhost:3000/paper/get_conference/${paper_id}`
+    );
+
+    let conference_id = await response.json();
+
+    conference_id = conference_id[0].conference_id;
+
+    response = await fetch(
+      `http://localhost:3000/paper/get_conference_chair/${paper_id}`
+    );
+
+    let chair_id = await response.json();
+
+    response = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
+
+    let reviewer_full_name = await response.json();
+
+    let notification_body =
+      reviewer_full_name + ` has reviewed the paper ${paper_title}`;
+
+    let notification_json = {
+      type: "chair_noti_from_reviewer",
+      paper_id: paper_id,
+      conference_id: conference_id,
+    };
+
+    response = await fetch("http://localhost:3000/notification/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: chair_id,
+        notification_body: notification_body,
+        notification_json: notification_json,
+      }),
+    });
+
+    response = await fetch("http://localhost:3000/reviewer/review", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({user_id: user_id, paper_id: paper_id, rating: rating, review: review}),
+      body: JSON.stringify({
+        user_id: user_id,
+        paper_id: paper_id,
+        rating: rating,
+        review: review,
+      }),
     });
 
     goto(`/${user_id}/review`);
   }
-
-  
-
-
 </script>
 
 <main>
-  <NavbarUser/>
+  <NavbarUser />
 
-  <h1>Write review </h1>
-
-  <div class="form">
-    <div class="form-control">
-      <label for="rating">Rating:</label>
-      <input
-        type="text"
-        id="rating"
-        bind:value={rating}
-      />
+  {#if data != null}
+    <div>
+      <h2>{data.paper_title}</h2>
+      <p>Related field: {data.related_fields}</p>
+      <p>Abstract : {data.abstract}</p>
+      <h3>PDF link : <a href={data.pdf_link}> view pdf </a></h3>
     </div>
 
-    <div class="form-control">
-      <label for="review">Review:</label>
+    <h1>Write review</h1>
 
-      <textarea style="height: 200px; width:890px;border-radius:.3em"
-        id="review"
-        bind:value={review}
-      />
-    </div>
+    <div class="form">
+      <div class="form-control">
+        <label for="rating">Rating:</label>
+        <input type="text" id="rating" bind:value={rating} />
+      </div>
 
-    <div class="form-control" style="display: block;">
-      <button on:click={handleSubmit}>Submit</button>
+      <div class="form-control">
+        <label for="review">Review:</label>
+
+        <textarea
+          style="height: 200px; width:890px;border-radius:.3em"
+          id="review"
+          bind:value={review}
+        />
+      </div>
+
+      <div class="form-control" style="display: block;">
+        <button
+          on:click={() => {
+            handleSubmit(data.paper_title);
+          }}>Submit</button
+        >
+      </div>
     </div>
-  </div>
+  {/if}
 </main>
 
 <style>

@@ -17,8 +17,7 @@
 
   onMount(async () => {
     try {
-
-      user_type = sessionStorage.getItem('user_type')
+      user_type = sessionStorage.getItem("user_type");
 
       const response = await fetch(url);
 
@@ -27,7 +26,6 @@
       }
 
       data = await response.json();
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -36,11 +34,10 @@
 
 {#if data != null}
   <main>
-    
-    {#if user_type == 'chair'}
-      <NavbarChair/>
+    {#if user_type == "chair"}
+      <NavbarChair />
     {:else}
-      <NavbarUser/>
+      <NavbarUser />
     {/if}
 
     <div class="header">
@@ -49,25 +46,26 @@
 
     <div class="cards">
       {#each data as item}
-        <hr>
+        <hr />
         <div>
-          <h2> {item.paper_title} </h2>
-          <h3> Related field: {item.related_fields}</h3>
+          <h2>{item.paper_title}</h2>
+          <h3>Related field: {item.related_fields}</h3>
           <h3>Abstract : {item.abstract}</h3>
-          <h3> PDF link :  <a href={item.pdf_link}>  view pdf </a> </h3>
+          <h3>PDF link : <a href={item.pdf_link}> view pdf </a></h3>
 
-          {#if item.review_status == 'reviewed'}
-             <h3> Review status:  <b style="color:green">{item.review_status}</b> </h3>
-             <p> <b> Rating: </b>   {item.rating} </p>
-             <p> <b> Review: </b>   {item.review} </p>
-             <h3> <a href="/{user_id}/review/{item.paper_id}"
-            >Edit review</a> </h3>
-             {:else}
-             <h3> Review status:  <b style="color:red">{item.review_status}</b> </h3>
-             <h3> <a href="/{user_id}/review/{item.paper_id}"
-             >Give review</a> </h3>
-             {/if}
-          
+          {#if item.review_status == "reviewed"}
+            <h3>
+              Review status: <b style="color:green">{item.review_status}</b>
+            </h3>
+            <p><b> Rating: </b> {item.rating}</p>
+            <p><b> Review: </b> {item.review}</p>
+            <h3><a href="/{user_id}/review/{item.paper_id}">Edit review</a></h3>
+          {:else}
+            <h3>
+              Review status: <b style="color:red">{item.review_status}</b>
+            </h3>
+            <h3><a href="/{user_id}/review/{item.paper_id}">Give review</a></h3>
+          {/if}
         </div>
       {/each}
     </div>

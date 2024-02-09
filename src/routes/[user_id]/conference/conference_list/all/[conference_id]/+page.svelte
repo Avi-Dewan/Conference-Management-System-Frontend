@@ -85,13 +85,22 @@
         >
         <a href="/{user_id}/conference/popular_workshop/{conference_id}"
           >Popular Workshops</a
-        >       
+        >
       {:else if data.status == "Open"}
         <a href="/{user_id}/conference/submitPaper/{conference_id}"
           >Submit a Paper</a
         >
-      {:else}
-          <a href="/{user_id}/conference/view_workshop_user/{conference_id}"
+        <a href="/{user_id}/conference/mysubmission/{conference_id}"
+          >My submissions</a
+        >
+        <a href="/{user_id}/conference/view_workshop_user/{conference_id}"
+          >View Workshops</a
+        >
+      {:else if user_type == "user"}
+        <a href="/{user_id}/conference/mysubmission/{conference_id}"
+          >My submissions</a
+        >
+        <a href="/{user_id}/conference/view_workshop_user/{conference_id}"
           >View Workshops</a
         >
       {/if}
