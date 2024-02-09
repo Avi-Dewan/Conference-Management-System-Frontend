@@ -104,6 +104,16 @@
     // console.log("hello");
 
     authors = [...authors, name];
+    // console.log("eta handle add er vitore")
+    // console.log(data)
+    // console.log("data sesh")
+    // console.log(authors)
+    // console.log("author sesh")
+
+
+    data = data.filter(item1 => {
+        return !authors.some(item2 => item2.user_id === item1.user_id);
+    });
     show = false;
   }
 
