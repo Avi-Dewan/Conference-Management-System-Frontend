@@ -286,6 +286,9 @@
           </div>
 
           <button on:click= {updateData(item.workshop_id)}>Update</button>
+          <a href="/{user_id}/conference/assignInstructor/{item.workshop_id}">
+            Assign
+          </a>
         <!-- {/if} -->
 
         <hr />

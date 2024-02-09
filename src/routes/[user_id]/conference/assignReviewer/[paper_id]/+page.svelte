@@ -49,8 +49,9 @@
       }
 
       paper_details = await response.json();
-
+      console.log(paper_details)
       paper_details = paper_details[0];
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
