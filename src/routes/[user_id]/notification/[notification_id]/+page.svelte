@@ -15,10 +15,12 @@
 
   user_id = $page.params.user_id;
 
+  let notification_id = $page.params.notification_id;
+
   let data = [];
 
   console.log(user_id);
-  let url = `http://localhost:3000/notification/${user_id}`;
+  let url = `http://localhost:3000/notification/single/${notification_id}`;
 
   const currentDate = new Date();
 
@@ -61,7 +63,7 @@
       let conference_id = notification_json.conference_id;
 
       goto(
-        `/${user_id}/conference/viewSubmission/${conference_id}/${paper_id}`
+        `/${user_id}/conference/viewPendingReviewPapers/${conference_id}/${paper_id}`
       );
     }
   }

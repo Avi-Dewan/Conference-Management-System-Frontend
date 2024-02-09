@@ -52,10 +52,24 @@
 
     let full_name = await res.json();
 
-    let notification_body = full_name + " rejected your request for reviewing";
+    res = await fetch(
+      `http://localhost:3000/paper/getConferenceInfo/${paper_id}`
+    );
+
+    let PaperInfoJSON = await res.json();
+
+    let conference_title = PaperInfoJSON.conference_title;
+    let paper_title = PaperInfoJSON.paper_title;
+
+    let notification_body =
+      full_name +
+      ` rejected your request for reviewing
+      for Paper Title:${paper_title} 
+      in Conference : ${conference_title}`;
 
     let notification_json = {
       type: "chair_noti_accept_reject",
+      outcome: "reject",
       paper_id: paper_id,
     };
 
@@ -110,10 +124,24 @@
 
     let full_name = await res.json();
 
-    let notification_body = full_name + " accepted your request for reviewing";
+    res = await fetch(
+      `http://localhost:3000/paper/getConferenceInfo/${paper_id}`
+    );
+
+    let PaperInfoJSON = await res.json();
+
+    let conference_title = PaperInfoJSON.conference_title;
+    let paper_title = PaperInfoJSON.paper_title;
+
+    let notification_body =
+      full_name +
+      ` accepted your request for reviewing
+      for Paper Title:${paper_title} 
+      in Conference : ${conference_title}`;
 
     let notification_json = {
       type: "chair_noti_accept_reject",
+      outcome: "accept",
       paper_id: paper_id,
     };
 

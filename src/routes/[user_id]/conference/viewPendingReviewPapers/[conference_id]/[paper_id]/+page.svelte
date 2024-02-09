@@ -9,7 +9,7 @@
   let user_id;
 
   user_id = $page.params.user_id;
-  let url = `http://localhost:3000/conference/${conference_id}/viewPendingReviewPapers`;
+  let url = `http://localhost:3000/conference/${conference_id}/viewPendingReviewPapers/${paper_id}`;
   let conference_url = `http://localhost:3000/conference/${conference_id}`;
   let papers = null;
   let conf_data = null;
