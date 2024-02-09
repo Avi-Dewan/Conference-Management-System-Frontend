@@ -9,6 +9,8 @@
 
   import { onMount } from "svelte";
 
+  import { goto } from "$app/navigation";
+
   let user_id, user_type;
 
   user_id = $page.params.user_id;
@@ -58,6 +60,8 @@
   });
 
   async function handleDeleteSubmission(paper_id) {
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
     let response = await fetch(
       "http://localhost:3000/paper/delete_submission",
       {
