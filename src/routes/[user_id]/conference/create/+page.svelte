@@ -30,6 +30,7 @@
     end_date: null,
     submission_deadline: null,
     related_fields: null,
+    chair_id: user_id,
   };
 
   let submission_deadline_date = "";
