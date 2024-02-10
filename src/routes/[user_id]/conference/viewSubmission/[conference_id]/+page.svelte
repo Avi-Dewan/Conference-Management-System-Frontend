@@ -80,13 +80,14 @@
     <div>
       <h1>{conf_data.conference_title}</h1>
       {#each papers as item}
-      {#if item.status != "accepted" && item.status != "rejected"}
+      
         <hr>
         <div style="margin-top: 70px;">
           <h2>Paper Title: {item.paper_title}</h2>
           <p> <b>Author:</b> {item.authors}</p>
           <p> <b>Track:</b> {item.related_fields}</p>
           <p> <b>Abstract:</b> {item.abstract}</p>
+          <p> <b>Status:</b> {item.status}</p>
           <p> <b>Requested Reviewer:</b> {item.requestedReviewers}</p>
           <p> <b> <u> Assigned Reviewers and reviews: </u></b></p>
           
@@ -107,6 +108,8 @@
 
           {/each}
           <a href={item.pdf_link}>View file</a>
+
+          {#if item.status != "accepted" && item.status != "rejected"}
           <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
             Assign
           </a>
@@ -124,10 +127,10 @@
             style="background-color:green;">Accept</button
           >
         </div>
-
+        {/if}
         </div>
 
-        {/if}
+        
 
 
 

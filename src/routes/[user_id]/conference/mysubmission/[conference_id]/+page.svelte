@@ -23,6 +23,7 @@
   const currentDate = new Date();
 
   let paper_data = null;
+  let review_data = null;
   onMount(async () => {
     try {
       user_type = sessionStorage.getItem("user_type");
@@ -54,6 +55,21 @@
       paper_data = await response.json();
 
       console.log(paper_data);
+
+
+
+      // let myPaperReviewURL = `http://localhost:3000/paper/review/${conference_id}/${user_id}`;
+      // const review_response = await fetch(myPaperReviewURL);
+
+      // if(!review_response.ok){
+      //   throw new Error("failed to fetch data");
+      // }
+
+      // review_data = await review_response.json();
+      // console.log(review_data);
+
+
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -104,6 +120,7 @@
 
         <h3>Status: {item.status}</h3>
 
+        {#if item.status == "pending"}
         <div style="margin-top: 20px;">
           <button
             on:click={() => {
@@ -111,6 +128,17 @@
             }}>Delete submission</button
           >
         </div>
+        {:else}
+
+          {#each item.reviews as review , idx}
+          <p>
+            Reviewer {idx+1} said: {review.review}
+            <br>
+            Reviewer {idx +1} rating: {review.rating}
+          </p>
+          {/each}
+
+        {/if}
       </div>
     {/each}
   {/if}
