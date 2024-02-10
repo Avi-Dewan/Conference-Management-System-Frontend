@@ -43,7 +43,7 @@
   });
 
   async function handleNotify(reviewer_id, paper_id, paper_title) {
-    let notification_body = `You have a pending review for Paper title ${paper_title}`;
+    let notification_body = `You have a pending review \n for Paper title ${paper_title}`;
 
     let notification_json = {
       type: "notify_reviewer",
@@ -96,6 +96,7 @@
               {:else}
                 <p style="color:red">Not given review yet</p>
                 <button
+                  style="background-color: black;"
                   on:click={() => {
                     handleNotify(rev.user_id, item.paper_id, item.paper_title);
                   }}>Notify {rev.full_name}</button

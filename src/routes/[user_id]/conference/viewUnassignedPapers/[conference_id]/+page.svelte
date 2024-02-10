@@ -40,6 +40,34 @@
       console.error("Error fetching data:", error);
     }
   });
+  async function handleNotify(reviewer_id, paper_id, paper_title) {
+    let notification_body = `You have a pending review \n for Paper title ${paper_title}`;
+
+    let notification_json = {
+      type: "notify_reviewer",
+      paper_id: paper_id,
+    };
+
+    console.log(reviewer_id);
+
+    let response = await fetch("http://localhost:3000/notification/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: reviewer_id,
+        notification_body: notification_body,
+        notification_json: notification_json,
+      }),
+    });
+
+    const thisPage = window.location.pathname;
+
+    console.log(notification_json);
+
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
 </script>
 
 <main>
@@ -65,7 +93,11 @@
                 <p>review: {rev.review}</p>
               {:else}
                 <p style="color:red">Not given review yet</p>
-                <a href="#"> notify "{rev.full_name}"" to write review</a>
+                <button
+                  on:click={() => {
+                    handleNotify(rev.user_id, item.paper_id, item.paper_title);
+                  }}>Notify {rev.full_name}</button
+                >
                 <br />
                 <br />
               {/if}
