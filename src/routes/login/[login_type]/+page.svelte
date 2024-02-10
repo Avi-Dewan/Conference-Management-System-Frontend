@@ -7,7 +7,7 @@
   
   let email, password;
   let login_type, user_id;
-  let login_type_array = []
+
 
 
 
@@ -15,10 +15,7 @@
     try {
       login_type = $page.params.login_type;
 
-      // Split the login_type string into an array
-      login_type_array = login_type.split('_');
-
-      console.log(login_type_array[0]);
+      console.log(login_type);
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -55,7 +52,7 @@
       if(login_type == 'normal') {
         goto(`/${user_id}/home`);
       } else {
-        alert("special case");
+        goto(`/${user_id}/notification/${login_type}`);
       }
 
     
