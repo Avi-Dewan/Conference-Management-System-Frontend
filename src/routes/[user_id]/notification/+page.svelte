@@ -79,6 +79,13 @@
       goto(
         `/${user_id}/conference/viewSubmission/${conference_id}/${paper_id}`
       );
+    } else if (notification_json.type == "notify_chair_paper") {
+      
+      let conference_id = notification_json.conference_id;
+
+      goto(
+        `/${user_id}/conference/viewSubmission/${conference_id}`
+      );
     }
   }
 </script>
@@ -100,6 +107,12 @@
           <h4 style="color: red;">
             Title: {item.notification_json.requested_paper_title}
           </h4>
+        {/if}
+
+        {#if item.notification_json.type == "notify_chair_paper"}
+        <h4 style="color: red;">
+          A new paper on the conference {item.notification_json.conference_id} has been submitted
+        </h4>
         {/if}
 
         {#if item.notification_status == "unread"}

@@ -13,6 +13,8 @@
     user_type;
   let conference_id = $page.params.conference_id;
 
+  let chair_id;
+
   console.log(conference_id);
 
   $: filterText = "";
@@ -64,6 +66,22 @@
     });
 
 
+    const response_chair = await fetch(`http://localhost:3000/conference/conference_chair/${conference_id}`);
+
+    if (!response_chair.ok) {
+        throw new Error("Failed to fetch data");
+    }
+
+    chair_id = await response_chair.json();
+
+    chair_id = chair_id.user_id
+
+    console.log("chair id hocche...")
+
+    console.log(chair_id);
+
+
+
 
     let notification_body = `A paper has been submitted`;
 
@@ -80,7 +98,7 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: user_id,
+        user_id: chair_id,
         notification_body: notification_body,
         notification_json: notification_json,
       }),
@@ -102,6 +120,19 @@
 
       data = await response.json();
       wholeData = data;
+
+
+
+
+
+
+
+
+
+
+
+
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
