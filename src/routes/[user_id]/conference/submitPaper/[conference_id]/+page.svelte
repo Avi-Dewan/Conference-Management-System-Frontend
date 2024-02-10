@@ -62,6 +62,33 @@
       },
       body: JSON.stringify(formData),
     });
+
+
+
+    let notification_body = `A paper has been submitted`;
+
+    let notification_json = {
+      type: "notify_chair_paper",
+      conference_id: conference_id,
+    };
+
+    // console.log(reviewer_id);
+
+    let response = await fetch("http://localhost:3000/notification/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: user_id,
+        notification_body: notification_body,
+        notification_json: notification_json,
+      }),
+    });
+
+    data = await response.json();
+
+
   }
 
   onMount(async () => {
@@ -178,6 +205,9 @@
     submitted = true;
 
     goto(`/${user_id}/conference/submitPaper/${conference_id}/success`);
+
+
+
 
     // alert(JSON.stringify(formData, null, 2));
   }
