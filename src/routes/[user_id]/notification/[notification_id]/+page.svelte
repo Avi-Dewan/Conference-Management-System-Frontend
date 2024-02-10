@@ -20,7 +20,7 @@
   let data = [];
 
   console.log(user_id);
-  let url = `http://localhost:3000/notification/single/${notification_id}`;
+  let url = `http://localhost:3000/notification/single/${notification_id}/${user_id}`;
 
   const currentDate = new Date();
 
