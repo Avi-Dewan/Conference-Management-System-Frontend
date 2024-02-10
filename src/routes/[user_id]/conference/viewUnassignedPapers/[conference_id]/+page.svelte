@@ -40,6 +40,63 @@
       console.error("Error fetching data:", error);
     }
   });
+  async function handleReject(paper_id) {
+    let response = await fetch("http://localhost:3000/chair/reject_paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paper_id: paper_id }),
+    });
+
+    let data = await response.json();
+    console.log(data);
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
+
+  async function handleAccept(paper_id) {
+    let response = await fetch("http://localhost:3000/chair/accept_paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paper_id: paper_id }),
+    });
+    let data = await response.json();
+
+    console.log(data);
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
+  async function handleNotify(reviewer_id, paper_id, paper_title) {
+    let notification_body = `You have a pending review \n for Paper title ${paper_title}`;
+
+    let notification_json = {
+      type: "notify_reviewer",
+      paper_id: paper_id,
+    };
+
+    console.log(reviewer_id);
+
+    let response = await fetch("http://localhost:3000/notification/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: reviewer_id,
+        notification_body: notification_body,
+        notification_json: notification_json,
+      }),
+    });
+
+    const thisPage = window.location.pathname;
+
+    console.log(notification_json);
+
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
 </script>
 
 <main>
@@ -65,7 +122,11 @@
                 <p>review: {rev.review}</p>
               {:else}
                 <p style="color:red">Not given review yet</p>
-                <a href="#"> notify "{rev.full_name}"" to write review</a>
+                <button
+                  on:click={() => {
+                    handleNotify(rev.user_id, item.paper_id, item.paper_title);
+                  }}>Notify {rev.full_name}</button
+                >
                 <br />
                 <br />
               {/if}
@@ -76,6 +137,17 @@
           <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
             Assign
           </a>
+
+          <div class="two-column" style="display: block" button-container>
+            <button
+              on:click={handleReject(item.paper_id)}
+              style="background-color:red;">Reject</button
+            >
+            <button
+              on:click={handleAccept(item.paper_id)}
+              style="background-color:green;">Accept</button
+            >
+          </div>
         </div>
       {/each}
     </div>
@@ -89,5 +161,15 @@
   }
 
   h1 {
+  }
+  button {
+    margin: 2% 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
 </style>

@@ -86,7 +86,7 @@
       body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
     });
 
-    response = await fetch("http://localhost:3000/reviewer/accept", {
+    let respons = await fetch("http://localhost:3000/reviewer/accept", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,15 +94,15 @@
       body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
     });
 
-    response = await fetch(
+    let respon = await fetch(
       `http://localhost:3000/paper/get_conference_chair/${paper_id}`
     );
 
-    if (!response.ok) {
+    if (!respon.ok) {
       throw new Error("Failed to fetch data");
     }
 
-    let chair_id = await response.json();
+    let chair_id = await respon.json();
 
     let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
 

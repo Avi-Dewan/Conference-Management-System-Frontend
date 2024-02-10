@@ -14,6 +14,9 @@
   onMount(async () => {
     try {
       login_type = $page.params.login_type;
+
+      console.log("login type:" , login_type);
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -49,7 +52,7 @@
       if(login_type == 'normal') {
         goto(`/${user_id}/home`);
       } else {
-        alert("special case");
+        goto(`/${user_id}/notification/${login_type}`);
       }
 
     

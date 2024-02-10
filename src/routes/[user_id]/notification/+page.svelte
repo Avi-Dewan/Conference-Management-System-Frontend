@@ -43,7 +43,23 @@
     }
   });
 
-  function handleDetails(notification_id, notification_json) {
+  async function handleDetails(notification_id, notification_json) {
+
+      // Make a PUT request to the server
+    const response = await fetch(`http://localhost:3000/notification/update_status/${notification_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // Add any data you want to send with the request
+      body: JSON.stringify({  })
+    });
+
+    if (!response.ok) {
+      console.error('Error:', response.statusText);
+      return;
+    }
+
     if (notification_json.type == "reviewer_request") {
       let paper_id = notification_json.requested_paper_id;
       goto(
@@ -84,6 +100,12 @@
           <h4 style="color: red;">
             Title: {item.notification_json.requested_paper_title}
           </h4>
+        {/if}
+
+        {#if item.notification_status == "unread"}
+          <h4 style="color: red;">Status: Unread</h4>
+        {:else}
+          <h4 style="color: green;">Status: Read</h4>
         {/if}
 
         <button
