@@ -15,7 +15,7 @@
     try {
       login_type = $page.params.login_type;
 
-      console.log(login_type);
+      console.log("login type:" , login_type);
 
     } catch (error) {
       console.error("Error fetching data:", error);
