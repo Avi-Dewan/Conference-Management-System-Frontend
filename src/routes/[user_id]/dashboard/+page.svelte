@@ -42,47 +42,68 @@
 <main>
   <NavbarChair />
 
-  {#if getConferencesSummary != null}
-    <h2>Your conferences:</h2>
+  <div>
+    <nav>
+      <a href="/{user_id}/conference/conference_list/all">Conferences</a>
+      <a href="/{user_id}/conference/conference_list/all"
+        >View Unassigned Papers</a
+      >
+      <a href="/{user_id}/conference/conference_list/open_for_submission"
+        >View pending papers</a
+      >
 
-    {#each getConferencesSummary as item}
-      <div>
-        <hr />
-        <h3>Title: {item.conference_title}</h3>
-        <h4>Total submitted papers: {item.submitted_paper_count}</h4>
-        <h4 style="color: red;">
-          Total Papers without any reviewer assigned: {item.paper_count_with_no_reviewer_assigned}
-        </h4>
-        <h4 style="color: red;">
-          Total Papers with pending reviews: {item.paper_count_with_pending_review}
-        </h4>
-        <h4 style="color: black;">
-          Total workshops: {item.workshop_count}
-        </h4>
-
-        <button
-          on:click={() => {
-            handleViewConference(item.conference_id);
-          }}>View Conference</button
-        >
-        {#if item.paper_count_with_no_reviewer_assigned != 0}
-          <button
-            on:click={() => {
-              handleUnassignedReviewer(item.conference_id);
-            }}>View papers with unassigned reviewer</button
-          >
-        {/if}
-        {#if item.paper_count_with_pending_review != 0}
-          <button
-            on:click={() => {
-              handlePendingReview(item.conference_id);
-            }}>View papers with pending reviews</button
-          >
-        {/if}
-      </div>
+      <div class="animation start-home"></div>
+    </nav>
+  </div>
+  <div>
+    {#if getConferencesSummary != null}
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <hr />
-    {/each}
-  {/if}
+      <h2>Your conferences:</h2>
+
+      {#each getConferencesSummary as item}
+        <div>
+          <hr />
+          <h3>Title: {item.conference_title}</h3>
+          <h4>Total submitted papers: {item.submitted_paper_count}</h4>
+          <h4 style="color: red;">
+            Total Papers without any reviewer assigned: {item.paper_count_with_no_reviewer_assigned}
+          </h4>
+          <h4 style="color: red;">
+            Total Papers with pending reviews: {item.paper_count_with_pending_review}
+          </h4>
+          <h4 style="color: black;">
+            Total workshops: {item.workshop_count}
+          </h4>
+
+          <button
+            on:click={() => {
+              handleViewConference(item.conference_id);
+            }}>View Conference</button
+          >
+          {#if item.paper_count_with_no_reviewer_assigned != 0}
+            <button
+              on:click={() => {
+                handleUnassignedReviewer(item.conference_id);
+              }}>View papers with unassigned reviewer</button
+            >
+          {/if}
+          {#if item.paper_count_with_pending_review != 0}
+            <button
+              on:click={() => {
+                handlePendingReview(item.conference_id);
+              }}>View papers with pending reviews</button
+            >
+          {/if}
+        </div>
+        <hr />
+      {/each}
+    {/if}
+  </div>
 </main>
 
 <style>
@@ -91,6 +112,59 @@
     margin: 2% auto;
   }
 
-  h1 {
+  nav {
+    float: left;
+    position: relative;
+    margin: 1% 0%;
+    width: 600px;
+    height: 50px;
+    background: #34495e;
+    border-radius: 8px;
+    font-size: 0;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+  nav a {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+    line-height: 50px;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    text-align: center;
+  }
+  nav .animation {
+    position: absolute;
+    height: 100%;
+    /* height: 5px; */
+    top: 0;
+    /* bottom: 0; */
+    z-index: 0;
+    background: #1abc9c;
+    border-radius: 8px;
+    transition: all 0.5s ease 0s;
+  }
+  nav a:nth-child(1) {
+    width: 200px;
+  }
+  nav .start-home,
+  a:nth-child(1):hover ~ .animation {
+    width: 200px;
+    left: 0;
+  }
+  nav a:nth-child(2) {
+    width: 200px;
+  }
+  nav a:nth-child(2):hover ~ .animation {
+    width: 200px;
+    left: 200px;
+  }
+  nav a:nth-child(3) {
+    width: 200px;
+  }
+  nav a:nth-child(3):hover ~ .animation {
+    width: 200px;
+    left: 400px;
   }
 </style>

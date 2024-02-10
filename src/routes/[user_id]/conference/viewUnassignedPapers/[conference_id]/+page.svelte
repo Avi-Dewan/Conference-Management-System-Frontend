@@ -40,6 +40,35 @@
       console.error("Error fetching data:", error);
     }
   });
+  async function handleReject(paper_id) {
+    let response = await fetch("http://localhost:3000/chair/reject_paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paper_id: paper_id }),
+    });
+
+    let data = await response.json();
+    console.log(data);
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
+
+  async function handleAccept(paper_id) {
+    let response = await fetch("http://localhost:3000/chair/accept_paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paper_id: paper_id }),
+    });
+    let data = await response.json();
+
+    console.log(data);
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
   async function handleNotify(reviewer_id, paper_id, paper_title) {
     let notification_body = `You have a pending review \n for Paper title ${paper_title}`;
 
@@ -108,6 +137,17 @@
           <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
             Assign
           </a>
+
+          <div class="two-column" style="display: block" button-container>
+            <button
+              on:click={handleReject(item.paper_id)}
+              style="background-color:red;">Reject</button
+            >
+            <button
+              on:click={handleAccept(item.paper_id)}
+              style="background-color:green;">Accept</button
+            >
+          </div>
         </div>
       {/each}
     </div>
@@ -121,5 +161,15 @@
   }
 
   h1 {
+  }
+  button {
+    margin: 2% 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
 </style>
