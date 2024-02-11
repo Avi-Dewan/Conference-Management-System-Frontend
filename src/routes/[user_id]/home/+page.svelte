@@ -6,20 +6,19 @@
 
   let user_id, user;
 
+  let unreadCount = null;
 
   onMount(async () => {
     try {
-
       const tokenResponse = await fetch("http://localhost:3000/auth", {
         headers: {
-            "Content-Type": "application/json",
-          },
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       });
 
       let tokenData = await tokenResponse.json();
       user_id = tokenData.user_id;
-
 
       let url = `http://localhost:3000/user/${user_id}`;
 
@@ -30,6 +29,14 @@
       }
 
       user = await response.json();
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+
       // console.log(user, "in home");
 
       sessionStorage.setItem("user_type", user.user_type);
@@ -39,12 +46,12 @@
   });
 </script>
 
-{#if user != null}
+{#if user != null && unreadCount != null}
   <main>
     {#if user.user_type == "chair"}
-      <NavbarChair />
+      <NavbarChair myVariable={unreadCount} />
     {:else}
-      <NavbarUser />
+      <NavbarUser myVariable={unreadCount} />
     {/if}
 
     <h1>Welcome to Conference Management System</h1>

@@ -68,30 +68,23 @@
     } else if (notification_json.type == "notify_chair_paper") {
       let conference_id = notification_json.conference_id;
 
-<<<<<<< HEAD
-      goto(
-        `/${user_id}/conference/viewSubmission/${conference_id}`
-      );
-    } else if (notification_json.type == "notify_coauthor_paper"){
-      let paper_id = notification_json.paper_id;
-      goto(
-        `/${user_id}/author_request/${paper_id}`
-      );
-    } else if (notification_json.type == "workshop_request_notify"){
-      let workshop_id = notification_json.workshop_id;
-      goto(
-        `/${user_id}/workshop_request/${workshop_id}`
-      );
-=======
       goto(`/${user_id}/conference/viewSubmission/${conference_id}`);
+    } else if (notification_json.type == "notify_coauthor_paper") {
+      let paper_id = notification_json.paper_id;
+      goto(`/${user_id}/author_request/${paper_id}`);
+    } else if (notification_json.type == "workshop_request_notify") {
+      let workshop_id = notification_json.workshop_id;
+      goto(`/${user_id}/workshop_request/${workshop_id}`);
     } else if (notification_json.type == "notify_author_accept/reject") {
-      let conference_id = notification_json.conference_id;
+      let workshop_id = notification_json.workshop_id;
 
-      goto(`/${user_id}/conference/mysubmission/${conference_id}`);
->>>>>>> 837966c49d805fccf9cb443febe3df3db5cb1744
+      goto(`/${user_id}/conference/mysubmission/${workshop_id}`);
+    } else if (
+      notification_json.type == "notify_chair_workshop_accept/reject"
+    ) {
+      let workshop_id = notification_json.workshop_id;
+      goto(`/${user_id}/conference/assignInstructor/${workshop_id}`);
     }
-    //"workshop_request_notify"
-
   }
 </script>
 

@@ -30,42 +30,75 @@
   });
 
   async function handleReject(workshop_id, workshop_title) {
-    // const response = await fetch(
-    //   "http://localhost:3000/workshop/reject_request", // ekhane workshop er request delete hbe
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ user_id: user_id, workshop_id: workshop_id }), // workshop id jabe ekhane
-    //   }
-    // );
+    let response = await fetch(
+      "http://localhost:3000/workshop/reject_request", // ekhane workshop er request delete hbe
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id, workshop_id: workshop_id }), // workshop id jabe ekhane
+      }
+    );
+
+    let conf_res = await fetch(
+      `http://localhost:3000/workshop/get_conference/${workshop_id}`
+    );
+
+    let conf_data = await conf_res.json();
+
+    let conference_title = conf_data.conference_details.conference_title;
+
+    let chair_id = conf_data.chair_id;
+
+    let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
+
+    let full_name = await res.json();
+
+    let notification_body = `${full_name} has rejected your request to be an instructor for Workshop: "${workshop_title}" in the conference "${conference_title}"`;
+
+    let notification_json = {
+      type: "notify_chair_workshop_accept/reject",
+      workshop_id: workshop_id,
+    };
+
+    response = await fetch("http://localhost:3000/notification/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: chair_id,
+        notification_body: notification_body,
+        notification_json: notification_json,
+      }),
+    });
     const thisPage = window.location.pathname;
 
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
 
   async function handleAccept(workshop_id, workshop_title) {
-    // let response = await fetch(
-    //   "http://localhost:3000/workshop/reject_request",
-    //   {
-    //     // ekhane workshop er request delete hbe
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ user_id: user_id, workshop_id: workshop_id }),
-    //   }
-    // );
+    let response = await fetch(
+      "http://localhost:3000/workshop/reject_request",
+      {
+        // ekhane workshop er request delete hbe
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id, workshop_id: workshop_id }),
+      }
+    );
 
-    // response = await fetch("http://localhost:3000/workshop/accept_request", {
-    //   // request accept hoise , tai db te add korlam
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ user_id: user_id, workshop_id: workshop_id }),
-    // });
+    response = await fetch("http://localhost:3000/workshop/accept_request", {
+      // request accept hoise , tai db te add korlam
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id: user_id, workshop_id: workshop_id }),
+    });
 
     let conf_res = await fetch(
       `http://localhost:3000/workshop/get_conference/${workshop_id}`
@@ -84,11 +117,11 @@
     let notification_body = `${full_name} has accepted your request to be an instructor for Workshop: "${workshop_title}" in the conference "${conference_title}"`;
 
     let notification_json = {
-      type: "notify_author_workshop_accept/reject",
+      type: "notify_chair_workshop_accept/reject",
       workshop_id: workshop_id,
     };
 
-    let response = await fetch("http://localhost:3000/notification/send", {
+    response = await fetch("http://localhost:3000/notification/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

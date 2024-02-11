@@ -3,6 +3,8 @@
 
   let user_id;
 
+  export let myVariable;
+
   $: user_id = $page.params.user_id;
 </script>
 
@@ -17,7 +19,15 @@
           <a href="/{user_id}/conference/conference_list/all">Conferences</a>
         </li>
         <li><a href="/{user_id}/conference/create">Create a conference</a></li>
-        <li><a href="/{user_id}/notification">My notification</a></li>
+        {#if myVariable > 0}
+          <li>
+            <a href="/{user_id}/notification" style="color: red;"
+              >My notification [{myVariable}]</a
+            >
+          </li>
+        {:else}
+          <li><a href="/{user_id}/notification">My notification</a></li>
+        {/if}
         <li><a href="/{user_id}/dashboard">Dashboard</a></li>
         <li><a href="#">My Profile</a></li>
         <li><a href="/">Log out</a></li>

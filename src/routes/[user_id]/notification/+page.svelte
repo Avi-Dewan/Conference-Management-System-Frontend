@@ -89,16 +89,17 @@
       let conference_id = notification_json.conference_id;
 
       goto(`/${user_id}/conference/mysubmission/${conference_id}`);
-    } else if (notification_json.type == "notify_coauthor_paper"){
+    } else if (notification_json.type == "notify_coauthor_paper") {
       let paper_id = notification_json.paper_id;
-      goto(
-        `/${user_id}/author_request/${paper_id}`
-      );
-    }else if (notification_json.type == "workshop_request_notify"){
+      goto(`/${user_id}/author_request/${paper_id}`);
+    } else if (notification_json.type == "workshop_request_notify") {
       let workshop_id = notification_json.workshop_id;
-      goto(
-        `/${user_id}/workshop_request/${workshop_id}`
-      );
+      goto(`/${user_id}/workshop_request/${workshop_id}`);
+    } else if (
+      notification_json.type == "notify_chair_workshop_accept/reject"
+    ) {
+      let workshop_id = notification_json.workshop_id;
+      goto(`/${user_id}/conference/assignInstructor/${workshop_id}`);
     }
   }
 </script>
