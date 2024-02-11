@@ -120,8 +120,9 @@
             </div>
           {/each}
           <button
-            style="background-color: green;"
-            on:click={() => goto(item.pdf_link)}>View file</button
+            on:click={() => {
+              window.location.href = item.pdf_link;
+            }}>View file</button
           >
           <button
             style="background-color: blueviolet;"

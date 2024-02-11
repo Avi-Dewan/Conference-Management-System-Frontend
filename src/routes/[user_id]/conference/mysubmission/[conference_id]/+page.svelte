@@ -126,7 +126,7 @@
           <p></p>
           <p><b>Research Area:</b>{item.related_fields}</p>
 
-          <button on:click={() => goto(item.pdf_link)}>View pdf</button>
+          <a href={item.pdf_link}>View Paper</a>
 
           <h3>Status: {item.status}</h3>
 

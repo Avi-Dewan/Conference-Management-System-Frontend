@@ -120,7 +120,9 @@
               <br />
             </div>
           {/each}
-          <a href={item.pdf_link}>View file</a>
+          <button on:click={() => window.open(item.pdf_link, "_blank")}
+            >View file</button
+          >
           <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
             Assign
           </a>
