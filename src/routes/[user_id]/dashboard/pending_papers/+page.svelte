@@ -28,8 +28,8 @@
     }
   });
 
-  function handleViewPaper(paper_id) {
-    goto(`/${user_id}/conference/assignReviewer/${paper_id}`);
+  function handleViewPaper(conference_id, paper_id) {
+    goto(`/${user_id}/conference/viewSubmission/${conference_id}/${paper_id}`);
   }
  
 </script>
@@ -68,7 +68,7 @@
           <h4>Related Fields: {item.related_fields}</h4>
           <button
               on:click={() => {
-                handleViewPaper(item.paper_id);
+                handleViewPaper(item.conference_id, item.paper_id);
               }}>View details</button
             >
         </div>
