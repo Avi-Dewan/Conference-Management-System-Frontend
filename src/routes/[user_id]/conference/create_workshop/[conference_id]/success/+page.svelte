@@ -19,8 +19,6 @@
   let unreadCount = null;
   onMount(async () => {
     try {
-      user_type = sessionStorage.getItem("user_type");
-
       const unreadNotificationCount = await fetch(
         `http://localhost:3000/notification/unreadCount/${user_id}`
       );

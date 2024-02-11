@@ -122,6 +122,7 @@
       suggestedInstructors = await response.json();
       filteredSuggestedInstructor = suggestedInstructors;
 
+      let user_id = main_user_id;
       const unreadNotificationCount = await fetch(
         `http://localhost:3000/notification/unreadCount/${user_id}`
       );

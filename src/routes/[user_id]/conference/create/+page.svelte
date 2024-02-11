@@ -4,6 +4,7 @@
   import { goto } from "$app/navigation";
 
   import { page } from "$app/stores";
+  import { onMount } from "svelte";
 
   async function createConference() {
     const req = await fetch("http://localhost:3000/conference/create", {
@@ -62,8 +63,6 @@
   let unreadCount = null;
   onMount(async () => {
     try {
-      user_type = sessionStorage.getItem("user_type");
-
       const unreadNotificationCount = await fetch(
         `http://localhost:3000/notification/unreadCount/${user_id}`
       );
