@@ -65,23 +65,21 @@
       body: JSON.stringify(formData),
     });
 
-
-    const response_chair = await fetch(`http://localhost:3000/conference/conference_chair/${conference_id}`);
+    const response_chair = await fetch(
+      `http://localhost:3000/conference/conference_chair/${conference_id}`
+    );
 
     if (!response_chair.ok) {
-        throw new Error("Failed to fetch data");
+      throw new Error("Failed to fetch data");
     }
 
     chair_id = await response_chair.json();
 
-    chair_id = chair_id.user_id
+    chair_id = chair_id.user_id;
 
-    console.log("chair id hocche...")
+    console.log("chair id hocche...");
 
     console.log(chair_id);
-
-
-
 
     let notification_body = `A paper has been submitted`;
 
@@ -105,8 +103,6 @@
     });
 
     data = await response.json();
-
-
   }
 
   onMount(async () => {
@@ -120,19 +116,6 @@
 
       data = await response.json();
       wholeData = data;
-
-
-
-
-
-
-
-
-
-
-
-
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -168,9 +151,8 @@
     // console.log(authors)
     // console.log("author sesh")
 
-
-    data = data.filter(item1 => {
-        return !authors.some(item2 => item2.user_id === item1.user_id);
+    data = data.filter((item1) => {
+      return !authors.some((item2) => item2.user_id === item1.user_id);
     });
     show = false;
   }
@@ -236,9 +218,6 @@
     submitted = true;
 
     goto(`/${user_id}/conference/submitPaper/${conference_id}/success`);
-
-
-
 
     // alert(JSON.stringify(formData, null, 2));
   }
