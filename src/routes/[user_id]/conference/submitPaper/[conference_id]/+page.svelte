@@ -157,6 +157,16 @@
 
       data = await response.json();
       wholeData = data;
+      console.log("whole data printing")
+      console.log(wholeData)
+
+      for (let i = 0; i < wholeData.length; i++) {
+        if (wholeData[i]["user_id"] === user_id) {
+          wholeData.splice(i, 1);
+          i--; // decrement i to adjust for the removed element
+        }
+      }
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
