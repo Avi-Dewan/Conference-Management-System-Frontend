@@ -12,6 +12,7 @@
   user_id = $page.params.user_id;
 
   let workshop_id = $page.params.workshop_id;
+  let unreadCount = null;
 
   onMount(async () => {
     try {
@@ -24,6 +25,12 @@
       }
 
       data = await response.json();
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
 
       console.log(data);
     } catch (error) {
@@ -141,9 +148,10 @@
   }
 </script>
 
-{#if data != null}
+{#if data != null && unreadCount != null}
   <main>
-    <NavbarUser />
+    <NavbarUser myVariable={unreadCount} />
+
     <h1>Workshop For Review</h1>
 
     <!-- <button on:click={handleClick}>Go to Another Page</button> -->

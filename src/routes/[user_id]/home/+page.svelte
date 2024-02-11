@@ -30,15 +30,14 @@
 
       user = await response.json();
 
+    // let unreadCount = null;
+
       const unreadNotificationCount = await fetch(
         `http://localhost:3000/notification/unreadCount/${user_id}`
       );
-
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;
-
-      // console.log(user, "in home");
-
+    
       sessionStorage.setItem("user_type", user.user_type);
     } catch (error) {
       console.error("Error fetching data:", error);

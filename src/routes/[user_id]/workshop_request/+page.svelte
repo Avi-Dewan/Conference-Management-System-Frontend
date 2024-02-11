@@ -10,6 +10,8 @@
   let user_id, user, data;
 
   user_id = $page.params.user_id;
+  let unreadCount = null;
+
 
   onMount(async () => {
     try {
@@ -22,6 +24,12 @@
       }
 
       data = await response.json();
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
 
       console.log(data);
     } catch (error) {
@@ -139,9 +147,9 @@
   }
 </script>
 
-{#if data != null}
+{#if data != null && unreadCount != null}
   <main>
-    <NavbarUser />
+    <NavbarUser myVariable={unreadCount} />
 
     <nav style="margin-top: 2%;">
       <a href="/{user_id}/Request">Paper Review</a>
