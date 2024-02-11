@@ -136,6 +136,18 @@
 {#if data != null}
   <main>
     <NavbarUser />
+
+    <nav style="margin-top: 2%;">
+      <a href="/{user_id}/Request">Paper Review</a>
+      <a href="/{user_id}/workshop_request">Workshop Instructor</a>
+      <a href="/{user_id}/author_request">Co authorship</a>
+      <div class="animation start-home"></div>
+    </nav>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
     <h1>Paper For Review</h1>
 
     <!-- <button on:click={handleClick}>Go to Another Page</button> -->
@@ -220,5 +232,60 @@
 
   .button-container {
     text-align: center;
+  }
+  nav {
+    float: left;
+    position: relative;
+    margin: 1% 0%;
+    width: 600px;
+    height: 50px;
+    background: #34495e;
+    border-radius: 8px;
+    font-size: 0;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+  nav a {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+    line-height: 50px;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    text-align: center;
+  }
+  nav .animation {
+    position: absolute;
+    height: 100%;
+    /* height: 5px; */
+    top: 0;
+    /* bottom: 0; */
+    z-index: 0;
+    background: #1abc9c;
+    border-radius: 8px;
+    transition: all 0.5s ease 0s;
+  }
+  nav a:nth-child(1) {
+    width: 200px;
+  }
+  nav .start-home,
+  a:nth-child(1):hover ~ .animation {
+    width: 200px;
+    left: 0;
+  }
+  nav a:nth-child(2) {
+    width: 200px;
+  }
+  nav a:nth-child(2):hover ~ .animation {
+    width: 200px;
+    left: 200px;
+  }
+  nav a:nth-child(3) {
+    width: 200px;
+  }
+  nav a:nth-child(3):hover ~ .animation {
+    width: 200px;
+    left: 400px;
   }
 </style>
