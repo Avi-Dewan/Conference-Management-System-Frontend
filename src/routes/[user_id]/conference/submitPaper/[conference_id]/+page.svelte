@@ -65,27 +65,37 @@
       body: JSON.stringify(formData),
     });
 
+<<<<<<< HEAD
     let paper_id = await req.json();
 
 
     const response_chair = await fetch(`http://localhost:3000/conference/conference_chair/${conference_id}`);
+=======
+    const response_chair = await fetch(
+      `http://localhost:3000/conference/conference_chair/${conference_id}`
+    );
+>>>>>>> 837966c49d805fccf9cb443febe3df3db5cb1744
 
     if (!response_chair.ok) {
-        throw new Error("Failed to fetch data");
+      throw new Error("Failed to fetch data");
     }
 
     chair_id = await response_chair.json();
 
-    chair_id = chair_id.user_id
+    chair_id = chair_id.user_id;
 
-    console.log("chair id hocche...")
+    console.log("chair id hocche...");
 
     console.log(chair_id);
 
+<<<<<<< HEAD
 
 
 
     let notification_body = `A paper titled ${formData.paper_title} has been submitted in the conference ${conf_data.conference_title}`;
+=======
+    let notification_body = `A paper has been submitted`;
+>>>>>>> 837966c49d805fccf9cb443febe3df3db5cb1744
 
     let notification_json = {
       type: "notify_chair_paper",
@@ -107,6 +117,7 @@
     });
 
     data = await response.json();
+<<<<<<< HEAD
 
 
 
@@ -157,6 +168,8 @@
 
 
 
+=======
+>>>>>>> 837966c49d805fccf9cb443febe3df3db5cb1744
   }
 
   onMount(async () => {
@@ -170,11 +183,14 @@
 
       data = await response.json();
       wholeData = data;
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 837966c49d805fccf9cb443febe3df3db5cb1744
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -210,9 +226,8 @@
     // console.log(authors)
     // console.log("author sesh")
 
-
-    data = data.filter(item1 => {
-        return !authors.some(item2 => item2.user_id === item1.user_id);
+    data = data.filter((item1) => {
+      return !authors.some((item2) => item2.user_id === item1.user_id);
     });
     show = false;
   }
@@ -278,9 +293,6 @@
     submitted = true;
 
     goto(`/${user_id}/conference/submitPaper/${conference_id}/success`);
-
-
-
 
     // alert(JSON.stringify(formData, null, 2));
   }
