@@ -65,6 +65,8 @@
       body: JSON.stringify(formData),
     });
 
+    let paper_id = await req.json();
+
 
     const response_chair = await fetch(`http://localhost:3000/conference/conference_chair/${conference_id}`);
 
@@ -83,7 +85,7 @@
 
 
 
-    let notification_body = `A paper has been submitted`;
+    let notification_body = `A paper titled ${formData.paper_title} has been submitted in the conference ${conf_data.conference_title}`;
 
     let notification_json = {
       type: "notify_chair_paper",
@@ -107,6 +109,54 @@
     data = await response.json();
 
 
+
+    let fullnameurl = `http://localhost:3000/user/getFullName/${formData.main_author_id}`; 
+    
+    const response_fullname = await fetch(fullnameurl);
+
+    if (!response_fullname.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    let main_author_fullname  = await response_fullname.json();
+    
+
+    let author_notification_body = `An user named ${main_author_fullname} has requested you to be a co-author on a paper titled ${formData.paper_title} on the conference ${conf_data.conference_title}`;
+
+    let author_notification_json = {
+      type: "notify_coauthor_paper",
+      conference_id: conference_id,
+      paper_id: paper_id
+    };
+
+    // console.log(reviewer_id);
+
+    for(let i = 0; i<formData.co_authors.length ; i++){
+
+      console.log("printing co authors")
+      console.log(formData.co_authors[i]);
+
+    
+
+    response = await fetch("http://localhost:3000/notification/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: formData.co_authors[i].user_id,
+        notification_body: author_notification_body,
+        notification_json: author_notification_json,
+      }),
+    });
+
+    data = await response.json();
+
+  }
+
+
+
+
   }
 
   onMount(async () => {
@@ -120,14 +170,6 @@
 
       data = await response.json();
       wholeData = data;
-
-
-
-
-
-
-
-
 
 
 

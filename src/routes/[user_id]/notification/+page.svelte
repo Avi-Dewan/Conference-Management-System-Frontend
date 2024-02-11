@@ -86,6 +86,16 @@
       goto(
         `/${user_id}/conference/viewSubmission/${conference_id}`
       );
+    } else if (notification_json.type == "notify_coauthor_paper"){
+      let paper_id = notification_json.paper_id;
+      goto(
+        `/${user_id}/author_request/${paper_id}`
+      );
+    }else if (notification_json.type == "workshop_request_notify"){
+      let workshop_id = notification_json.workshop_id;
+      goto(
+        `/${user_id}/workshop_request/${workshop_id}`
+      );
     }
   }
 </script>
@@ -109,11 +119,11 @@
           </h4>
         {/if}
 
-        {#if item.notification_json.type == "notify_chair_paper"}
+        <!-- {#if item.notification_json.type == "notify_chair_paper"}
         <h4 style="color: red;">
           A new paper on the conference {item.notification_json.conference_id} has been submitted
         </h4>
-        {/if}
+        {/if} -->
 
         {#if item.notification_status == "unread"}
           <h4 style="color: red;">Status: Unread</h4>
