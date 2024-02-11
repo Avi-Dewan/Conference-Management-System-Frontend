@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
+  import { goto } from "$app/navigation";
 
   const conference_id = $page.params.conference_id;
   let user_id;
@@ -71,6 +72,34 @@
 
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
+
+  async function handleReject(paper_id) {
+    let response = await fetch("http://localhost:3000/chair/reject_paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paper_id: paper_id }),
+    });
+
+    let data = await response.json();
+    console.log(data);
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
+
+  async function handleAccept(paper_id) {
+    let response = await fetch("http://localhost:3000/chair/accept_paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paper_id: paper_id }),
+    });
+    let data = await response.json();
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
 </script>
 
 <main>
@@ -85,6 +114,7 @@
           <p><b>Author:</b> {item.authors}</p>
           <p><b>Track:</b> {item.related_fields}</p>
           <p><b>Abstract:</b> {item.abstract}</p>
+          <p><b>Status:</b> {item.status}</p>
           <p><b>Requested Reviewer:</b> {item.requestedReviewers}</p>
           <p><b> <u> Assigned Reviewers and reviews: </u></b></p>
 
@@ -108,9 +138,21 @@
             </div>
           {/each}
           <a href={item.pdf_link}>View file</a>
-          <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
-            Assign
-          </a>
+          {#if item.status != "accepted" && item.status != "rejected"}
+            <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
+              Assign
+            </a>
+            <div class="two-column" style="display: block" button-container>
+              <button
+                on:click={handleReject(item.paper_id)}
+                style="background-color:red;">Reject</button
+              >
+              <button
+                on:click={handleAccept(item.paper_id)}
+                style="background-color:green;">Accept</button
+              >
+            </div>
+          {/if}
         </div>
       {/each}
     </div>
@@ -124,5 +166,28 @@
   }
 
   h1 {
+  }
+  .border_style {
+    color: #333;
+    /* Add the border property to your existing class */
+    border: 2px solid #000;
+    /* Optional: Add padding to the content inside the div */
+    padding: 10px;
+    /* Additional styles */
+    background-color: #f4f4f4; /* Set background color */
+    text-align: center; /* Set text alignment to center */
+    font-family: Arial, sans-serif; /* Set font family */
+    margin: 20px; /* Add margin around the div */
+  }
+
+  button {
+    margin: 2% 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
 </style>
