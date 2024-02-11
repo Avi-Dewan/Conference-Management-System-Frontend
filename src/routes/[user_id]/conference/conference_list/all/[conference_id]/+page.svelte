@@ -8,6 +8,7 @@
   import NavbarUser from "/src/components/navbar_user.svelte";
 
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
 
   let user_id, user_type;
 
@@ -74,35 +75,17 @@
       <h3>Description: {data.conference_description}</h3>
 
       {#if user_type == "chair"}
-        <a href="/{user_id}/conference/viewSubmission/{conference_id}"
-          >View Submissions</a
-        >
-        <a href="/{user_id}/conference/create_workshop/{conference_id}"
-          >Create a workshop</a
-        >
-        <a href="/{user_id}/conference/view_workshop/{conference_id}"
-          >View Workshops</a
-        >
-        <a href="/{user_id}/conference/popular_workshop/{conference_id}"
-          >Popular Workshops</a
-        >
+        <button on:click={() => goto(`/${user_id}/conference/viewSubmission/${conference_id}`)}>View Submissions</button>
+        <button on:click={() => goto(`/${user_id}/conference/create_workshop/${conference_id}`)}>Create a workshop</button>
+        <button on:click={() => goto(`/${user_id}/conference/view_workshop/${conference_id}`)}>View Workshops</button>
+        <button on:click={() => goto(`/${user_id}/conference/popular_workshop/${conference_id}`)}>Popular Workshops</button>
       {:else if data.status == "Open"}
-        <a href="/{user_id}/conference/submitPaper/{conference_id}"
-          >Submit a Paper</a
-        >
-        <a href="/{user_id}/conference/mysubmission/{conference_id}"
-          >My submissions</a
-        >
-        <a href="/{user_id}/conference/view_workshop_user/{conference_id}"
-          >View Workshops</a
-        >
+        <button on:click={() => goto(`/${user_id}/conference/submitPaper/${conference_id}`)}>Submit a Paper</button>
+        <button on:click={() => goto(`/${user_id}/conference/mysubmission/${conference_id}`)}>My submissions</button>
+        <button on:click={() => goto(`/${user_id}/conference/view_workshop_user/${conference_id}`)}>View Workshops</button>
       {:else if user_type == "user"}
-        <a href="/{user_id}/conference/mysubmission/{conference_id}"
-          >My submissions</a
-        >
-        <a href="/{user_id}/conference/view_workshop_user/{conference_id}"
-          >View Workshops</a
-        >
+        <button on:click={() => goto(`/${user_id}/conference/mysubmission/${conference_id}`)}>My submissions</button>
+        <button on:click={() => goto(`/${user_id}/conference/view_workshop_user/${conference_id}`)}>View Workshops</button>
       {/if}
     </div>
   </main>
@@ -115,5 +98,16 @@
   }
 
   h1 {
+  }
+
+  button {
+    margin-top: 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
 </style>
