@@ -44,19 +44,21 @@
   });
 
   async function handleDetails(notification_id, notification_json) {
-
-      // Make a PUT request to the server
-    const response = await fetch(`http://localhost:3000/notification/update_status/${notification_id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      // Add any data you want to send with the request
-      body: JSON.stringify({  })
-    });
+    // Make a PUT request to the server
+    const response = await fetch(
+      `http://localhost:3000/notification/update_status/${notification_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Add any data you want to send with the request
+        body: JSON.stringify({}),
+      }
+    );
 
     if (!response.ok) {
-      console.error('Error:', response.statusText);
+      console.error("Error:", response.statusText);
       return;
     }
 
@@ -80,11 +82,22 @@
         `/${user_id}/conference/viewSubmission/${conference_id}/${paper_id}`
       );
     } else if (notification_json.type == "notify_chair_paper") {
-      
       let conference_id = notification_json.conference_id;
 
+      goto(`/${user_id}/conference/viewSubmission/${conference_id}`);
+    } else if (notification_json.type == "notify_author_accept/reject") {
+      let conference_id = notification_json.conference_id;
+
+      goto(`/${user_id}/conference/mysubmission/${conference_id}`);
+    } else if (notification_json.type == "notify_coauthor_paper"){
+      let paper_id = notification_json.paper_id;
       goto(
-        `/${user_id}/conference/viewSubmission/${conference_id}`
+        `/${user_id}/author_request/${paper_id}`
+      );
+    }else if (notification_json.type == "workshop_request_notify"){
+      let workshop_id = notification_json.workshop_id;
+      goto(
+        `/${user_id}/workshop_request/${workshop_id}`
       );
     }
   }
@@ -109,11 +122,11 @@
           </h4>
         {/if}
 
-        {#if item.notification_json.type == "notify_chair_paper"}
+        <!-- {#if item.notification_json.type == "notify_chair_paper"}
         <h4 style="color: red;">
           A new paper on the conference {item.notification_json.conference_id} has been submitted
         </h4>
-        {/if}
+        {/if} -->
 
         {#if item.notification_status == "unread"}
           <h4 >Status: <b style="color: red;"> Unread </b> </h4>

@@ -56,8 +56,6 @@
 
       console.log(paper_data);
 
-
-
       // let myPaperReviewURL = `http://localhost:3000/paper/review/${conference_id}/${user_id}`;
       // const review_response = await fetch(myPaperReviewURL);
 
@@ -67,9 +65,6 @@
 
       // review_data = await review_response.json();
       // console.log(review_data);
-
-
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -128,15 +123,17 @@
           >
         </div>
         {:else}
-
-          {#each item.reviews as review , idx}
-          <p>
-            Reviewer {idx+1} said: {review.review}
-            <br>
-            Reviewer {idx +1} rating: {review.rating}
-          </p>
+          {#each item.reviews as review, idx}
+            <p>
+              {#if review.review != null}
+                Reviewer {idx + 1} said: {review.review}
+              {/if}
+              <br />
+              {#if review.rating != null}
+                Reviewer {idx + 1} rating: {review.rating}
+              {/if}
+            </p>
           {/each}
-
         {/if}
       </div>
     {/each}

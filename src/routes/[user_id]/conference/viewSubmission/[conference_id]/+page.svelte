@@ -41,7 +41,7 @@
     }
   });
 
-  async function handleReject(paper_id) {
+  async function handleReject(paper_id, paper_title) {
     let response = await fetch("http://localhost:3000/chair/reject_paper", {
       method: "POST",
       headers: {
@@ -51,12 +51,50 @@
     });
 
     let data = await response.json();
-    console.log(data);
+
+    let conf_res = await fetch(
+      `http://localhost:3000/paper/getConferenceInfo/${paper_id}`
+    );
+    let conf_data = await conf_res.json();
+
+    let conference_title = conf_data.conference_title;
+
+    let notification_body = `Your paper titled "${paper_title}" has been rejected in the conference ${conference_title}`;
+
+    let conference_id = conf_data.conference_id;
+
+    let notification_json = {
+      type: "notify_author_accept/reject",
+      paper_id: paper_id,
+      conference_id: conference_id,
+    };
+
+    // console.log(reviewer_id);
+
+    let all_author_res = await fetch(
+      `http://localhost:3000/paper/all_authors/${paper_id}`
+    );
+
+    let all_author_id = await all_author_res.json();
+
+    for (let i = 0; i < all_author_id.length; i++) {
+      await fetch("http://localhost:3000/notification/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: all_author_id[i].user_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      });
+    }
     const thisPage = window.location.pathname;
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
 
-  async function handleAccept(paper_id) {
+  async function handleAccept(paper_id, paper_title) {
     let response = await fetch("http://localhost:3000/chair/accept_paper", {
       method: "POST",
       headers: {
@@ -66,7 +104,44 @@
     });
     let data = await response.json();
 
-    console.log(data);
+    let conf_res = await fetch(
+      `http://localhost:3000/paper/getConferenceInfo/${paper_id}`
+    );
+    let conf_data = await conf_res.json();
+
+    let conference_title = conf_data.conference_title;
+
+    let notification_body = `Your paper titled "${paper_title}" has been accepted in the conference ${conference_title}`;
+
+    let conference_id = conf_data.conference_id;
+
+    let notification_json = {
+      type: "notify_author_accept/reject",
+      paper_id: paper_id,
+      conference_id: conference_id,
+    };
+
+    // console.log(reviewer_id);
+
+    let all_author_res = await fetch(
+      `http://localhost:3000/paper/all_authors/${paper_id}`
+    );
+
+    let all_author_id = await all_author_res.json();
+
+    for (let i = 0; i < all_author_id.length; i++) {
+      await fetch("http://localhost:3000/notification/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: all_author_id[i].user_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      });
+    }
     const thisPage = window.location.pathname;
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
@@ -141,11 +216,11 @@
           <button on:click={() => goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}>Assign</button>
             <div class="two-column" style="display: block" button-container>
               <button
-                on:click={handleReject(item.paper_id)}
+                on:click={handleReject(item.paper_id, item.paper_title)}
                 style="background-color:red;">Reject</button
               >
               <button
-                on:click={handleAccept(item.paper_id)}
+                on:click={handleAccept(item.paper_id, item.paper_title)}
                 style="background-color:green;">Accept</button
               >
             </div>
