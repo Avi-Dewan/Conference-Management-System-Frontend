@@ -6,36 +6,30 @@
 
   const user_id = $page.params.user_id;
 
-  let getConferencesSummaryURL = `http://localhost:3000/conference/${user_id}/all`;
+  let getUnassigned_workshopsURL = `http://localhost:3000/workshop/unassignedInstructor/${user_id}`;
 
-  let getConferencesSummary = null;
+  let unassigned_workshops = null;
   onMount(async () => {
     try {
       let user_type = sessionStorage.getItem("user_type");
 
-      const response = await fetch(getConferencesSummaryURL);
+      const response = await fetch(getUnassigned_workshopsURL);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
 
       let data = await response.json();
 
-      getConferencesSummary = data;
+      unassigned_workshops = data;
 
-      console.log(data);
+      console.log(unassigned_workshops);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   });
 
-  function handleUnassignedReviewer(conference_id) {
-    goto(`/${user_id}/conference/viewUnassignedPapers/${conference_id}`);
-  }
-  function handlePendingReview(conference_id) {
-    goto(`/${user_id}/conference/viewPendingReviewPapers/${conference_id}`);
-  }
-  function handleViewConference(conference_id) {
-    goto(`/${user_id}/conference/conference_list/all/${conference_id}`);
+  function handleViewWorkshop(workshop_id) {
+    goto(`/${user_id}/conference/assignInstructor/${workshop_id}`);
   }
 </script>
 
@@ -54,54 +48,31 @@
       <a href="/{user_id}/dashboard/unassigned_workshop"
       >View Unassigned Workshop</a
       >
-
       <div class="animation start-home"></div>
     </nav>
   </div>
   <div>
-    {#if getConferencesSummary != null}
+    {#if unassigned_workshops != null}
       <br />
       <br />
       <br />
       <br />
       <br />
       <hr />
-      <h2>Your conferences:</h2>
+      <h2> Unassigned Workshop:</h2>
 
-      {#each getConferencesSummary as item}
+      {#each unassigned_workshops as item}
         <div>
           <hr />
-          <h3>Title: {item.conference_title}</h3>
-          <h4>Total submitted papers: {item.submitted_paper_count}</h4>
-          <h4 style="color: red;">
-            Total Papers without any reviewer assigned: {item.paper_count_with_no_reviewer_assigned}
-          </h4>
-          <h4 style="color: red;">
-            Total Papers with pending reviews: {item.paper_count_with_pending_review}
-          </h4>
-          <h4 style="color: black;">
-            Total workshops: {item.workshop_count}
-          </h4>
+          <h3>Title: {item.workshop_title}</h3>
+          <h4>Related Fields: {item.related_fields}</h4>
+          <h4>Conference : {item.conference.conference_title}</h4>
 
           <button
-            on:click={() => {
-              handleViewConference(item.conference_id);
-            }}>View Conference</button
-          >
-          {#if item.paper_count_with_no_reviewer_assigned != 0}
-            <button
               on:click={() => {
-                handleUnassignedReviewer(item.conference_id);
-              }}>View papers with unassigned reviewer</button
+                handleViewWorkshop(item.workshop_id);
+              }}>View details</button
             >
-          {/if}
-          {#if item.paper_count_with_pending_review != 0}
-            <button
-              on:click={() => {
-                handlePendingReview(item.conference_id);
-              }}>View papers with pending reviews</button
-            >
-          {/if}
         </div>
         <hr />
       {/each}

@@ -4,6 +4,7 @@
 
   import Card from "/src/components/card.svelte";
   import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
 
   let data = [];
 
@@ -73,9 +74,10 @@
         {:else}
           <h3 style="color: red;">Status: {item.status}</h3>
         {/if}
-        <a href="/{user_id}/conference/conference_list/all/{item.conference_id}"
-          >View Details</a
-        >
+
+        <button on:click={() => goto(`/${user_id}/conference/conference_list/all/${item.conference_id}`)}>
+          View Details
+        </button>
         <hr />
       {/each}
     </div>
@@ -91,6 +93,17 @@
   body {
     font-family: "Open Sans", sans-serif;
     background: #2c3e50;
+  }
+
+  button {
+    margin-top: 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
   nav {
     float: left;

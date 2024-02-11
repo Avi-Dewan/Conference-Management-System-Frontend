@@ -237,13 +237,6 @@
             <input type="date" bind:value={workshop_date} />
           </h3>
 
-          <h3>
-            <button
-              on:click={() =>
-                handleAssign(item.related_fields, item.workshop_id, item)}
-              >Assign instructor</button
-            >
-          </h3>
 
           <div class="form-control">
             {#if item.showSuggest == true}
@@ -286,9 +279,9 @@
           </div>
 
           <button on:click= {updateData(item.workshop_id)}>Update</button>
-          <a href="/{user_id}/conference/assignInstructor/{item.workshop_id}">
-            Assign
-          </a>
+          <button on:click={() => {
+            window.location.href = `/${user_id}/conference/assignInstructor/${item.workshop_id}`;
+          }}>Assign</button>
         <!-- {/if} -->
 
         <hr />

@@ -203,7 +203,7 @@
                 <p>review: {rev.review}</p>
               {:else}
                 <p style="color:red">Not given review yet</p>
-                <button
+                <button style="background-color: blue;"
                   on:click={() => {
                     handleNotify(rev.user_id, item.paper_id, item.paper_title);
                   }}>Notify {rev.full_name}</button
