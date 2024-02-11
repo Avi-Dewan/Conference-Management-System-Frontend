@@ -41,6 +41,8 @@
   let user_type;
 
   let paper_title = null;
+
+  let unreadCount = null;
   //paper details
   onMount(async () => {
     try {
@@ -51,9 +53,15 @@
       }
 
       paper_details = await response.json();
-      console.log(paper_details)
+      console.log(paper_details);
       paper_details = paper_details[0];
 
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -157,7 +165,6 @@
     goto(`/${main_user_id}/home`).then(() => goto(thisPage));
   }
 
-  
   async function removeRequest(paper_id, user_id) {
     const response = await fetch(request_delete_url, {
       method: "POST",
@@ -190,8 +197,8 @@
 </script>
 
 <main>
-  {#if paper_details != null && paper_author_details != null && suggestedReviewer != null && alreadyRequestedReviewer != null && suggestedManualReviewer != null && alreadyAssignedReviewer != null}
-    <NavbarChair />
+  {#if unreadCount != null && paper_details != null && paper_author_details != null && suggestedReviewer != null && alreadyRequestedReviewer != null && suggestedManualReviewer != null && alreadyAssignedReviewer != null}
+    <NavbarChair myVariable={unreadCount} />
     <div>
       <h1>Title: {paper_details.paper_title}</h1>
       <hr />

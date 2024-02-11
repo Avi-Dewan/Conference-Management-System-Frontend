@@ -7,7 +7,6 @@
 
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
-  
 
   import { onMount } from "svelte";
 
@@ -30,15 +29,11 @@
 
   let filteredSuggestedInstructor = null;
 
-
   let request_instructor_url = `http://localhost:3000/workshop/request`;
-
 
   let instructor_auto_url = `http://localhost:3000/workshop/auto_suggest`;
 
-  let updateData_url = `http://localhost:3000/workshop/updateData`
-
-  
+  let updateData_url = `http://localhost:3000/workshop/updateData`;
 
   onMount(async () => {
     try {
@@ -56,8 +51,9 @@
       if (allWorkshops != null) {
         for (let i = 0; i < allWorkshops.length; i++) {
           allWorkshops[i].showSuggest = false;
-          allWorkshops[i].workshop_time = JSON.parse(allWorkshops[i].workshop_time);
-
+          allWorkshops[i].workshop_time = JSON.parse(
+            allWorkshops[i].workshop_time
+          );
 
           let already_sent_request_url = `http://localhost:3000/workshop/sent_request/${allWorkshops[i].workshop_id}`;
           const workshop_response = await fetch(already_sent_request_url);
@@ -66,7 +62,6 @@
           }
 
           let alreadyRequestedInstructor = await workshop_response.json();
-
 
           let already_assigned_reviewer_url = `http://localhost:3000/workshop/accepted_request/${allWorkshops[i].workshop_id}`;
           const accepted_response = await fetch(already_assigned_reviewer_url);
@@ -78,30 +73,20 @@
 
           console.log(alreadyAssignedInstructor);
 
-
-
-
-
           console.log(alreadyRequestedInstructor);
 
           allWorkshops[i]["requested"] = [];
           allWorkshops[i]["assigned"] = [];
 
           alreadyRequestedInstructor.forEach((obj, index) => {
-              allWorkshops[i]["requested"].push(obj.full_name)
+            allWorkshops[i]["requested"].push(obj.full_name);
           });
 
           alreadyAssignedInstructor.forEach((obj, index) => {
-              allWorkshops[i]["assigned"].push(obj.full_name)
+            allWorkshops[i]["assigned"].push(obj.full_name);
           });
 
-          console.log("hahahahahahahahahahahahah")
-
-          
-
-
-
-
+          console.log("hahahahahahahahahahahahah");
         }
 
         console.log(allWorkshops);
@@ -110,8 +95,6 @@
       console.error("Error fetching data:", error);
     }
   });
-
-
 
   //   //kader kader request kora hoise
   //   onMount(async () => {
@@ -130,8 +113,6 @@
   //     console.error("Error fetching data:", error);
   //   }
   // });
-
-
 
   async function handleAssign(related_fields, workshop_id, item) {
     let formData = {
@@ -156,10 +137,11 @@
     console.log(data);
   }
 
-  async function requestInstructor(workshop_id, user_id) { // identical to requestReviewer
+  async function requestInstructor(workshop_id, user_id) {
+    // identical to requestReviewer
     console.log(workshop_id);
     console.log(user_id);
-    
+
     const response = await fetch(request_instructor_url, {
       method: "POST",
       headers: {
@@ -172,61 +154,71 @@
 
     console.log(user_type, "before");
     goto(`/${main_user_id}/home`).then(() => goto(thisPage));
-
   }
 
-  async function updateData(workshop_id) { 
-
-    
+  async function updateData(workshop_id) {
     const response = await fetch(updateData_url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({workshop_id: workshop_id,  workshop_time: workshop_time, workshop_date: workshop_date }),
+      body: JSON.stringify({
+        workshop_id: workshop_id,
+        workshop_time: workshop_time,
+        workshop_date: workshop_date,
+      }),
     });
 
     const thisPage = window.location.pathname;
 
     console.log(user_type, "before");
     goto(`/${main_user_id}/home`).then(() => goto(thisPage));
-
   }
 
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
 
-
-
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  {#if user_type == "chair"}
-    <NavbarChair />
-  {:else}
-    <NavbarUser />
-  {/if}
-  {#if allWorkshops != null}
-    <div class="cards">
-      {#each allWorkshops as item}
-        <h2>{item.workshop_title}</h2>
-        <h3 style="color:black">Related Fields: {item.related_fields}</h3>
-        <h4>Description: {item.workshop_description}</h4>
+  {#if unreadCount != null}
+    {#if user_type == "chair"}
+      <NavbarChair myVariable={unreadCount} />
+    {:else}
+      <NavbarUser myVariable={unreadCount} />
+    {/if}
+    {#if allWorkshops != null}
+      <div class="cards">
+        {#each allWorkshops as item}
+          <h2>{item.workshop_title}</h2>
+          <h3 style="color:black">Related Fields: {item.related_fields}</h3>
+          <h4>Description: {item.workshop_description}</h4>
 
-        <h3>Interested People: {item.count}</h3>
+          <h3>Interested People: {item.count}</h3>
 
-        <h3>Requested Instructor: {item.requested} </h3>
-        <h3>Assigned Instructor: {item.assigned} </h3>
-        <!-- {#each item.requested as requested}
+          <h3>Requested Instructor: {item.requested}</h3>
+          <h3>Assigned Instructor: {item.assigned}</h3>
+          <!-- {#each item.requested as requested}
           <h3>{requested.full_name} , {requested.current_institution}</h3>
         {/each} -->
-        
-        {#if item.workshop_time != null}
-          <h4>Time: {item.workshop_time.time}</h4>
-          <h4>Date: {item.workshop_time.date}</h4>
-        {:else}
-          <h4 style="color: red;">Time: Not yet assigned</h4>
-          <h4 style="color: red;">Date: Not yet assigned</h4>
-        {/if}
-          
+
+          {#if item.workshop_time != null}
+            <h4>Time: {item.workshop_time.time}</h4>
+            <h4>Date: {item.workshop_time.date}</h4>
+          {:else}
+            <h4 style="color: red;">Time: Not yet assigned</h4>
+            <h4 style="color: red;">Date: Not yet assigned</h4>
+          {/if}
 
           <h3>
             Assign time:
@@ -236,7 +228,6 @@
             Assign Date:
             <input type="date" bind:value={workshop_date} />
           </h3>
-
 
           <div class="form-control">
             {#if item.showSuggest == true}
@@ -278,15 +269,18 @@
             {/if}
           </div>
 
-          <button on:click= {updateData(item.workshop_id)}>Update</button>
-          <button on:click={() => {
-            window.location.href = `/${user_id}/conference/assignInstructor/${item.workshop_id}`;
-          }}>Assign</button>
-        <!-- {/if} -->
+          <button on:click={updateData(item.workshop_id)}>Update</button>
+          <button
+            on:click={() => {
+              window.location.href = `/${user_id}/conference/assignInstructor/${item.workshop_id}`;
+            }}>Assign</button
+          >
+          <!-- {/if} -->
 
-        <hr />
-      {/each}
-    </div>
+          <hr />
+        {/each}
+      </div>
+    {/if}
   {/if}
 </main>
 

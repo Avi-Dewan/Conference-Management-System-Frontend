@@ -15,17 +15,35 @@
   function goBack() {
     goto(`/${user_id}/conference/view_workshop/${conference_id}`);
   }
+
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      user_type = sessionStorage.getItem("user_type");
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  <NavbarChair />
-  <div>
-    <div class="success-dialog">
-      <h3 style="color: black;">Success! Your workshop created.</h3>
+  {#if unreadCount != null}
+    <NavbarChair myVariable={unreadCount} />
+    <div>
+      <div class="success-dialog">
+        <h3 style="color: black;">Success! Your workshop created.</h3>
 
-      <button on:click={goBack}>Ok</button>
+        <button on:click={goBack}>Ok</button>
+      </div>
     </div>
-  </div>
+  {/if}
 </main>
 
 <style>

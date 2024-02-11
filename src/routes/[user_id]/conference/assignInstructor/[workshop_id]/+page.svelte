@@ -110,7 +110,7 @@
   });
 
   //kara kara suggested
-
+  let unreadCount = null;
   onMount(async () => {
     try {
       let instructor_auto_url = `http://localhost:3000/workshop/auto_suggest/${workshop_id}`;
@@ -122,6 +122,12 @@
       suggestedInstructors = await response.json();
       filteredSuggestedInstructor = suggestedInstructors;
 
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
       console.log(suggestedInstructors);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -153,34 +159,36 @@
       body: JSON.stringify({ workshop_id: workshop_id, user_id: user_id }),
     });
 
-
-    let conf_data = await fetch(`http://localhost:3000/conference/${workshop_details.conference_id}`);
+    let conf_data = await fetch(
+      `http://localhost:3000/conference/${workshop_details.conference_id}`
+    );
     if (!conf_data.ok) {
       throw new Error("Failed to fetch data");
     }
 
     conf_data = await conf_data.json();
 
-
-
-    let notification_body = `Request for being an instructor for a workshop on the title ${workshop_details.workshop_title}, in the conference ${conf_data.conference_title}  `
+    let notification_body = `Request for being an instructor for a workshop on the title ${workshop_details.workshop_title}, in the conference ${conf_data.conference_title}  `;
 
     let notification_json = {
-      type : "workshop_request_notify",
-      workshop_id : workshop_id
-    }
+      type: "workshop_request_notify",
+      workshop_id: workshop_id,
+    };
 
-    let notification_response = await fetch("http://localhost:3000/notification/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: user_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
+    let notification_response = await fetch(
+      "http://localhost:3000/notification/send",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      }
+    );
 
     let notification_data = await notification_response.json();
 
@@ -220,8 +228,8 @@
 </script>
 
 <main>
-  {#if workshop_details != null && alreadyAssignedInstructor != null && alreadyRequestedInstructor != null}
-    <NavbarChair />
+  {#if workshop_details != null && alreadyAssignedInstructor != null && alreadyRequestedInstructor != null && unreadCount != null}
+    <NavbarChair myVariable={unreadCount} />
     <div>
       <h1>Title: {workshop_details.workshop_title}</h1>
       <!-- <hr />

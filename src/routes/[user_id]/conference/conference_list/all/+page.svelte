@@ -17,6 +17,7 @@
   let url = `http://localhost:3000/conference/all`;
 
   const currentDate = new Date();
+  let unreadCount = null;
 
   onMount(async () => {
     try {
@@ -37,18 +38,25 @@
         if (submissionDeadline < currentDate) data[i].status = "Closed";
         else data[i].status = "Open";
       }
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   });
 </script>
 
-{#if data != null}
+{#if data != null && unreadCount != null}
   <main>
     {#if user_type == "chair"}
-      <NavbarChair />
+      <NavbarChair myVariable={unreadCount} />
     {:else}
-      <NavbarUser />
+      <NavbarUser myVariable={unreadCount} />
     {/if}
 
     <div class="header">
@@ -75,7 +83,12 @@
           <h3 style="color: red;">Status: {item.status}</h3>
         {/if}
 
-        <button on:click={() => goto(`/${user_id}/conference/conference_list/all/${item.conference_id}`)}>
+        <button
+          on:click={() =>
+            goto(
+              `/${user_id}/conference/conference_list/all/${item.conference_id}`
+            )}
+        >
           View Details
         </button>
         <hr />

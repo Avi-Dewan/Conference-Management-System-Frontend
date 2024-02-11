@@ -37,76 +37,89 @@
   function handleViewConference(conference_id) {
     goto(`/${user_id}/conference/conference_list/all/${conference_id}`);
   }
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  <NavbarChair />
+  {#if unreadCount != null}
+    <NavbarChair myVariable={unreadCount} />
 
-  <div>
-    <nav>
-      <a href="/{user_id}/dashboard">Conferences</a>
-      <a href="/{user_id}/dashboard/unassigned_papers"
-        >View Unassigned Papers</a
-      >
-      <a href="/{user_id}/dashboard/pending_papers"
-        >View pending papers</a
-      >
-      <a href="/{user_id}/dashboard/unassigned_workshop"
-      >View Unassigned Workshop</a
-      >
+    <div>
+      <nav>
+        <a href="/{user_id}/dashboard">Conferences</a>
+        <a href="/{user_id}/dashboard/unassigned_papers"
+          >View Unassigned Papers</a
+        >
+        <a href="/{user_id}/dashboard/pending_papers">View pending papers</a>
+        <a href="/{user_id}/dashboard/unassigned_workshop"
+          >View Unassigned Workshop</a
+        >
 
-      <div class="animation start-home"></div>
-    </nav>
-  </div>
-  <div>
-    {#if getConferencesSummary != null}
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <hr />
-      <h2>Your conferences:</h2>
-
-      {#each getConferencesSummary as item}
-        <div>
-          <hr />
-          <h3>Title: {item.conference_title}</h3>
-          <h4>Total submitted papers: {item.submitted_paper_count}</h4>
-          <h4 style="color: red;">
-            Total Papers without any reviewer assigned: {item.paper_count_with_no_reviewer_assigned}
-          </h4>
-          <h4 style="color: red;">
-            Total Papers with pending reviews: {item.paper_count_with_pending_review}
-          </h4>
-          <h4 style="color: black;">
-            Total workshops: {item.workshop_count}
-          </h4>
-
-          <button
-            on:click={() => {
-              handleViewConference(item.conference_id);
-            }}>View Conference</button
-          >
-          {#if item.paper_count_with_no_reviewer_assigned != 0}
-            <button
-              on:click={() => {
-                handleUnassignedReviewer(item.conference_id);
-              }}>View papers with unassigned reviewer</button
-            >
-          {/if}
-          {#if item.paper_count_with_pending_review != 0}
-            <button
-              on:click={() => {
-                handlePendingReview(item.conference_id);
-              }}>View papers with pending reviews</button
-            >
-          {/if}
-        </div>
+        <div class="animation start-home"></div>
+      </nav>
+    </div>
+    <div>
+      {#if getConferencesSummary != null}
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <hr />
-      {/each}
-    {/if}
-  </div>
+        <h2>Your conferences:</h2>
+
+        {#each getConferencesSummary as item}
+          <div>
+            <hr />
+            <h3>Title: {item.conference_title}</h3>
+            <h4>Total submitted papers: {item.submitted_paper_count}</h4>
+            <h4 style="color: red;">
+              Total Papers without any reviewer assigned: {item.paper_count_with_no_reviewer_assigned}
+            </h4>
+            <h4 style="color: red;">
+              Total Papers with pending reviews: {item.paper_count_with_pending_review}
+            </h4>
+            <h4 style="color: black;">
+              Total workshops: {item.workshop_count}
+            </h4>
+
+            <button
+              on:click={() => {
+                handleViewConference(item.conference_id);
+              }}>View Conference</button
+            >
+            {#if item.paper_count_with_no_reviewer_assigned != 0}
+              <button
+                on:click={() => {
+                  handleUnassignedReviewer(item.conference_id);
+                }}>View papers with unassigned reviewer</button
+              >
+            {/if}
+            {#if item.paper_count_with_pending_review != 0}
+              <button
+                on:click={() => {
+                  handlePendingReview(item.conference_id);
+                }}>View papers with pending reviews</button
+              >
+            {/if}
+          </div>
+          <hr />
+        {/each}
+      {/if}
+    </div>
+  {/if}
 </main>
 
 <style>
@@ -181,7 +194,7 @@
     width: 200px;
     left: 400px;
   }
-  
+
   nav a:nth-child(4):hover ~ .animation {
     width: 250px;
     left: 600px;

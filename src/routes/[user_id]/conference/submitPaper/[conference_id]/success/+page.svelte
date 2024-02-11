@@ -14,17 +14,32 @@
   function goBack() {
     goto(`/${user_id}/conference/conference_list/all`);
   }
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  <NavbarUser />
-  <div>
-    <div class="success-dialog">
-      <h3 style="color: black;">Success! Your File was submitted.</h3>
+  {#if unreadCount != null}
+    <NavbarUser myVariable={unreadCount} />
+    <div>
+      <div class="success-dialog">
+        <h3 style="color: black;">Success! Your File was submitted.</h3>
 
-      <button on:click={goBack}>Ok</button>
+        <button on:click={goBack}>Ok</button>
+      </div>
     </div>
-  </div>
+  {/if}
 </main>
 
 <style>

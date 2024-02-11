@@ -84,59 +84,79 @@
       }
     );
   }
+
+  let unreadCount = null;
+
+  onMount(async () => {
+    try {
+      user_type = sessionStorage.getItem("user_type");
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  {#if user_type == "chair"}
-    <NavbarChair />
-  {:else}
-    <NavbarUser />
-  {/if}
+  {#if unreadCount != null}
+    {#if user_type == "chair"}
+      <NavbarChair myVariable={unreadCount} />
+    {:else}
+      <NavbarUser myVariable={unreadCount} />
+    {/if}
 
-  {#if conf_data != null && paper_data != null}
-    <h2>Conference Title: {conf_data.conference_title}</h2>
+    {#if conf_data != null && paper_data != null}
+      <h2>Conference Title: {conf_data.conference_title}</h2>
 
-    {#each paper_data as item}
-      <div>
-        <h3>Paper title: {item.paper_title}</h3>
+      {#each paper_data as item}
+        <div>
+          <h3>Paper title: {item.paper_title}</h3>
 
-        <p>
-          <b>Authors: </b> 
-          {#each item.authors as author, index (author)}
-            {author.full_name}{index < item.authors.length - 1 ? ', ' : ''}
-          {/each}
-        </p>
-        <p> <b>Abstract:</b>{item.abstract}<p>
+          <p>
+            <b>Authors: </b>
+            {#each item.authors as author, index (author)}
+              {author.full_name}{index < item.authors.length - 1 ? ", " : ""}
+            {/each}
+          </p>
+          <p><b>Abstract:</b>{item.abstract}</p>
+          <p></p>
+          <p><b>Research Area:</b>{item.related_fields}</p>
 
-        <p><b>Research Area:</b>{item.related_fields}</p>
+          <button on:click={() => goto(item.pdf_link)}>View pdf</button>
 
-        <button on:click={() => goto(item.pdf_link)}>View pdf</button>
+          <h3>Status: {item.status}</h3>
 
-        <h3>Status: {item.status}</h3>
-
-        {#if item.status == "pending"}
-        <div style="margin-top: 20px;">
-          <button style="background-color: red;"
-            on:click={() => {
-              handleDeleteSubmission(item.paper_id);
-            }}>Delete submission</button
-          >
+          {#if item.status == "pending"}
+            <div style="margin-top: 20px;">
+              <button
+                style="background-color: red;"
+                on:click={() => {
+                  handleDeleteSubmission(item.paper_id);
+                }}>Delete submission</button
+              >
+            </div>
+          {:else}
+            {#each item.reviews as review, idx}
+              <p>
+                {#if review.review != null}
+                  Reviewer {idx + 1} said: {review.review}
+                {/if}
+                <br />
+                {#if review.rating != null}
+                  Reviewer {idx + 1} rating: {review.rating}
+                {/if}
+              </p>
+            {/each}
+          {/if}
         </div>
-        {:else}
-          {#each item.reviews as review, idx}
-            <p>
-              {#if review.review != null}
-                Reviewer {idx + 1} said: {review.review}
-              {/if}
-              <br />
-              {#if review.rating != null}
-                Reviewer {idx + 1} rating: {review.rating}
-              {/if}
-            </p>
-          {/each}
-        {/if}
-      </div>
-    {/each}
+      {/each}
+    {/if}
   {/if}
 </main>
 
@@ -159,5 +179,4 @@
     font-size: 16px;
     cursor: pointer;
   }
-  
 </style>

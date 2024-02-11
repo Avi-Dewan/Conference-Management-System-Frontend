@@ -262,112 +262,131 @@
 
     // alert(JSON.stringify(formData, null, 2));
   }
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  <NavbarUser />
+  {#if unreadCount != null}
+    <NavbarUser />
 
-  {#if data != null && conf_data != null}
-    <h1>Submit a Paper</h1>
+    {#if data != null && conf_data != null}
+      <h1>Submit a Paper</h1>
 
-    <div class="form">
-      <div class="form-control">
-        <h2>Paper Title</h2>
-        <input type="text" id="paper_title" bind:value={formData.paper_title} />
-      </div>
+      <div class="form">
+        <div class="form-control">
+          <h2>Paper Title</h2>
+          <input
+            type="text"
+            id="paper_title"
+            bind:value={formData.paper_title}
+          />
+        </div>
 
-      <div class="form-control">
-        <h2>Paper Authors</h2>
+        <div class="form-control">
+          <h2>Paper Authors</h2>
 
-        {#if show == false}
-          <div class="two-column">
-            {#each authors as item, index (item)}
-              <div class="two-column">
+          {#if show == false}
+            <div class="two-column">
+              {#each authors as item, index (item)}
+                <div class="two-column">
+                  <div>
+                    <label style="width: 1px;"><h4>{item.full_name}</h4></label>
+                  </div>
+                  <div>
+                    <button
+                      on:click={() => removeItem(index)}
+                      style="background-color:red;"
+                    >
+                      Remove</button
+                    >
+                  </div>
+                </div>
+              {/each}
+            </div>
+          {/if}
+
+          {#if show == true}
+            <div class="scrollable-window">
+              <input
+                type="text"
+                placeholder="Filter by name"
+                bind:value={filterText}
+                style="max-width: 80%;margin-left:5%"
+                on:input={() => {
+                  data = wholeData.filter(
+                    (item) =>
+                      item.full_name
+                        .toLowerCase()
+                        .toLowerCase()
+                        .indexOf(filterText.toLowerCase()) !== -1
+                  );
+
+                  if (filterText == "") {
+                    data = wholeData;
+                  }
+                }}
+              />
+              {#each data as item (item.user_id)}
                 <div>
-                  <label style="width: 1px;"><h4>{item.full_name}</h4></label>
+                  <div class="card">
+                    <h3>Name: {item.full_name}</h3>
+                    <h4>Affliation: {item.current_institution}</h4>
+                    <h4>Expertise: {item.expertise}</h4>
+                    <button
+                      on:click={handleAdd({
+                        full_name: item.full_name,
+                        user_id: item.user_id,
+                      })}>Add</button
+                    >
+                  </div>
                 </div>
-                <div>
-                  <button
-                    on:click={() => removeItem(index)}
-                    style="background-color:red;"
-                  >
-                    Remove</button
-                  >
-                </div>
-              </div>
-            {/each}
+              {/each}
+            </div>
+          {/if}
+          <button on:click={authorSelect}>Choose Authors</button>
+        </div>
+
+        <div class="form-control">
+          <h3 style="margin-top: 8%;">Research Track</h3>
+
+          <div>
+            <select bind:value={selectedTrack}>
+              {#each conf_track as item}
+                <option value={item}>{item}</option>
+              {/each}
+            </select>
           </div>
-        {/if}
+        </div>
 
-        {#if show == true}
-          <div class="scrollable-window">
-            <input
-              type="text"
-              placeholder="Filter by name"
-              bind:value={filterText}
-              style="max-width: 80%;margin-left:5%"
-              on:input={() => {
-                data = wholeData.filter(
-                  (item) =>
-                    item.full_name
-                      .toLowerCase()
-                      .toLowerCase()
-                      .indexOf(filterText.toLowerCase()) !== -1
-                );
+        <div style="margin-top: 5%;">
+          <h3>Abstract</h3>
+          <textarea
+            style="height: 150px; width:700px;border-radius:1em"
+            bind:value={formData.abstract}
+          ></textarea>
+        </div>
 
-                if (filterText == "") {
-                  data = wholeData;
-                }
-              }}
-            />
-            {#each data as item (item.user_id)}
-              <div>
-                <div class="card">
-                  <h3>Name: {item.full_name}</h3>
-                  <h4>Affliation: {item.current_institution}</h4>
-                  <h4>Expertise: {item.expertise}</h4>
-                  <button
-                    on:click={handleAdd({
-                      full_name: item.full_name,
-                      user_id: item.user_id,
-                    })}>Add</button
-                  >
-                </div>
-              </div>
-            {/each}
-          </div>
-        {/if}
-        <button on:click={authorSelect}>Choose Authors</button>
-      </div>
-
-      <div class="form-control">
-        <h3 style="margin-top: 8%;">Research Track</h3>
-
-        <div>
-          <select bind:value={selectedTrack}>
-            {#each conf_track as item}
-              <option value={item}>{item}</option>
-            {/each}
-          </select>
+        <form class="form-control">
+          <h3>Attach Paper</h3>
+          <input id="file" type="file" bind:value={file_path} bind:files />
+        </form>
+        <div class="form-control" style="display: block;">
+          <button on:click={handleSubmit}>Submit</button>
         </div>
       </div>
-
-      <div style="margin-top: 5%;">
-        <h3>Abstract</h3>
-        <textarea
-          style="height: 150px; width:700px;border-radius:1em"
-          bind:value={formData.abstract}
-        ></textarea>
-      </div>
-
-      <form class="form-control">
-        <h3>Attach Paper</h3>
-        <input id="file" type="file" bind:value={file_path} bind:files />
-      </form>
-      <div class="form-control" style="display: block;">
-        <button on:click={handleSubmit}>Submit</button>
-      </div>
-    </div>
+    {/if}
   {/if}
 </main>
 

@@ -173,11 +173,24 @@
 
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  {#if papers != null && conf_data != null}
-    <NavbarChair />
+  {#if papers != null && conf_data != null && unreadCount != null}
+    <NavbarChair myVariable={unreadCount} />
     <div>
       <h1>{conf_data.conference_title}</h1>
       {#each papers as item}
@@ -199,7 +212,8 @@
                 <p>review: {rev.review}</p>
               {:else}
                 <p style="color:red">Not given review yet</p>
-                <button style="background-color: blue;"
+                <button
+                  style="background-color: blue;"
                   on:click={() => {
                     handleNotify(rev.user_id, item.paper_id, item.paper_title);
                   }}>Notify {rev.full_name}</button
@@ -210,10 +224,16 @@
               <br />
             </div>
           {/each}
-          <button on:click={() => window.open(item.pdf_link, '_blank')}>View file</button>
+          <button on:click={() => window.open(item.pdf_link, "_blank")}
+            >View file</button
+          >
 
           {#if item.status != "accepted" && item.status != "rejected"}
-          <button on:click={() => goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}>Assign</button>
+            <button
+              on:click={() =>
+                goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}
+              >Assign</button
+            >
             <div class="two-column" style="display: block" button-container>
               <button
                 on:click={handleReject(item.paper_id, item.paper_title)}

@@ -70,11 +70,24 @@
 
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  {#if papers != null && conf_data != null}
-    <NavbarChair />
+  {#if papers != null && conf_data != null && unreadCount != null}
+    <NavbarChair myVariable={unreadCount} />
     <div>
       <h1>{conf_data.conference_title}</h1>
       {#each papers as item}
@@ -106,8 +119,16 @@
               <br />
             </div>
           {/each}
-          <button style="background-color: green;" on:click={() => goto(item.pdf_link)}>View file</button>
-          <button style="background-color: blueviolet;" on:click={() => goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}>Assign</button>
+          <button
+            style="background-color: green;"
+            on:click={() => goto(item.pdf_link)}>View file</button
+          >
+          <button
+            style="background-color: blueviolet;"
+            on:click={() =>
+              goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}
+            >Assign</button
+          >
         </div>
       {/each}
     </div>

@@ -31,53 +31,65 @@
   function handleViewPaper(conference_id, paper_id) {
     goto(`/${user_id}/conference/viewSubmission/${conference_id}/${paper_id}`);
   }
- 
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  <NavbarChair />
+  {#if unreadCount != null}
+    <NavbarChair myVariable={unreadCount} />
 
-  <div>
-    <nav>
-      <a href="/{user_id}/dashboard">Conferences</a>
-      <a href="/{user_id}/dashboard/unassigned_papers"
-        >View Unassigned Papers</a
-      >
-      <a href="/{user_id}/dashboard/pending_papers"
-        >View pending papers</a
-      >
-      <a href="/{user_id}/dashboard/unassigned_workshop"
-      >View Unassigned Workshop</a
-      >
-      <div class="animation start-home"></div>
-    </nav>
-  </div>
-  <div>
-    {#if pending_papers != null}
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <hr />
-      <h2> Pending Papers:</h2>
+    <div>
+      <nav>
+        <a href="/{user_id}/dashboard">Conferences</a>
+        <a href="/{user_id}/dashboard/unassigned_papers"
+          >View Unassigned Papers</a
+        >
+        <a href="/{user_id}/dashboard/pending_papers">View pending papers</a>
+        <a href="/{user_id}/dashboard/unassigned_workshop"
+          >View Unassigned Workshop</a
+        >
+        <div class="animation start-home"></div>
+      </nav>
+    </div>
+    <div>
+      {#if pending_papers != null}
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <hr />
+        <h2>Pending Papers:</h2>
 
-      {#each pending_papers as item}
-        <div>
-          <hr />
-          <h3>Title: {item.paper_title}</h3>
-          <h4>Authors: {item.authors}</h4>
-          <h4>Related Fields: {item.related_fields}</h4>
-          <button
+        {#each pending_papers as item}
+          <div>
+            <hr />
+            <h3>Title: {item.paper_title}</h3>
+            <h4>Authors: {item.authors}</h4>
+            <h4>Related Fields: {item.related_fields}</h4>
+            <button
               on:click={() => {
                 handleViewPaper(item.conference_id, item.paper_id);
               }}>View details</button
             >
-        </div>
-        <hr />
-      {/each}
-    {/if}
-  </div>
+          </div>
+          <hr />
+        {/each}
+      {/if}
+    </div>
+  {/if}
 </main>
 
 <style>
@@ -141,7 +153,7 @@
     width: 200px;
     left: 400px;
   }
-  
+
   nav a:nth-child(4):hover ~ .animation {
     width: 250px;
     left: 600px;

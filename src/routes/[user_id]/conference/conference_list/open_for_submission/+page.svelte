@@ -5,13 +5,15 @@
   import Card from "/src/components/card.svelte";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
-  import {goto} from "$app/navigation";
-  
+  import { goto } from "$app/navigation";
+
   let data = [];
 
   let user_id, user_type;
 
   $: user_id = $page.params.user_id;
+
+  let unreadCount = null;
 
   let url = `http://localhost:3000/conference/open`;
 
@@ -35,6 +37,13 @@
         if (submissionDeadline < currentDate) data[i].status = "Closed";
         else data[i].status = "Open";
       }
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -42,39 +51,46 @@
 </script>
 
 <main>
-  {#if user_type == "chair"}
-    <NavbarChair />
-  {:else}
-    <NavbarUser />
-  {/if}
-  <div class="header">
-    <h1>Conferences</h1>
-  </div>
+  {#if unreadCount != null}
+    {#if user_type == "chair"}
+      <NavbarChair myVariable={unreadCount} />
+    {:else}
+      <NavbarUser myVariable={unreadCount} />
+    {/if}
+    <div class="header">
+      <h1>Conferences</h1>
+    </div>
 
-  <nav>
-    <a href="/{user_id}/conference/conference_list/all">All</a>
-    <a href="/{user_id}/conference/conference_list/open_for_submission"
-      >Open for submission</a
-    >
-    <div class="animation start-home"></div>
-  </nav>
-  <div class="cards">
-    {#each data as item}
-      <Card>
-        <h2>{item.conference_title}</h2>
-        <h3>Related Fields: {item.related_fields}</h3>
-        <h4>Webpage:</h4>
-        <a href={item.conference_webpage}>{item.conference_webpage}</a>
-        {#if item.status == "Open"}
-          <h3 style="color: green;">Status: {item.status}</h3>
-        {:else}
-          <h3 style="color: red;">Status: {item.status}</h3>
-        {/if}
-        <button on:click={() => goto(`/{user_id}/conference/conference_list/all/{item.conference_id}`)}>View Details</button>
-      </Card>
-      <hr />
-    {/each}
-  </div>
+    <nav>
+      <a href="/{user_id}/conference/conference_list/all">All</a>
+      <a href="/{user_id}/conference/conference_list/open_for_submission"
+        >Open for submission</a
+      >
+      <div class="animation start-home"></div>
+    </nav>
+    <div class="cards">
+      {#each data as item}
+        <Card>
+          <h2>{item.conference_title}</h2>
+          <h3>Related Fields: {item.related_fields}</h3>
+          <h4>Webpage:</h4>
+          <a href={item.conference_webpage}>{item.conference_webpage}</a>
+          {#if item.status == "Open"}
+            <h3 style="color: green;">Status: {item.status}</h3>
+          {:else}
+            <h3 style="color: red;">Status: {item.status}</h3>
+          {/if}
+          <button
+            on:click={() =>
+              goto(
+                `/{user_id}/conference/conference_list/all/{item.conference_id}`
+              )}>View Details</button
+          >
+        </Card>
+        <hr />
+      {/each}
+    </div>
+  {/if}
 </main>
 
 <style>
@@ -98,7 +114,7 @@
     font-size: 16px;
     cursor: pointer;
   }
-  
+
   nav {
     float: left;
     position: relative;

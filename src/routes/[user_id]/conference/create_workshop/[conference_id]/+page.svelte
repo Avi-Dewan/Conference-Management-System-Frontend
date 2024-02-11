@@ -58,77 +58,94 @@
   function removeItem(index) {
     researchFields = researchFields.filter((_, i) => i != index);
   }
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      user_type = sessionStorage.getItem("user_type");
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
 <main>
-  <NavbarChair />
+  {#if unreadCount != null}
+    <NavbarChair myVariable={unreadCount} />
 
-  <h1>Create a workshop</h1>
+    <h1>Create a workshop</h1>
 
-  <div class="form">
-    <div class="form-control">
-      <label for="workshop_title">Workshop Title:</label>
-      <input
-        type="text"
-        id="workshop_title"
-        bind:value={formData.workshop_title}
-      />
-    </div>
+    <div class="form">
+      <div class="form-control">
+        <label for="workshop_title">Workshop Title:</label>
+        <input
+          type="text"
+          id="workshop_title"
+          bind:value={formData.workshop_title}
+        />
+      </div>
 
-    <div class="form-control">
-      <label for="workshop_description">Description:</label>
+      <div class="form-control">
+        <label for="workshop_description">Description:</label>
 
-      <input
-        type="text"
-        id="workshop_title"
-        bind:value={formData.workshop_description}
-      />
-    </div>
-    <div class="form-control">
-      <label for="workshop_description">Probable Length (in hours):</label>
+        <input
+          type="text"
+          id="workshop_title"
+          bind:value={formData.workshop_description}
+        />
+      </div>
+      <div class="form-control">
+        <label for="workshop_description">Probable Length (in hours):</label>
 
-      <input
-        type="text"
-        id="workshop_length"
-        bind:value={formData.workshop_length}
-      />
-    </div>
+        <input
+          type="text"
+          id="workshop_length"
+          bind:value={formData.workshop_length}
+        />
+      </div>
 
-    <div class="form-control">
-      <label for="resarch_field" style="margin-top: 50px;"
-        ><h2>Related Track</h2></label
-      >
+      <div class="form-control">
+        <label for="resarch_field" style="margin-top: 50px;"
+          ><h2>Related Track</h2></label
+        >
 
-      <div class="two-column">
-        {#each researchFields as item, index (item)}
-          <div class="two-column">
-            <div>
-              <label style="width: 1px;"><h3>{item}</h3></label>
+        <div class="two-column">
+          {#each researchFields as item, index (item)}
+            <div class="two-column">
+              <div>
+                <label style="width: 1px;"><h3>{item}</h3></label>
+              </div>
+              <div>
+                <button
+                  on:click={() => removeItem(index)}
+                  style="background-color:red;"
+                >
+                  Remove</button
+                >
+              </div>
             </div>
-            <div>
-              <button
-                on:click={() => removeItem(index)}
-                style="background-color:red;"
-              >
-                Remove</button
-              >
-            </div>
-          </div>
-        {/each}
+          {/each}
+        </div>
+      </div>
+
+      <div class="form-control">
+        <input type="text" bind:value={addfield} style="width:30%" />
+        <button on:click={handleAdd} style="margin-left: 3%;height:40px;">
+          Add
+        </button>
+      </div>
+
+      <div class="form-control" style="display: block;">
+        <button on:click={handleSubmit}>Submit</button>
       </div>
     </div>
-
-    <div class="form-control">
-      <input type="text" bind:value={addfield} style="width:30%" />
-      <button on:click={handleAdd} style="margin-left: 3%;height:40px;">
-        Add
-      </button>
-    </div>
-
-    <div class="form-control" style="display: block;">
-      <button on:click={handleSubmit}>Submit</button>
-    </div>
-  </div>
+  {/if}
 </main>
 
 <style>
