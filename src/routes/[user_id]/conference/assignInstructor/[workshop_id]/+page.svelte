@@ -271,7 +271,7 @@
       {/each}
     </div>
     <div style="margin-top: 10%;">
-      <h2>Reviewer Suggestion:</h2>
+      <h2>Workshop Instructor Suggestion:</h2>
       <div class="form-control">
         {#if showAuto == true}
           <div class="scrollable-window">

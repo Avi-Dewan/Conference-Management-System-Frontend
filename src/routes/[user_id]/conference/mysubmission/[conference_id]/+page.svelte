@@ -101,28 +101,27 @@
         <h3>Paper title: {item.paper_title}</h3>
 
         <p>
-          Authors:
-
-          {#each item.authors as author}
-            <p>
-              {author.full_name}
-            </p>
+          <b>Authors: </b> 
+          {#each item.authors as author, index (author)}
+            {author.full_name}{index < item.authors.length - 1 ? ', ' : ''}
           {/each}
         </p>
-        <h3>Abstract:{item.abstract}</h3>
-        <p>Research Area:{item.related_fields}</p>
-        <a href={item.pdf_link}>paper_pdf</a>
+        <p> <b>Abstract:</b>{item.abstract}<p>
+
+        <p><b>Research Area:</b>{item.related_fields}</p>
+
+        <button on:click={() => goto(item.pdf_link)}>View pdf</button>
 
         <h3>Status: {item.status}</h3>
 
         {#if item.status == "pending"}
-          <div style="margin-top: 20px;">
-            <button
-              on:click={() => {
-                handleDeleteSubmission(item.paper_id);
-              }}>Delete submission</button
-            >
-          </div>
+        <div style="margin-top: 20px;">
+          <button style="background-color: red;"
+            on:click={() => {
+              handleDeleteSubmission(item.paper_id);
+            }}>Delete submission</button
+          >
+        </div>
         {:else}
           {#each item.reviews as review, idx}
             <p>
@@ -149,4 +148,16 @@
 
   h1 {
   }
+
+  button {
+    margin-top: 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
 </style>

@@ -96,7 +96,6 @@
               {:else}
                 <p style="color:red">Not given review yet</p>
                 <button
-                  style="background-color: black;"
                   on:click={() => {
                     handleNotify(rev.user_id, item.paper_id, item.paper_title);
                   }}>Notify {rev.full_name}</button
@@ -107,10 +106,8 @@
               <br />
             </div>
           {/each}
-          <a href={item.pdf_link}>View file</a>
-          <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
-            Assign
-          </a>
+          <button style="background-color: green;" on:click={() => goto(item.pdf_link)}>View file</button>
+          <button style="background-color: blueviolet;" on:click={() => goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}>Assign</button>
         </div>
       {/each}
     </div>
@@ -124,5 +121,16 @@
   }
 
   h1 {
+  }
+
+  button {
+    margin-top: 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
 </style>

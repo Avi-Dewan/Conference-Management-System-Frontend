@@ -115,6 +115,17 @@
     margin: 2% auto;
   }
 
+  button {
+    margin-top: 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
   nav {
     float: left;
     position: relative;

@@ -210,12 +210,10 @@
               <br />
             </div>
           {/each}
-          <a href={item.pdf_link}>View file</a>
+          <button on:click={() => window.open(item.pdf_link, '_blank')}>View file</button>
 
           {#if item.status != "accepted" && item.status != "rejected"}
-            <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
-              Assign
-            </a>
+          <button on:click={() => goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}>Assign</button>
             <div class="two-column" style="display: block" button-container>
               <button
                 on:click={handleReject(item.paper_id, item.paper_title)}
@@ -257,11 +255,11 @@
   }
 
   button {
-    margin: 2% 0%;
+    margin-top: 0%;
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
-
+    background-color: #007bff;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
