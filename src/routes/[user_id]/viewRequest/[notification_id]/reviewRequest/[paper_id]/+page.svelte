@@ -12,6 +12,7 @@
   let paper_id = $page.params.paper_id;
   let notification_id = $page.params.notification_id;
   user_id = $page.params.user_id;
+  let unreadCount = null;
 
   onMount(async () => {
     try {
@@ -24,6 +25,13 @@
       }
 
       data = await response.json();
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -163,9 +171,9 @@
   }
 </script>
 
-{#if data != null}
+{#if data != null  && unreadCount != null}
   <main>
-    <NavbarUser />
+    <NavbarUser myVariable={unreadCount} />
     <h1>Paper For Review</h1>
 
     <!-- <button on:click={handleClick}>Go to Another Page</button> -->

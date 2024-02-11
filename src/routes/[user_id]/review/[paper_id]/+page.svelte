@@ -16,6 +16,7 @@
   let rating, review;
 
   let url = `http://localhost:3000/paper/${paper_id}`;
+  let unreadCount = null;
 
   onMount(async () => {
     try {
@@ -29,6 +30,13 @@
 
       data = await response.json();
       data = data[0];
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -92,7 +100,8 @@
 </script>
 
 <main>
-  <NavbarUser />
+  {#if unreadCount != null}
+    <NavbarUser myVariable={unreadCount} />
 
   {#if data != null}
     <div>
@@ -128,6 +137,8 @@
         >
       </div>
     </div>
+  {/if}
+
   {/if}
 </main>
 

@@ -14,6 +14,7 @@
   user_id = $page.params.user_id;
 
   let url = `http://localhost:3000/reviewer/assignedPapers/${user_id}`;
+  let unreadCount = null;
 
   onMount(async () => {
     try {
@@ -26,18 +27,25 @@
       }
 
       data = await response.json();
+
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   });
 </script>
 
-{#if data != null}
+{#if data != null && unreadCount != null}
   <main>
     {#if user_type == "chair"}
-      <NavbarChair />
+      <NavbarChair myVariable={unreadCount} />
     {:else}
-      <NavbarUser />
+      <NavbarUser myVariable={unreadCount} />
     {/if}
 
     <div class="header">
