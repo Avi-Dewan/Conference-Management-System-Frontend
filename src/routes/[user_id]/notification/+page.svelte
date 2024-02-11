@@ -99,7 +99,7 @@
 
   {#if data != null}
     <div>
-      <h2>My Notification</h2>
+      <h2>My Notifications: </h2>
       {#each data as item}
         <h3>{item.notification_body}</h3>
 
@@ -116,9 +116,9 @@
         {/if}
 
         {#if item.notification_status == "unread"}
-          <h4 style="color: red;">Status: Unread</h4>
+          <h4 >Status: <b style="color: red;"> Unread </b> </h4>
         {:else}
-          <h4 style="color: green;">Status: Read</h4>
+          <h4 >Status: <b style="color: green;"> Read </b> </h4>
         {/if}
 
         <button
@@ -136,6 +136,17 @@
   main {
     max-width: 90%;
     margin: 2% auto;
+  }
+
+  button {
+    margin-top: 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
 
   h1 {

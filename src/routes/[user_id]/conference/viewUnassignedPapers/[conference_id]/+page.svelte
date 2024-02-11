@@ -133,10 +133,8 @@
               <br />
             </div>
           {/each}
-          <a href={item.pdf_link}>View file</a>
-          <a href="/{user_id}/conference/assignReviewer/{item.paper_id}">
-            Assign
-          </a>
+          <button on:click={() => {window.location.href = item.pdf_link;}}>View file</button>
+          <button on:click={() => {window.location.href = `/${user_id}/conference/assignReviewer/${item.paper_id}`;}}>Assign</button>
 
           <div class="two-column" style="display: block" button-container>
             <button
@@ -167,7 +165,7 @@
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
-
+    background-color: blue;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
