@@ -6,32 +6,31 @@
 
   const user_id = $page.params.user_id;
 
-  let getUnassigned_papersURL = `http://localhost:3000/conference/unassignedPapers/${user_id}`;
+  let getUnassigned_workshopsURL = `http://localhost:3000/workshop/unassignedInstructor/${user_id}`;
 
-  let unassigned_papers = null;
+  let unassigned_workshops = null;
   onMount(async () => {
     try {
       let user_type = sessionStorage.getItem("user_type");
 
-      const response = await fetch(getUnassigned_papersURL);
+      const response = await fetch(getUnassigned_workshopsURL);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
 
       let data = await response.json();
 
-      unassigned_papers = data;
+      unassigned_workshops = data;
 
-      console.log(unassigned_papers);
+      console.log(unassigned_workshops);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   });
 
-  function handleViewPaper(paper_id) {
-    goto(`/${user_id}/conference/assignReviewer/${paper_id}`);
+  function handleViewWorkshop(workshop_id) {
+    goto(`/${user_id}/conference/assignInstructor/${workshop_id}`);
   }
- 
 </script>
 
 <main>
@@ -53,24 +52,25 @@
     </nav>
   </div>
   <div>
-    {#if unassigned_papers != null}
+    {#if unassigned_workshops != null}
       <br />
       <br />
       <br />
       <br />
       <br />
       <hr />
-      <h2> Unassigned Papers:</h2>
+      <h2> Unassigned Workshop:</h2>
 
-      {#each unassigned_papers as item}
+      {#each unassigned_workshops as item}
         <div>
           <hr />
-          <h3>Title: {item.paper_title}</h3>
-          <h4>Authors: {item.authors}</h4>
+          <h3>Title: {item.workshop_title}</h3>
           <h4>Related Fields: {item.related_fields}</h4>
+          <h4>Conference : {item.conference.conference_title}</h4>
+
           <button
               on:click={() => {
-                handleViewPaper(item.paper_id);
+                handleViewWorkshop(item.workshop_id);
               }}>View details</button
             >
         </div>

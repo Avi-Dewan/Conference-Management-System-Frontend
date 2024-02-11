@@ -51,6 +51,9 @@
       <a href="/{user_id}/dashboard/pending_papers"
         >View pending papers</a
       >
+      <a href="/{user_id}/dashboard/unassigned_workshop"
+      >View Unassigned Workshop</a
+      >
 
       <div class="animation start-home"></div>
     </nav>
@@ -116,7 +119,7 @@
     float: left;
     position: relative;
     margin: 1% 0%;
-    width: 600px;
+    width: 850px;
     height: 50px;
     background: #34495e;
     border-radius: 8px;
@@ -166,5 +169,10 @@
   nav a:nth-child(3):hover ~ .animation {
     width: 200px;
     left: 400px;
+  }
+  
+  nav a:nth-child(4):hover ~ .animation {
+    width: 250px;
+    left: 600px;
   }
 </style>
