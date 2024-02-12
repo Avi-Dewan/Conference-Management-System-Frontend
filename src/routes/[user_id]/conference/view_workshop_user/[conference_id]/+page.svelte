@@ -51,6 +51,9 @@
       if (allWorkshops != null) {
         for (let i = 0; i < allWorkshops.length; i++) {
           allWorkshops[i].showSuggest = false;
+          allWorkshops[i].workshop_time = JSON.parse(
+            allWorkshops[i].workshop_time
+          );
         }
 
         console.log(allWorkshops);

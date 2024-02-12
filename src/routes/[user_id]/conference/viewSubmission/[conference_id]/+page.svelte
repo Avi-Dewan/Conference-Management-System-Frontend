@@ -234,7 +234,11 @@
                 goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}
               >Assign</button
             >
-            <div class="two-column" style="display: block" button-container>
+            <div
+              class="two-column"
+              style="display: block;margin-top:20px"
+              button-container
+            >
               <button
                 on:click={handleReject(item.paper_id, item.paper_title)}
                 style="background-color:red;">Reject</button
