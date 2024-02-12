@@ -83,7 +83,7 @@
           <button
             on:click={() =>
               goto(
-                `/{user_id}/conference/conference_list/all/{item.conference_id}`
+                `/${user_id}/conference/conference_list/all/${item.conference_id}`
               )}>View Details</button
           >
         </Card>

@@ -15,49 +15,45 @@
 <main>
   <h1>Conference Management System</h1>
 
-  <br>
-  <br>
-  <br>
-  
+  <br />
+  <br />
+  <br />
+
   <div class="container">
-
     <div class="text">
-      <h2 style="text-align: center;">Manage Your Conference <br>
-        Easily and Effectively with <br>
-        
-        Our Conference Management Software </h2>
+      <h2 style="text-align: center;">
+        Manage Your Conference <br />
+        Easily and Effectively with <br />
 
-        <div class="form-control" style="display: block; text-align: center;">
-          <button on:click={handleSignUp}>Sign Up</button>
-          <button on:click={handleLogIn}>Login</button>
-        </div>
+        Our Conference Management Software
+      </h2>
+
+      <div class="form-control" style="display: block; text-align: center;">
+        <button on:click={handleSignUp}>Sign Up</button>
+        <button on:click={handleLogIn}>Login</button>
+      </div>
     </div>
 
     <div class="image">
-      <img src="/src/images/conference.jpg" alt="Conference" style="width: 1200px; height: 800px;">
+      <img
+        src="/src/images/conference.jpg"
+        alt="Conference"
+        style="width: 1000px; height: 600px;"
+      />
     </div>
-    
   </div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-
- 
-
- 
-
+  <br />
+  <br />
+  <br />
+  <br />
 </main>
 
 <style>
-
   main {
     max-width: 90%;
     margin: 2% auto;
   }
-
-  
 
   .container {
     display: flex;
@@ -73,8 +69,6 @@
   .image img {
     border-radius: 20px; /* Adjust as needed */
   }
- 
-
 
   .form-control {
     margin-bottom: 20px;
@@ -82,8 +76,6 @@
     min-width: 50px;
     clear: both;
   }
-
- 
 
   .form-control button {
     margin-top: 5%;
@@ -101,5 +93,4 @@
   .form-control button:hover {
     background-color: #0056b3;
   }
-
 </style>
