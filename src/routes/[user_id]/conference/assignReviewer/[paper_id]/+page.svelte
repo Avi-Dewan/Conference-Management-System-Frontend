@@ -56,6 +56,7 @@
       console.log(paper_details);
       paper_details = paper_details[0];
 
+      let user_id = main_user_id;
       const unreadNotificationCount = await fetch(
         `http://localhost:3000/notification/unreadCount/${user_id}`
       );
