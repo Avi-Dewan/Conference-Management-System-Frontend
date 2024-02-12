@@ -247,19 +247,18 @@
                 </div>
               {/if}
             </div> -->
-
-            {#if item.interest == "no"}
-              <button on:click={updateValue(item.workshop_id, "Interested")}
-                >Interested</button
-              >
-            {:else}
-              <button on:click={updateValue(item.workshop_id, "no")}
-                >Not Interested</button
-              >
-            {/if}
-
-            <!-- <button on:click={updateValue(item.workshop_id)} >Not Interested</button> -->
           {/if}
+          {#if item.interest == "no"}
+            <button on:click={updateValue(item.workshop_id, "Interested")}
+              >Interested</button
+            >
+          {:else}
+            <button on:click={updateValue(item.workshop_id, "no")}
+              >Not Interested</button
+            >
+          {/if}
+
+          <!-- <button on:click={updateValue(item.workshop_id)} >Not Interested</button> -->
 
           <hr />
         {/each}

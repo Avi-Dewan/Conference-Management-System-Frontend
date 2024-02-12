@@ -45,6 +45,20 @@
     }
   });
 
+  let unreadCount = null;
+  onMount(async () => {
+    try {
+      const unreadNotificationCount = await fetch(
+        `http://localhost:3000/notification/unreadCount/${user_id}`
+      );
+
+      unreadCount = await unreadNotificationCount.json();
+      unreadCount = unreadCount.unreadCount;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
+
   function handleDetails(notification_id, notification_json) {
     if (notification_json.type == "reviewer_request") {
       let paper_id = notification_json.requested_paper_id;
@@ -89,32 +103,34 @@
 </script>
 
 <main>
-  {#if user_type == "chair"}
-    <NavbarChair />
-  {:else}
-    <NavbarUser />
-  {/if}
+  {#if unreadCount != null}
+    {#if user_type == "chair"}
+      <NavbarChair myVariable={unreadCount} />
+    {:else}
+      <NavbarUser myVariable={unreadCount} />
+    {/if}
 
-  {#if data != null}
-    <div>
-      <h2>My Notification</h2>
-      {#each data as item}
-        <h3>{item.notification_body}</h3>
+    {#if data != null}
+      <div>
+        <h2>My Notification</h2>
+        {#each data as item}
+          <h3>{item.notification_body}</h3>
 
-        {#if item.notification_json.type == "reviewer_request"}
-          <h4 style="color: red;">
-            Title: {item.notification_json.requested_paper_title}
-          </h4>
-        {/if}
+          {#if item.notification_json.type == "reviewer_request"}
+            <h4 style="color: red;">
+              Title: {item.notification_json.requested_paper_title}
+            </h4>
+          {/if}
 
-        <button
-          on:click={() => {
-            handleDetails(item.notification_id, item.notification_json);
-          }}>Go details</button
-        >
-      {/each}
-      <div></div>
-    </div>
+          <button
+            on:click={() => {
+              handleDetails(item.notification_id, item.notification_json);
+            }}>Go details</button
+          >
+        {/each}
+        <div></div>
+      </div>
+    {/if}
   {/if}
 </main>
 

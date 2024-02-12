@@ -320,8 +320,12 @@
                 <h3>Name: {item.full_name}</h3>
                 <h4>Affliation: {item.current_institution}</h4>
                 <h4>Expertise: {item.expertise}</h4>
-                <button on:click={requestReviewer(paper_id, item.user_id)}
-                  >Request</button
+                <button
+                  on:click={requestReviewer(
+                    paper_id,
+                    item.user_id,
+                    paper_details.paper_title
+                  )}>Request</button
                 >
               </div>
             </div>
