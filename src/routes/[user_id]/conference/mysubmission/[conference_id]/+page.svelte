@@ -84,6 +84,18 @@
       }
     );
   }
+  async function handleEditSubmission(conference_id, paper_id) {
+    const thisPage = window.location.pathname;
+    console.log(paper_id);
+    goto(`/${user_id}/conference/edit_paper/${conference_id}/${paper_id}`);
+    // let response = await fetch("http://localhost:3000/paper/edit_submission", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ paper_id: paper_id }),
+    // });
+  }
 
   let unreadCount = null;
 
@@ -139,11 +151,22 @@
                 }}>Delete submission</button
               >
             </div>
+          {:else if item.status == "revise"}
+            <div style="margin-top: 20px;">
+              <button
+                style="background-color: green;"
+                on:click={() => {
+                  handleEditSubmission(conference_id, item.paper_id);
+                }}>Edit submission</button
+              >
+            </div>
+            `
           {:else}
             {#each item.reviews as review, idx}
               <p>
                 {#if review.review != null}
-                  Reviewer {idx + 1} said: {review.review}
+                  Reviewer {idx + 1} said:
+                  <p style="white-space: pre-wrap;">{review.review}</p>
                 {/if}
                 <br />
                 {#if review.rating != null}
