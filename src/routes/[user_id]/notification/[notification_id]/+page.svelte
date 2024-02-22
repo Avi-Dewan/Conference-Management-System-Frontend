@@ -90,14 +90,29 @@
       let workshop_id = notification_json.workshop_id;
       goto(`/${user_id}/workshop_request/${workshop_id}`);
     } else if (notification_json.type == "notify_author_accept/reject") {
-      let workshop_id = notification_json.workshop_id;
+      let conference_id = notification_json.conference_id;
 
-      goto(`/${user_id}/conference/mysubmission/${workshop_id}`);
+      goto(`/${user_id}/conference/mysubmission/${conference_id}`);
     } else if (
       notification_json.type == "notify_chair_workshop_accept/reject"
     ) {
       let workshop_id = notification_json.workshop_id;
       goto(`/${user_id}/conference/assignInstructor/${workshop_id}`);
+    } else if (notification_json.type == "notify_chair_poster") {
+      let conference_id = notification_json.conference_id;
+
+      goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`);
+    } else if (notification_json.type == "notify_coauthor_poster") {
+      let poster_id = notification_json.poster_id;
+      goto(`/${user_id}/author_poster_request/${paper_id}`);
+    } else if (notification_json.type == "notify_author_poster_accept/reject") {
+      let conference_id = notification_json.conference_id;
+
+      goto(`/${user_id}/conference/mysubmission/${conference_id}`);
+    } else if (notification_json.type == "notify_reviewer_poster") {
+      let poster_id = notification_json.poster_id;
+
+      goto(`/${user_id}/review/${poster_id}`);
     }
   }
 </script>

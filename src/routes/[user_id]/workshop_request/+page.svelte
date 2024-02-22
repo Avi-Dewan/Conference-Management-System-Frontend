@@ -174,10 +174,10 @@
           <!-- <a href={item.pdf_link}>View Paper</a> -->
           <h3>Related Fields: {item.related_fields}</h3>
           <h3>Description: {item.workshop_description}</h3>
-          <!-- <a
+          <a
               href="/{user_id}/conference/conference_list/all/{item.conference_id}"
               >View Conference</a
-            > -->
+            >
 
           <div
             class="two-column"
