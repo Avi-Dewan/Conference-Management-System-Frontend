@@ -13,6 +13,9 @@
   let papers = null;
   let conf_data = null;
 
+  let submission_deadline_date = "";
+  let submission_deadline_time = "";
+
   onMount(async () => {
     try {
       const response = await fetch(url);
@@ -146,13 +149,21 @@
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
   async function handleRevise(paper_id, paper_title) {
+    let formData = {
+      paper_id: paper_id,
+      submission_deadline: {
+        date: submission_deadline_date,
+        time: submission_deadline_time,
+      },
+    };
     let response = await fetch("http://localhost:3000/chair/revise_paper", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ paper_id: paper_id }),
+      body: JSON.stringify(formData),
     });
+
     let data = await response.json();
 
     let conf_res = await fetch(
@@ -304,9 +315,33 @@
                 on:click={handleAccept(item.paper_id, item.paper_title)}
                 style="background-color:green;">Accept</button
               >
+              <div class="column">
+                <label for="submission_deadline">Date:</label>
+                <input
+                  type="date"
+                  id="submission_deadline_date"
+                  bind:value={submission_deadline_date}
+                />
+                <input
+                  type="time"
+                  id="submission_deadline_time"
+                  bind:value={submission_deadline_time}
+                />
+                <button
+                  on:click={handleRevise(item.paper_id, item.paper_title)}
+                  style="background-color:black;">Revise</button
+                >
+              </div>
+            </div>
+          {:else if item.status == "revise"}
+            <div style="margin-top: 20px;">
               <button
-                on:click={handleRevise(item.paper_id, item.paper_title)}
-                style="background-color:black;">Revise</button
+                on:click={handleReject(item.paper_id, item.paper_title)}
+                style="background-color:red;">Reject</button
+              >
+              <button
+                on:click={handleAccept(item.paper_id, item.paper_title)}
+                style="background-color:green;">Accept</button
               >
             </div>
           {/if}
