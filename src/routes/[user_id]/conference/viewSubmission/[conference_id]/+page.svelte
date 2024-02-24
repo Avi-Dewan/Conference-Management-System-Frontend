@@ -13,6 +13,9 @@
   let papers = null;
   let conf_data = null;
 
+  let submission_deadline_date = "";
+  let submission_deadline_time = "";
+
   onMount(async () => {
     try {
       const response = await fetch(url);
@@ -145,6 +148,65 @@
     const thisPage = window.location.pathname;
     goto(`/${user_id}/home`).then(() => goto(thisPage));
   }
+  async function handleRevise(paper_id, paper_title) {
+    let formData = {
+      paper_id: paper_id,
+      submission_deadline: {
+        date: submission_deadline_date,
+        time: submission_deadline_time,
+      },
+    };
+    let response = await fetch("http://localhost:3000/chair/revise_paper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    let data = await response.json();
+
+    let conf_res = await fetch(
+      `http://localhost:3000/paper/getConferenceInfo/${paper_id}`
+    );
+    let conf_data = await conf_res.json();
+
+    let conference_title = conf_data.conference_title;
+
+    let notification_body = `Your paper titled "${paper_title}"in the conference ${conference_title} should be Revised`;
+
+    let conference_id = conf_data.conference_id;
+
+    let notification_json = {
+      type: "notify_author_accept/reject",
+      paper_id: paper_id,
+      conference_id: conference_id,
+    };
+
+    // console.log(reviewer_id);
+
+    let all_author_res = await fetch(
+      `http://localhost:3000/paper/all_authors/${paper_id}`
+    );
+
+    let all_author_id = await all_author_res.json();
+
+    for (let i = 0; i < all_author_id.length; i++) {
+      await fetch("http://localhost:3000/notification/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: all_author_id[i].user_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      });
+    }
+    const thisPage = window.location.pathname;
+    goto(`/${user_id}/home`).then(() => goto(thisPage));
+  }
   async function handleNotify(reviewer_id, paper_id, paper_title) {
     let notification_body = `You have a pending review \n for Paper title ${paper_title}`;
 
@@ -208,8 +270,14 @@
             <div>
               <b>{rev.full_name}</b>
               {#if rev.rating != null}
-                <p>rating: {rev.rating}</p>
-                <p>review: {rev.review}</p>
+                <h4>Rating:</h4>
+                <p>{rev.rating}</p>
+              {:else}
+                <h4>Rating: None</h4>
+              {/if}
+              {#if rev.review != null}
+                <h4>Review:</h4>
+                <p style="white-space: pre-wrap;">{rev.review}</p>
               {:else}
                 <p style="color:red">Not given review yet</p>
                 <button
@@ -228,7 +296,7 @@
             >View file</button
           >
 
-          {#if item.status != "accepted" && item.status != "rejected"}
+          {#if item.status != "accepted" && item.status != "rejected" && item.status != "revise"}
             <button
               on:click={() =>
                 goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}
@@ -239,6 +307,34 @@
               style="display: block;margin-top:20px"
               button-container
             >
+              <button
+                on:click={handleReject(item.paper_id, item.paper_title)}
+                style="background-color:red;">Reject</button
+              >
+              <button
+                on:click={handleAccept(item.paper_id, item.paper_title)}
+                style="background-color:green;">Accept</button
+              >
+              <div class="column">
+                <label for="submission_deadline">Date:</label>
+                <input
+                  type="date"
+                  id="submission_deadline_date"
+                  bind:value={submission_deadline_date}
+                />
+                <input
+                  type="time"
+                  id="submission_deadline_time"
+                  bind:value={submission_deadline_time}
+                />
+                <button
+                  on:click={handleRevise(item.paper_id, item.paper_title)}
+                  style="background-color:black;">Revise</button
+                >
+              </div>
+            </div>
+          {:else if item.status == "revise"}
+            <div style="margin-top: 20px;">
               <button
                 on:click={handleReject(item.paper_id, item.paper_title)}
                 style="background-color:red;">Reject</button

@@ -84,6 +84,18 @@
       }
     );
   }
+  async function handleEditSubmission(conference_id, paper_id) {
+    const thisPage = window.location.pathname;
+    console.log(paper_id);
+    goto(`/${user_id}/conference/edit_paper/${conference_id}/${paper_id}`);
+    // let response = await fetch("http://localhost:3000/paper/edit_submission", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ paper_id: paper_id }),
+    // });
+  }
 
   let unreadCount = null;
 
@@ -131,25 +143,61 @@
           <h3>Status: {item.status}</h3>
 
           {#if item.status == "pending"}
-            <div style="margin-top: 20px;">
-              <button
-                style="background-color: red;"
-                on:click={() => {
-                  handleDeleteSubmission(item.paper_id);
-                }}>Delete submission</button
-              >
+            {#if item.conference_submission_status == "open"}
+              <div style="margin-top: 20px;">
+                <button
+                  style="background-color: red;"
+                  on:click={() => {
+                    handleDeleteSubmission(item.paper_id);
+                  }}>Delete submission</button
+                >
+              </div>
+            {:else}
+              <h3 style="color: red;">Submission closed</h3>
+            {/if}
+          {:else if item.status == "revise"}
+            <div>
+              {#each item.reviews as review, idx}
+                <p>
+                  {#if review.review != null}
+                    Reviewer {idx + 1} said:
+                    <p style="white-space: pre-wrap;">{review.review}</p>
+                  {/if}
+                </p>
+              {/each}
             </div>
+            {#if item.submission_status == "open"}
+              <div style="margin-top: 20px;">
+                <button
+                  style="background-color: green;"
+                  on:click={() => {
+                    handleEditSubmission(conference_id, item.paper_id);
+                  }}>Edit submission</button
+                >
+              </div>
+            {:else}
+              <h3 style="color: red;">Submission closed</h3>
+            {/if}
+            `
           {:else}
+            <hr />
             {#each item.reviews as review, idx}
-              <p>
-                {#if review.review != null}
-                  Reviewer {idx + 1} said: {review.review}
-                {/if}
-                <br />
-                {#if review.rating != null}
-                  Reviewer {idx + 1} rating: {review.rating}
-                {/if}
-              </p>
+              <div>
+                Reviewer {idx + 1}:
+                <p>
+                  {#if review.review != null}
+                    <p style="white-space: pre-wrap;">
+                      Review: {review.review}
+                    </p>
+                    {#if review.rating != null}
+                      <p>rating: {review.rating}</p>
+                    {/if}
+                  {:else}
+                    <p>Review: None</p>
+                  {/if}
+                </p>
+                <hr />
+              </div>
             {/each}
           {/if}
         </div>
