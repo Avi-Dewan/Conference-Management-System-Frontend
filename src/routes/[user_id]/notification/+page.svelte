@@ -104,10 +104,18 @@
       let conference_id = notification_json.conference_id;
 
       goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`);
-    } else if (notification_json.type == "notify_coauthor_poster") {
+    }
+    
+    
+    else if (notification_json.type == "notify_coauthor_poster") {
       let poster_id = notification_json.poster_id;
-      goto(`/${user_id}/author_poster_request/${paper_id}`);
-    } else if (notification_json.type == "notify_author_poster_accept/reject") {
+      console.log("poster id ki ase ekhane??")
+      console.log(poster_id)
+      goto(`/${user_id}/author_poster_request/${poster_id}`);
+    }
+    
+    
+    else if (notification_json.type == "notify_author_poster_accept/reject") {
       let conference_id = notification_json.conference_id;
 
       goto(`/${user_id}/conference/mysubmission/${conference_id}`);

@@ -231,7 +231,7 @@
             {#if item.status != "accepted" && item.status != "rejected"}
               <button
                 on:click={() =>
-                  goto(`/${user_id}/conference/assignReviewer/${item.poster_id}`)}
+                  goto(`/${user_id}/conference/assignPosterReviewer/${item.poster_id}`)}
                 >Assign</button
               >
               <div

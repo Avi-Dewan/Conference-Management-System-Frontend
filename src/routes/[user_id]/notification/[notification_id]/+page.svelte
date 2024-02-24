@@ -104,15 +104,19 @@
       goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`);
     } else if (notification_json.type == "notify_coauthor_poster") {
       let poster_id = notification_json.poster_id;
-      goto(`/${user_id}/author_poster_request/${paper_id}`);
+      goto(`/${user_id}/author_poster_request/${poster_id}`);
     } else if (notification_json.type == "notify_author_poster_accept/reject") {
       let conference_id = notification_json.conference_id;
 
       goto(`/${user_id}/conference/mysubmission/${conference_id}`);
     } else if (notification_json.type == "notify_reviewer_poster") {
       let poster_id = notification_json.poster_id;
-
       goto(`/${user_id}/review/${poster_id}`);
+    }
+
+    else if (notification_json.type == "chair_poster_noti_accept_reject") {
+      let poster_id = notification_json.poster_id;
+      goto(`/${user_id}/conference/assignPosterReviewer/${poster_id}`);
     }
   }
 </script>

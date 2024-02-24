@@ -66,6 +66,9 @@
       });
   
       let poster_id = await req.json();
+
+      console.log("req theke poster id ki ase??")
+      console.log(poster_id)
   
       const response_chair = await fetch(
         `http://localhost:3000/conference/conference_chair/${conference_id}`

@@ -95,6 +95,11 @@
         >
         <button
           on:click={() =>
+            goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`)}
+          >View Poster Submissions</button
+        >        
+        <button
+          on:click={() =>
             goto(`/${user_id}/conference/create_workshop/${conference_id}`)}
           >Create a workshop</button
         >

@@ -39,7 +39,7 @@
   
     async function handleReject(poster_id) {
       const response = await fetch(
-        "http://localhost:3000/author/reject_request", // ekhane author er request delete hbe
+        "http://localhost:3000/poster/author/reject_request", // ekhane author er request delete hbe
         {
           method: "POST",
           headers: {
