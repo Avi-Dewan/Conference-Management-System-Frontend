@@ -56,6 +56,34 @@
 
   let submitted = false;
 
+  let co_authors_wihtout_account = [];
+
+  let form_co_author_without_account = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    affiliation: "",
+
+  };
+
+  function handleAdd_CoAuthor() {
+    // console.log("hello");
+    if (form_co_author_without_account.first_name != "" && form_co_author_without_account.last_name != "" && form_co_author_without_account.email != "" && form_co_author_without_account.affiliation != "") {
+      co_authors_wihtout_account = [...co_authors_wihtout_account, form_co_author_without_account];
+      
+      form_co_author_without_account = {
+        first_name: "",
+        last_name: "",
+        email: "",
+        affiliation: "",
+
+      };
+    }
+  }
+  function removeCoAuthor(index) {
+    co_authors_wihtout_account = co_authors_wihtout_account.filter((_, i) => i != index);
+  }
+
   async function submitPaper() {
     const req = await fetch("http://localhost:3000/paper/submit", {
       method: "POST",
@@ -65,7 +93,11 @@
       body: JSON.stringify(formData),
     });
 
-    let paper_id = await req.json();
+    let {co_authors_wihtout_account_id, paper_id} = await req.json();
+
+    console.log("co authors without account id", co_authors_wihtout_account_id);
+    console.log("paper id", paper_id);
+
 
     const response_chair = await fetch(
       `http://localhost:3000/conference/conference_chair/${conference_id}`
@@ -144,6 +176,26 @@
 
       data = await response.json();
     }
+
+    for (let i = 0; i < co_authors_wihtout_account_id.length; i++) {
+      console.log("printing co authors without account");
+      console.log(co_authors_wihtout_account_id[i]);
+
+      response = await fetch("http://localhost:3000/notification/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: co_authors_wihtout_account_id[i],
+          notification_body: author_notification_body,
+          notification_json: author_notification_json,
+        }),
+      });
+
+      data = await response.json();
+    }
+
   }
 
   onMount(async () => {
@@ -258,9 +310,12 @@
     formData.file = files[0];
 
     formData.main_author_id = user_id;
+    formData.co_authors_without_account = co_authors_wihtout_account;
 
     formData.conference_id = conference_id;
-    console.log(conference_id);
+    // console.log(conference_id);
+
+    console.log(formData);
 
     uploadFile();
 
@@ -305,7 +360,7 @@
         </div>
 
         <div class="form-control">
-          <h2>Paper Authors</h2>
+          <h2>Co-Authors</h2>
 
           {#if show == false}
             <div class="two-column">
@@ -366,6 +421,73 @@
             </div>
           {/if}
           <button on:click={authorSelect}>Choose Authors</button>
+        </div>
+
+
+        <div class="form-control">
+            <h2>Insert co-author info if they do not have account on the system</h2>
+
+            <div class="two-column">
+              {#each co_authors_wihtout_account as item, index (item)}
+                <div class="two-column">
+                  <div>
+                    <h4>  {item.first_name} {item.last_name}</h4>
+                    <h5>  {item.email}</h5>
+                    <h5>  {item.affiliation}</h5>                
+                  </div>
+                  <div>
+                    <button
+                      on:click={() => removeCoAuthor(index)}
+                      style="background-color:red;"
+                    >
+                      Remove</button
+                    >
+                  </div>
+                </div>
+              {/each}
+            </div>
+
+        </div>
+        <br/>
+        <br/>
+        
+        <div class="form-control">
+
+          <div class="column">
+            <label for="first_name">First Name:</label>
+            <input
+              type="text"
+              id="first_name"
+              bind:value={form_co_author_without_account.first_name}
+            />
+          </div>
+
+          <div class="column" > 
+            <label for="last_name"> Last Name:</label>
+            <input
+              type="text"
+              id="last_name"
+              style="margin-left: 3%"
+              bind:value={form_co_author_without_account.last_name}
+            />
+          </div>
+        </div>
+
+
+        <div class="form-control">
+          <label for="email">Email:</label>
+          <input type="text" id="email" bind:value={form_co_author_without_account.email} />
+        </div>
+        
+        <div class="form-control">
+          <label for="affiliation">Affiliation:</label>
+          <input type="text" id="affiliation" bind:value={form_co_author_without_account.affiliation} />
+        </div>
+
+        <div class="form-control">
+          <button on:click={handleAdd_CoAuthor} style="height:40px;">
+            Add co-author
+          </button>
         </div>
 
         <div class="form-control">
