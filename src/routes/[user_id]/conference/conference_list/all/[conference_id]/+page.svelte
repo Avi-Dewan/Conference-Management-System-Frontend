@@ -108,11 +108,11 @@
             goto(`/${user_id}/conference/view_workshop/${conference_id}`)}
           >View Workshops</button
         >
-        <button
+        <!-- <button
           on:click={() =>
             goto(`/${user_id}/conference/popular_workshop/${conference_id}`)}
           >Popular Workshops</button
-        >
+        > -->
       {:else if data.status == "Open"}
         <button
           on:click={() =>

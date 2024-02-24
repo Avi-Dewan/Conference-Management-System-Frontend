@@ -28,12 +28,13 @@
 
       data = await response.json();
 
+      console.log(data);
+
       const unreadNotificationCount = await fetch(
         `http://localhost:3000/notification/unreadCount/${user_id}`
       );
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -62,12 +63,38 @@
           <h3>PDF link : <a href={item.pdf_link}> view pdf </a></h3>
 
           {#if item.review_status == "reviewed"}
-            <h3>
-              Review status: <b style="color:green">{item.review_status}</b>
-            </h3>
-            <p><b> Rating: </b> {item.rating}</p>
-            <p><b> Review: </b> {item.review}</p>
-            <h3><a href="/{user_id}/review/{item.paper_id}">Edit review</a></h3>
+            {#if item.paper_status == "revise"}
+              <h3>
+                Review status: <b style="color:red"
+                  >{item.review_status} but need Revise</b
+                >
+              </h3>
+
+              <h4>
+                <b>Current review: </b>
+                <p style="white-space: pre-wrap;">{item.review}</p>
+              </h4>
+              {#if item.submission_status == "closed"}
+                <h3>
+                  <a href="/{user_id}/review/{item.paper_id}">Review Again</a>
+                </h3>
+              {:else}
+                <h4 style="color: red;">
+                  Note: You can review this paper after Date: {item
+                    .submission_deadline.date} & Time: {item.submission_deadline
+                    .time}
+                </h4>
+              {/if}
+            {:else}
+              <h3>
+                Review status: <b style="color:green">{item.review_status}</b>
+                <p><b> Rating: </b> {item.rating}</p>
+                <p><b> Review: </b> {item.review}</p>
+                <h3>
+                  <a href="/{user_id}/review/{item.paper_id}">Edit review</a>
+                </h3>
+              </h3>
+            {/if}
           {:else}
             <h3>
               Review status: <b style="color:red">{item.review_status}</b>
