@@ -41,7 +41,7 @@
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
+        body: JSON.stringify({ user_id: user_id, poster_id: poster_id }),
       });
   
       response = await fetch(
@@ -54,7 +54,7 @@
   
       let chair_id = await response.json();
   
-      let res = await fetch(`http://localhost:3000/poster/user/getFullName/${user_id}`);
+      let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
   
       let full_name = await res.json();
   
@@ -103,7 +103,7 @@
       });
   
       let respon = await fetch(
-        `http://localhost:3000/poster/get_conference_chair/${paper_id}`
+        `http://localhost:3000/poster/get_conference_chair/${poster_id}`
       );
   
       if (!respon.ok) {
@@ -112,7 +112,7 @@
   
       let chair_id = await respon.json();
   
-      let res = await fetch(`http://localhost:3000/poster/user/getFullName/${user_id}`);
+      let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
   
       let full_name = await res.json();
   
