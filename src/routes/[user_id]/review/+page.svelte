@@ -70,7 +70,10 @@
                 >
               </h3>
 
-              <h4><b>Current review: </b> {item.review}</h4>
+              <h4>
+                <b>Current review: </b>
+                <p style="white-space: pre-wrap;">{item.review}</p>
+              </h4>
               {#if item.submission_status == "closed"}
                 <h3>
                   <a href="/{user_id}/review/{item.paper_id}">Review Again</a>
