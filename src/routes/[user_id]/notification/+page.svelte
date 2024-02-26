@@ -68,7 +68,14 @@
         `/${user_id}/viewRequest/${notification_id}/reviewRequest/${paper_id}`
       );
     } 
-    
+
+
+    else if (notification_json.type == "poster_reviewer_request") {
+      let poster_id = notification_json.requested_poster_id;
+      goto(
+        `/${user_id}/viewRequest/${notification_id}/reviewPosterRequest/${poster_id}`
+      );
+    }  
     
     else if (notification_json.type == "chair_noti_accept_reject") {
       let paper_id = notification_json.paper_id;
@@ -140,7 +147,7 @@
     else if (notification_json.type == "notify_author_poster_accept/reject") {
       let conference_id = notification_json.conference_id;
 
-      goto(`/${user_id}/conference/mysubmission/${conference_id}`);
+      goto(`/${user_id}/conference/myPostersubmission/${conference_id}`);
     }
 
     else if (notification_json.type == "notify_reviewer_poster") {

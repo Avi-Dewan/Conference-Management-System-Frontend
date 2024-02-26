@@ -63,7 +63,7 @@
             <h3>PDF link : <a href={item.pdf_link}> view pdf </a></h3>
   
             {#if item.review_status == "reviewed"}
-              {#if item.paper_status == "revise"}
+              {#if item.poster_status == "revise"}
                 <h3>
                   Review status: <b style="color:red"
                     >{item.review_status} but need Revise</b
@@ -76,11 +76,11 @@
                 </h4>
                 {#if item.submission_status == "closed"}
                   <h3>
-                    <a href="/{user_id}/review/{item.paper_id}">Review Again</a>
+                    <a href="/{user_id}/review/{item.poster_id}">Review Again</a>
                   </h3>
                 {:else}
                   <h4 style="color: red;">
-                    Note: You can review this paper after Date: {item
+                    Note: You can review this poster after Date: {item
                       .submission_deadline.date} & Time: {item.submission_deadline
                       .time}
                   </h4>
