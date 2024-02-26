@@ -7,17 +7,17 @@
   const main_user_id = $page.params.user_id;
   const paper_id = $page.params.paper_id;
 
-  let paper_details_url = `http://localhost:3000/paper/${paper_id}`;
-  let paper_author_url = `http://localhost:3000/paper/${paper_id}/author`;
-  let reviewer_auto_url = `http://localhost:3000/assign/auto/${paper_id}`;
+  let paper_details_url = `${import.meta.env.VITE_BACKEND}/paper/${paper_id}`;
+  let paper_author_url = `${import.meta.env.VITE_BACKEND}/paper/${paper_id}/author`;
+  let reviewer_auto_url = `${import.meta.env.VITE_BACKEND}/assign/auto/${paper_id}`;
 
-  let request_reviwer_url = `http://localhost:3000/assign/request`;
-  let request_delete_url = `http://localhost:3000/assign/request_delete`;
-  let already_sent_request_url = `http://localhost:3000/assign/sent_request/${paper_id}`;
+  let request_reviwer_url = `${import.meta.env.VITE_BACKEND}/assign/request`;
+  let request_delete_url = `${import.meta.env.VITE_BACKEND}/assign/request_delete`;
+  let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/assign/sent_request/${paper_id}`;
 
-  let reviewer_manual_url = `http://localhost:3000/assign/manual/${paper_id}`;
+  let reviewer_manual_url = `${import.meta.env.VITE_BACKEND}/assign/manual/${paper_id}`;
 
-  let already_assigned_reviewer_url = `http://localhost:3000/reviewer/assigned/${paper_id}`;
+  let already_assigned_reviewer_url = `${import.meta.env.VITE_BACKEND}/reviewer/assigned/${paper_id}`;
 
   let paper_details = null;
   let paper_author_details = null;
@@ -58,7 +58,7 @@
 
       let user_id = main_user_id;
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

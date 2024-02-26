@@ -7,17 +7,17 @@
   const main_user_id = $page.params.user_id;
   const workshop_id = $page.params.workshop_id;
 
-  // let paper_details_url = `http://localhost:3000/paper/${paper_id}`;
-  // let paper_author_url = `http://localhost:3000/paper/${paper_id}/author`;
-  // let reviewer_auto_url = `http://localhost:3000/assign/auto/${paper_id}`;
+  // let paper_details_url = `${import.meta.env.VITE_BACKEND}/paper/${paper_id}`;
+  // let paper_author_url = `${import.meta.env.VITE_BACKEND}/paper/${paper_id}/author`;
+  // let reviewer_auto_url = `${import.meta.env.VITE_BACKEND}/assign/auto/${paper_id}`;
 
-  // let request_reviwer_url = `http://localhost:3000/assign/request`;
-  // let request_delete_url = `http://localhost:3000/assign/request_delete`;
-  // let already_sent_request_url = `http://localhost:3000/assign/sent_request/${paper_id}`;
+  // let request_reviwer_url = `${import.meta.env.VITE_BACKEND}/assign/request`;
+  // let request_delete_url = `${import.meta.env.VITE_BACKEND}/assign/request_delete`;
+  // let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/assign/sent_request/${paper_id}`;
 
-  // let reviewer_manual_url = `http://localhost:3000/assign/manual/${paper_id}`;
+  // let reviewer_manual_url = `${import.meta.env.VITE_BACKEND}/assign/manual/${paper_id}`;
 
-  // let already_assigned_reviewer_url = `http://localhost:3000/reviewer/assigned/${paper_id}`;
+  // let already_assigned_reviewer_url = `${import.meta.env.VITE_BACKEND}/reviewer/assigned/${paper_id}`;
 
   let workshop_details = null;
   let paper_author_details = null;
@@ -44,7 +44,7 @@
     try {
       user_type = sessionStorage.getItem("user_type");
 
-      let workshop_details_url = `http://localhost:3000/workshop/${workshop_id}`;
+      let workshop_details_url = `${import.meta.env.VITE_BACKEND}/workshop/${workshop_id}`;
       const response = await fetch(workshop_details_url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -77,7 +77,7 @@
   //kader kader request kora hoise
   onMount(async () => {
     try {
-      let already_sent_request_url = `http://localhost:3000/workshop/sent_request/${workshop_id}`;
+      let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/workshop/sent_request/${workshop_id}`;
       const response = await fetch(already_sent_request_url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -94,7 +94,7 @@
   //kader kader assign kora hoise
   onMount(async () => {
     try {
-      let already_assigned_Instructor_url = `http://localhost:3000/workshop/accepted_request/${workshop_id}`;
+      let already_assigned_Instructor_url = `${import.meta.env.VITE_BACKEND}/workshop/accepted_request/${workshop_id}`;
 
       const response = await fetch(already_assigned_Instructor_url);
       if (!response.ok) {
@@ -113,7 +113,7 @@
   let unreadCount = null;
   onMount(async () => {
     try {
-      let instructor_auto_url = `http://localhost:3000/workshop/auto_suggest/${workshop_id}`;
+      let instructor_auto_url = `${import.meta.env.VITE_BACKEND}/workshop/auto_suggest/${workshop_id}`;
       const response = await fetch(instructor_auto_url);
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -124,7 +124,7 @@
 
       let user_id = main_user_id;
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();
@@ -151,7 +151,7 @@
   // });
 
   async function requestInstructor(workshop_id, user_id) {
-    let request_instructor_url = `http://localhost:3000/workshop/request`;
+    let request_instructor_url = `${import.meta.env.VITE_BACKEND}/workshop/request`;
     const response = await fetch(request_instructor_url, {
       method: "POST",
       headers: {
@@ -161,7 +161,7 @@
     });
 
     let conf_data = await fetch(
-      `http://localhost:3000/conference/${workshop_details.conference_id}`
+      `${import.meta.env.VITE_BACKEND}/conference/${workshop_details.conference_id}`
     );
     if (!conf_data.ok) {
       throw new Error("Failed to fetch data");
@@ -177,7 +177,7 @@
     };
 
     let notification_response = await fetch(
-      "http://localhost:3000/notification/send",
+      `${import.meta.env.VITE_BACKEND}/notification/send`,
       {
         method: "POST",
         headers: {
@@ -200,7 +200,7 @@
   }
 
   async function removeRequest(workshop_id, user_id) {
-    let request_delete_url = `http://localhost:3000/workshop/request_delete`;
+    let request_delete_url = `${import.meta.env.VITE_BACKEND}/workshop/request_delete`;
     const response = await fetch(request_delete_url, {
       method: "POST",
       headers: {

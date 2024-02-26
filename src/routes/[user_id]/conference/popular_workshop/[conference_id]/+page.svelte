@@ -15,7 +15,7 @@
 
   user_id = $page.params.user_id;
 
-  let getAllWorkshopURL = `http://localhost:3000/workshop/popular/${conference_id}`;
+  let getAllWorkshopURL = `${import.meta.env.VITE_BACKEND}/workshop/popular/${conference_id}`;
 
   let allWorkshops = null;
 
@@ -49,7 +49,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

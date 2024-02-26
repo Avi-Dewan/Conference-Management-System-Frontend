@@ -7,7 +7,7 @@
 
 
   async function createUser() {
-    const response = await fetch("http://localhost:3000/auth/signup", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND}/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -6,7 +6,7 @@
 
   const user_id = $page.params.user_id;
 
-  let getPapersURL = `http://localhost:3000/paper/allPapers/${user_id}`;
+  let getPapersURL = `${import.meta.env.VITE_BACKEND}/paper/allPapers/${user_id}`;
 
   let getPapersSummary = null;
   onMount(async () => {
@@ -35,7 +35,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

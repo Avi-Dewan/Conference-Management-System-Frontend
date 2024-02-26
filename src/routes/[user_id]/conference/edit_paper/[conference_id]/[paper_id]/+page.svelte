@@ -34,8 +34,8 @@
     co_authors: null,
   };
 
-  let url = `http://localhost:3000/user/all`;
-  let conf_url = `http://localhost:3000/conference/${conference_id}`;
+  let url = `${import.meta.env.VITE_BACKEND}/user/all`;
+  let conf_url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
 
   let data = null;
 
@@ -62,10 +62,10 @@
 
   onMount(async () => {
     try {
-      paper_detail = await fetch(`http://localhost:3000/paper/${paper_id}`);
+      paper_detail = await fetch(`${import.meta.env.VITE_BACKEND}/paper/${paper_id}`);
 
       let paper_author = await fetch(
-        `http://localhost:3000/paper/${paper_id}/author`
+        `${import.meta.env.VITE_BACKEND}/paper/${paper_id}/author`
       );
 
       paper_author = await paper_author.json();
@@ -87,7 +87,7 @@
 
   async function editPaper() {
     const req = await fetch(
-      `http://localhost:3000/paper/edit_paper/${paper_id}`,
+      `${import.meta.env.VITE_BACKEND}/paper/edit_paper/${paper_id}`,
       {
         method: "PUT",
         headers: {
@@ -100,7 +100,7 @@
     //let data = await req.json();
 
     const response_chair = await fetch(
-      `http://localhost:3000/conference/conference_chair/${conference_id}`
+      `${import.meta.env.VITE_BACKEND}/conference/conference_chair/${conference_id}`
     );
 
     if (!response_chair.ok) {
@@ -124,7 +124,7 @@
 
     // console.log(reviewer_id);
 
-    let response = await fetch("http://localhost:3000/notification/send", {
+    let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -138,7 +138,7 @@
 
     data = await response.json();
 
-    // let fullnameurl = `http://localhost:3000/user/getFullName/${formData.main_author_id}`;
+    // let fullnameurl = `${import.meta.env.VITE_BACKEND}/user/getFullName/${formData.main_author_id}`;
 
     // const response_fullname = await fetch(fullnameurl);
 
@@ -162,7 +162,7 @@
     //   console.log("printing co authors");
     //   console.log(formData.co_authors[i]);
 
-    //   response = await fetch("http://localhost:3000/notification/send", {
+    //   response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send", {
     //     method: "POST",
     //     headers: {
     //       "Content-Type": "application/json",
@@ -304,7 +304,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

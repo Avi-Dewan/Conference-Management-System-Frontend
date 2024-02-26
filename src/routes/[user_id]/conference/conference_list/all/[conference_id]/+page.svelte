@@ -16,7 +16,7 @@
 
   let data = [];
 
-  let url = `http://localhost:3000/conference/${conference_id}`;
+  let url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
 
   const currentDate = new Date();
 
@@ -46,7 +46,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

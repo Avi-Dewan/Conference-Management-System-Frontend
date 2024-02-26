@@ -16,17 +16,17 @@
 
   user_id = $page.params.user_id;
 
-  let getAllWorkshopURL = `http://localhost:3000/workshop/all/${conference_id}`;
+  let getAllWorkshopURL = `${import.meta.env.VITE_BACKEND}/workshop/all/${conference_id}`;
 
-  let getInterstedPeople = `http://localhost:3000/workshop/interested/${conference_id}/${user_id}`;
+  let getInterstedPeople = `${import.meta.env.VITE_BACKEND}/workshop/interested/${conference_id}/${user_id}`;
 
   let allWorkshops = null;
 
-  let getAllworkshopInterestURL = `http://localhost:3000/workshop/interested/${conference_id}`;
+  let getAllworkshopInterestURL = `${import.meta.env.VITE_BACKEND}/workshop/interested/${conference_id}`;
 
   let interested_workshops = null;
 
-  let instructorFetchUrl = `http://localhost:3000/workshop/suggestTeachers`;
+  let instructorFetchUrl = `${import.meta.env.VITE_BACKEND}/workshop/suggestTeachers`;
 
   let suggestedInstructors = null;
 
@@ -159,7 +159,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

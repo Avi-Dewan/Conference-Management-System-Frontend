@@ -10,7 +10,7 @@
 
   onMount(async () => {
     try {
-      const tokenResponse = await fetch("http://localhost:3000/auth", {
+      const tokenResponse = await fetch(`${import.meta.env.VITE_BACKEND}/auth`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -20,7 +20,7 @@
       let tokenData = await tokenResponse.json();
       user_id = tokenData.user_id;
 
-      let url = `http://localhost:3000/user/${user_id}`;
+      let url = `${import.meta.env.VITE_BACKEND}/user/${user_id}`;
 
       const response = await fetch(url);
 
@@ -33,7 +33,7 @@
     // let unreadCount = null;
 
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;

@@ -23,7 +23,7 @@
   });
   
   async function handleLogIn() {
-    const response = await fetch("http://localhost:3000/auth/login", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@
       
     } else {
       
-      const tokenResponse = await fetch("http://localhost:3000/auth", {
+      const tokenResponse = await fetch(`${import.meta.env.VITE_BACKEND}/auth`, {
         headers: {
             "Content-Type": "application/json",
           },

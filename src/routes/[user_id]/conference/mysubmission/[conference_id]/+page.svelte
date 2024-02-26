@@ -17,8 +17,8 @@
 
   let conf_data = null;
 
-  let confurl = `http://localhost:3000/conference/${conference_id}`;
-  let myPaperInConferenceURL = `http://localhost:3000/paper/mysubmission/${conference_id}/${user_id}`;
+  let confurl = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
+  let myPaperInConferenceURL = `${import.meta.env.VITE_BACKEND}/paper/mysubmission/${conference_id}/${user_id}`;
 
   const currentDate = new Date();
 
@@ -56,7 +56,7 @@
 
       console.log(paper_data);
 
-      // let myPaperReviewURL = `http://localhost:3000/paper/review/${conference_id}/${user_id}`;
+      // let myPaperReviewURL = `${import.meta.env.VITE_BACKEND}/paper/review/${conference_id}/${user_id}`;
       // const review_response = await fetch(myPaperReviewURL);
 
       // if(!review_response.ok){
@@ -74,7 +74,7 @@
     const thisPage = window.location.pathname;
     goto(`/${user_id}/home`).then(() => goto(thisPage));
     let response = await fetch(
-      "http://localhost:3000/paper/delete_submission",
+      `${import.meta.env.VITE_BACKEND}/paper/delete_submission`,
       {
         method: "POST",
         headers: {
@@ -88,7 +88,7 @@
     const thisPage = window.location.pathname;
     console.log(paper_id);
     goto(`/${user_id}/conference/edit_paper/${conference_id}/${paper_id}`);
-    // let response = await fetch("http://localhost:3000/paper/edit_submission", {
+    // let response = await fetch(`${import.meta.env.VITE_BACKEND}/paper/edit_submission", {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json",
@@ -102,7 +102,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

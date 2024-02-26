@@ -6,7 +6,7 @@
 
   const user_id = $page.params.user_id;
 
-  let getUnassigned_workshopsURL = `http://localhost:3000/workshop/unassignedInstructor/${user_id}`;
+  let getUnassigned_workshopsURL = `${import.meta.env.VITE_BACKEND}/workshop/unassignedInstructor/${user_id}`;
 
   let unassigned_workshops = null;
   onMount(async () => {
@@ -35,7 +35,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

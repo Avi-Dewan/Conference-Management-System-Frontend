@@ -28,7 +28,7 @@
   let submission_deadline_time = "";
 
   async function createWorkshop() {
-    const req = await fetch("http://localhost:3000/workshop/create", {
+    const req = await fetch(`${import.meta.env.VITE_BACKEND}/workshop/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();
