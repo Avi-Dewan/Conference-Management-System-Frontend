@@ -29,7 +29,7 @@
           <li><a href="/{user_id}/notification">My notification</a></li>
         {/if}
         <li><a href="/{user_id}/dashboard">Dashboard</a></li>
-        <li><a href="#">My Profile</a></li>
+        <li><a href="/{user_id}/profile/myProfile">My Profile</a></li>
         <li><a href="/">Log out</a></li>
       </ul>
     </nav>
