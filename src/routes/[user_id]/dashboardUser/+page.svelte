@@ -6,7 +6,17 @@
 
   const user_id = $page.params.user_id;
 
-  let getPapersURL = `${import.meta.env.VITE_BACKEND}/paper/allPapers/${user_id}`;
+  let searchQuery = "";
+
+  let filteredPapers = [];
+
+  function handleSearch() {
+    console.log(`Searching for: ${searchQuery}`);
+  }
+
+  let getPapersURL = `${
+    import.meta.env.VITE_BACKEND
+  }/paper/allPapers/${user_id}`;
 
   let getPapersSummary = null;
   onMount(async () => {
@@ -21,6 +31,7 @@
       let data = await response.json();
 
       getPapersSummary = data;
+      filteredPapers = data;
 
       console.log(data);
     } catch (error) {
@@ -50,14 +61,41 @@
   {#if unreadCount != null}
     <NavbarChair myVariable={unreadCount} />
 
-    {#if getPapersSummary != null}
+    <div class="search-container">
+      <input
+        class="search-input"
+        bind:value={searchQuery}
+        type="text"
+        placeholder="Search by conference name or paper title..."
+        on:input={() => {
+          filteredPapers = getPapersSummary.filter(
+            (item) =>
+              item.paper_title
+                .toLowerCase()
+                .toLowerCase()
+                .indexOf(searchQuery.toLowerCase()) !== -1 ||
+              item.conference_title
+                .toLowerCase()
+                .indexOf(searchQuery.toLowerCase()) !== -1
+          );
+
+          if (searchQuery == "") {
+            filteredPapers = getPapersSummary;
+          }
+        }}
+      />
+      <button class="search-button" on:click={handleSearch}>Search</button>
+    </div>
+    {#if filteredPapers != null}
       <h2>Your papers:</h2>
 
-      {#each getPapersSummary as item}
+      {#each filteredPapers as item}
         <div>
           <hr />
-          <h3>Title: {item.paper_title}</h3>
+          <h3>Paper Title: {item.paper_title}</h3>
+          <h4>Authors: {item.authors}</h4>
           <h4>Related fields: {item.related_fields}</h4>
+          <h4>Conference name: {item.conference_title}</h4>
           {#if item.status == "accepted"}
             <h4>Status: <b style="color: green;"> accepted</b></h4>
           {:else if item.status == "rejected"}
@@ -103,5 +141,33 @@
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+  }
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    width: 400px;
+  }
+
+  .search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+  }
+
+  .search-button:hover {
+    background-color: #45a049;
   }
 </style>
