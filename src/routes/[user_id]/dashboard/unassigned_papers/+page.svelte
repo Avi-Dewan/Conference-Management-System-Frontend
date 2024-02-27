@@ -6,7 +6,9 @@
 
   const user_id = $page.params.user_id;
 
-  let getUnassigned_papersURL = `${import.meta.env.VITE_BACKEND}/conference/unassignedPapers/${user_id}`;
+  let getUnassigned_papersURL = `${
+    import.meta.env.VITE_BACKEND
+  }/conference/unassignedPapers/${user_id}`;
 
   let unassigned_papers = null;
   onMount(async () => {
@@ -77,9 +79,10 @@
         {#each unassigned_papers as item}
           <div>
             <hr />
-            <h3>Title: {item.paper_title}</h3>
+            <h3>Paper Title: {item.paper_title}</h3>
             <h4>Authors: {item.authors}</h4>
             <h4>Related Fields: {item.related_fields}</h4>
+            <h4>Conference name: {item.conference_title}</h4>
             <button
               on:click={() => {
                 handleViewPaper(item.paper_id);
