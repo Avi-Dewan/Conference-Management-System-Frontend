@@ -74,7 +74,7 @@
     <b> Current Institution: </b> {user.current_institution}
     <br>
     <br> 
-    <b> Personal Links: </b> 
+    <b> Personal Links: </b>  <br>
     {#each user.personal_links as link}
       <a href={link}>{link}</a> <br>
     {/each}
@@ -93,6 +93,8 @@
       {#if item.status == "accepted"}
         <h3>Title: {item.paper_title}</h3>
         <h4>Related fields: {item.related_fields}</h4>
+        <h4>Conference: {item.conference_title}</h4>
+        <h4>Authors: {item.authors}</h4>
         <button
         on:click={() => {
           handleViewPaper(item.conference_id);
@@ -106,6 +108,9 @@
     </div>
   {/each}
   </main>
+
+  {:else} 
+  <h1>Loading...</h1>
 {/if}
 
 <style>
