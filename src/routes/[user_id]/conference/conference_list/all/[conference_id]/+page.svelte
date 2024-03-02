@@ -95,6 +95,11 @@
         >
         <button
           on:click={() =>
+            goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`)}
+          >View Poster Submissions</button
+        >        
+        <button
+          on:click={() =>
             goto(`/${user_id}/conference/create_workshop/${conference_id}`)}
           >Create a workshop</button
         >
@@ -121,9 +126,19 @@
         >
         <button
           on:click={() =>
+            goto(`/${user_id}/conference/submitPoster/${conference_id}`)}
+          >Submit a Poster</button
+        >
+        <button
+          on:click={() =>
             goto(`/${user_id}/conference/mysubmission/${conference_id}`)}
           >My submissions</button
         >
+        <button
+          on:click={() =>
+            goto(`/${user_id}/conference/myPostersubmission/${conference_id}`)}
+          >My Poster submissions</button
+        >        
         <button
           on:click={() =>
             goto(`/${user_id}/conference/view_workshop_user/${conference_id}`)}
