@@ -50,9 +50,7 @@
     }
   });
 
-  function handleViewPaper(conference_id) {
-    goto(`/${user_id}/conference/mysubmission/${conference_id}`);
-  }
+  
 
 </script>
 
@@ -62,28 +60,25 @@
 
     <h1>My Profile</h1>
 
-    <p> <b> Name: </b>  {user.first_name} {user.last_name}
-    <br>
-    <br> 
-    <b> Email: </b> {user.email}
-    <br>
-    <br>
-    <b> Date of Birth: </b> {user.date_of_birth}
-    <br>
-    <br>
-    <b> Current Institution: </b> {user.current_institution}
-    <br>
-    <br> 
-    <b> Personal Links: </b>  <br>
-    {#each user.personal_links as link}
-      <a href={link}>{link}</a> <br>
-    {/each}
-    <br>
-    <br> 
-    <b> Expertise: </b> {#each user.expertise as expertise}
-      {expertise} ,
-    {/each}
-    </p>
+      <p>
+        <b>Name:</b> {user.first_name} {user.last_name}<br><br>
+        <b>Email:</b> {user.email}<br><br>
+        <b>Date of Birth:</b> {user.date_of_birth}<br><br>
+        <b>Current Institution:</b> {user.current_institution}<br><br>
+        <b>Personal Links:</b><br>
+        {#each user.personal_links as link}
+          <a href={link}>{link}</a><br>
+        {/each}<br><br>
+        <b>Expertise:</b>
+        {#each user.expertise as expertise}
+          {expertise},
+        {/each}
+      </p>
+
+      <button on:click={() => {goto(`/${user_id}/profile/edit`)}}>Edit Profile</button>
+      <br/>
+      <button on:click={() => {goto(`/${user_id}/profile/changePassword`)}}>Change Password</button>
+
 
     <h3>My Publications: </h3>
     <hr />
@@ -95,11 +90,7 @@
         <h4>Related fields: {item.related_fields}</h4>
         <h4>Conference: {item.conference_title}</h4>
         <h4>Authors: {item.authors}</h4>
-        <button
-        on:click={() => {
-          handleViewPaper(item.conference_id);
-        }}>View Paper</button
-      >
+        <a href={item.pdf_link}>View Paper</a>
       <hr />
 
       {/if}
@@ -122,12 +113,15 @@
   h1 {
   }
 
+  
+
   button {
-    margin-top: 0%;
-    padding: 8px 20px;
+    margin-top: 1%;
+    margin-right: 30%;
+    padding: 8px 10px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
+    background-color: #45484b;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
