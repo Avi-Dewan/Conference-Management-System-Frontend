@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
+  import "/src/app.css";
 
   const user_id = $page.params.user_id;
 
@@ -71,23 +72,32 @@
         <br />
         <br />
         <hr />
-        <h2>Unassigned Workshop:</h2>
 
-        {#each unassigned_workshops as item}
-          <div>
+        <div class="header">
+          <h2>Unassigned Workshop:</h2>
+        </div>
+
+        <div class="card">
+          {#each unassigned_workshops as item}
+            <div class="card bg-gray-200 shadow-xl mt-10">
+              <div class="card-body">
+                
+                <h3>Title: {item.workshop_title}</h3>
+                <h4>Related Fields: {item.related_fields}</h4>
+                <h4>Conference : {item.conference.conference_title}</h4>
+                <div style="margin-top: 20px;" class="card-actions justify">
+
+                  <button class="btn btn-primary"
+                    on:click={() => {
+                      handleViewWorkshop(item.workshop_id);
+                    }}>View details</button
+                  >
+                </div>
+              </div>
+            </div>
             <hr />
-            <h3>Title: {item.workshop_title}</h3>
-            <h4>Related Fields: {item.related_fields}</h4>
-            <h4>Conference : {item.conference.conference_title}</h4>
-
-            <button
-              on:click={() => {
-                handleViewWorkshop(item.workshop_id);
-              }}>View details</button
-            >
-          </div>
-          <hr />
-        {/each}
+          {/each}
+        </div>
       {/if}
     </div>
   {/if}
@@ -97,6 +107,17 @@
   main {
     max-width: 90%;
     margin: 2% auto;
+  }
+
+  button {
+    margin-top: 0%;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
   }
 
   nav {
@@ -158,16 +179,5 @@
   nav a:nth-child(4):hover ~ .animation {
     width: 250px;
     left: 600px;
-  }
-
-  button {
-    margin-top: 0%;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
   }
 </style>

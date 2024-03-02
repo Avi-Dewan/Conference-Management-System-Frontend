@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
+  import "/src/app.css";
 
   const user_id = $page.params.user_id;
 
@@ -66,6 +67,7 @@
         <div class="animation start-home"></div>
       </nav>
     </div>
+
     <div>
       {#if unassigned_papers != null}
         <br />
@@ -74,23 +76,33 @@
         <br />
         <br />
         <hr />
-        <h2>Unassigned Papers:</h2>
+        <div class="header">
+          <h2>Unassigned Papers:</h2>
+        </div>
 
-        {#each unassigned_papers as item}
-          <div>
-            <hr />
-            <h3>Paper Title: {item.paper_title}</h3>
-            <h4>Authors: {item.authors}</h4>
-            <h4>Related Fields: {item.related_fields}</h4>
-            <h4>Conference name: {item.conference_title}</h4>
-            <button
-              on:click={() => {
-                handleViewPaper(item.paper_id);
-              }}>View details</button
-            >
-          </div>
-          <hr />
-        {/each}
+        <div class="card">
+            {#each unassigned_papers as item}
+              <div class="card bg-gray-200 shadow-xl mt-10">
+                <div class="card-body">
+                  <hr />
+                  <h3>Paper Title: {item.paper_title}</h3>
+                  <h4>Authors: {item.authors}</h4>
+                  <h4>Related Fields: {item.related_fields}</h4>
+                  <h4>Conference name: {item.conference_title}</h4>
+                  <div style="margin-top: 20px;" class="card-actions justify">
+
+                  <button class="btn btn-primary"
+                    on:click={() => {
+                      handleViewPaper(item.paper_id);
+                    }}>View details</button
+                  >
+                  </div>
+                </div>
+              </div>
+              <hr />
+            {/each}
+        </div>
+        
       {/if}
     </div>
   {/if}
