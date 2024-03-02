@@ -1,0 +1,22 @@
+@tailwind base;
+@layer base {
+    h1 {
+        @apply text-4xl font-bold text-gray-800
+    }
+
+    h2 {
+        @apply text-3xl font-semibold text-gray-700
+    }
+
+    h3 {
+        @apply text-2xl font-semibold text-gray-600
+    }
+    h4{
+        @apply text-xl font-semibold text-gray-500
+    }
+    a {
+        @apply text-blue-600 underline;
+    }
+}
+@tailwind components;
+@tailwind utilities;

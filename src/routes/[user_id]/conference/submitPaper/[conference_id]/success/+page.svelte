@@ -8,6 +8,7 @@
   import { onMount } from "svelte";
 
   import { goto } from "$app/navigation";
+  import "/src/app.css";
 
   let user_id = $page.params.user_id;
   let conference_id = $page.params.conference_id;
@@ -34,9 +35,11 @@
     <NavbarUser myVariable={unreadCount} />
     <div>
       <div class="success-dialog">
-        <h3 style="color: black;">Success! Your File was submitted.</h3>
+        <h3 class="mt-4" style="color: black;">
+          Success! Your File was submitted.
+        </h3>
 
-        <button on:click={goBack}>Ok</button>
+        <button class="mt-4" on:click={goBack}>Ok</button>
       </div>
     </div>
   {/if}

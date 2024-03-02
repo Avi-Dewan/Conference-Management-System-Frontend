@@ -45,13 +45,16 @@
   });
 
   async function handleReject(paper_id, paper_title) {
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/chair/reject_paper`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ paper_id: paper_id }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/chair/reject_paper`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paper_id: paper_id }),
+      }
+    );
 
     let data = await response.json();
 
@@ -98,13 +101,16 @@
   }
 
   async function handleAccept(paper_id, paper_title) {
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/chair/accept_paper`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ paper_id: paper_id }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/chair/accept_paper`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paper_id: paper_id }),
+      }
+    );
     let data = await response.json();
 
     let conf_res = await fetch(
@@ -156,13 +162,16 @@
         time: submission_deadline_time,
       },
     };
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/chair/revise_paper`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/chair/revise_paper`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     let data = await response.json();
 
@@ -217,17 +226,20 @@
 
     console.log(reviewer_id);
 
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: reviewer_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/notification/send`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: reviewer_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      }
+    );
 
     const thisPage = window.location.pathname;
 
@@ -270,8 +282,9 @@
             <div>
               <b>{rev.full_name}</b>
               {#if rev.rating != null}
-                <h4>Rating:</h4>
-                <p>{rev.rating}</p>
+                <h4>
+                  Rating: <p>{rev.rating}</p>
+                </h4>
               {:else}
                 <h4>Rating: None</h4>
               {/if}

@@ -89,7 +89,10 @@
               <h3>
                 Review status: <b style="color:green">{item.review_status}</b>
                 <p><b> Rating: </b> {item.rating}</p>
-                <p><b> Review: </b> {item.review}</p>
+                <p style="white-space: pre-wrap;">
+                  <b> Review: </b>
+                  {item.review}
+                </p>
                 <h3>
                   <a href="/{user_id}/review/{item.paper_id}">Edit review</a>
                 </h3>
@@ -171,7 +174,7 @@
     margin: 2% auto;
   }
   .cards {
-    margin: 120px 0%;
+    margin: 0px 0%;
     display: block;
     flex-direction: column; /* Display elements vertically */
   }
