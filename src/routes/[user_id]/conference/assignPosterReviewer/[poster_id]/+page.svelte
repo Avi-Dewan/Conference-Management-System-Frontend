@@ -148,17 +148,43 @@
     });
   
     async function requestReviewer(poster_id, user_id, poster_title) {
-      const response = await fetch(request_reviwer_url, {
+
+      let notification_body = `You are requested to review the following poster ${poster_title}`;
+
+    let notification_json = {
+      type: 'poster_reviewer_request',
+      requested_user_id : user_id,
+      requested_poster_id : poster_id,
+      requested_poster_title : poster_title
+    };
+
+    let notification_response = await fetch(
+      "http://localhost:3000/notification/send",
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          poster_id: poster_id,
           user_id: user_id,
-          poster_title: poster_title,
+          notification_body: notification_body,
+          notification_json: notification_json,
         }),
-      });
+      }
+    );
+
+    let notification_data = await notification_response.json();
+      // const response = await fetch(request_reviwer_url, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     poster_id: poster_id,
+      //     user_id: user_id,
+      //     poster_title: poster_title,
+      //   }),
+      // });
   
       const thisPage = window.location.pathname;
   

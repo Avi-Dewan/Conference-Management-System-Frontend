@@ -161,6 +161,12 @@
       let poster_id = notification_json.poster_id;
       goto(`/${user_id}/conference/assignPosterReviewer/${poster_id}`);
     }
+    else if (notification_json.type == "poster_reviewer_request") {
+      let poster_id = notification_json.requested_poster_id;
+      goto(
+        `/${user_id}/viewRequest/${notification_id}/reviewRequest/${poster_id}`
+      );
+    }
 
   }
   let unreadCount = null;
