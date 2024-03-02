@@ -6,7 +6,7 @@
 
   const user_id = $page.params.user_id;
 
-  let getConferencesSummaryURL = `http://localhost:3000/conference/${user_id}/all`;
+  let getConferencesSummaryURL = `${import.meta.env.VITE_BACKEND}/conference/${user_id}/all`;
 
   let getConferencesSummary = null;
   onMount(async () => {
@@ -41,7 +41,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

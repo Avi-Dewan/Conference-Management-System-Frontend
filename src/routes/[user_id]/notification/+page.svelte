@@ -18,7 +18,7 @@
   let data = [];
 
   console.log(user_id);
-  let url = `http://localhost:3000/notification/${user_id}`;
+  let url = `${import.meta.env.VITE_BACKEND}/notification/${user_id}`;
 
   const currentDate = new Date();
 
@@ -46,7 +46,7 @@
   async function handleDetails(notification_id, notification_json) {
     // Make a PUT request to the server
     const response = await fetch(
-      `http://localhost:3000/notification/update_status/${notification_id}`,
+      `${import.meta.env.VITE_BACKEND}/notification/update_status/${notification_id}`,
       {
         method: "PUT",
         headers: {
@@ -173,7 +173,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

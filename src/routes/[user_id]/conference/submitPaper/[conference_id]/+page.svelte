@@ -30,8 +30,8 @@
     co_authors: null,
   };
 
-  let url = `http://localhost:3000/user/all`;
-  let conf_url = `http://localhost:3000/conference/${conference_id}`;
+  let url = `${import.meta.env.VITE_BACKEND}/user/all`;
+  let conf_url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
 
   let data = null;
 
@@ -85,7 +85,7 @@
   }
 
   async function submitPaper() {
-    const req = await fetch("http://localhost:3000/paper/submit", {
+    const req = await fetch(`${import.meta.env.VITE_BACKEND}/paper/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +100,7 @@
 
 
     const response_chair = await fetch(
-      `http://localhost:3000/conference/conference_chair/${conference_id}`
+      `${import.meta.env.VITE_BACKEND}/conference/conference_chair/${conference_id}`
     );
 
     if (!response_chair.ok) {
@@ -124,7 +124,7 @@
 
     // console.log(reviewer_id);
 
-    let response = await fetch("http://localhost:3000/notification/send", {
+    let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -138,7 +138,7 @@
 
     data = await response.json();
 
-    let fullnameurl = `http://localhost:3000/user/getFullName/${formData.main_author_id}`;
+    let fullnameurl = `${import.meta.env.VITE_BACKEND}/user/getFullName/${formData.main_author_id}`;
 
     const response_fullname = await fetch(fullnameurl);
 
@@ -162,7 +162,7 @@
       console.log("printing co authors");
       console.log(formData.co_authors[i]);
 
-      response = await fetch("http://localhost:3000/notification/send", {
+      response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -181,7 +181,7 @@
       console.log("printing co authors without account");
       console.log(co_authors_wihtout_account_id[i]);
 
-      response = await fetch("http://localhost:3000/notification/send", {
+      response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -331,7 +331,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

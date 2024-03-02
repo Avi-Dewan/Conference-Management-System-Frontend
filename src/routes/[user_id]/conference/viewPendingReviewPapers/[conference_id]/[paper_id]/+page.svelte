@@ -9,8 +9,8 @@
   let user_id;
 
   user_id = $page.params.user_id;
-  let url = `http://localhost:3000/conference/${conference_id}/viewPendingReviewPapers/${paper_id}`;
-  let conference_url = `http://localhost:3000/conference/${conference_id}`;
+  let url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}/viewPendingReviewPapers/${paper_id}`;
+  let conference_url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
   let papers = null;
   let conf_data = null;
 
@@ -52,7 +52,7 @@
 
     console.log(reviewer_id);
 
-    let response = await fetch("http://localhost:3000/notification/send", {
+    let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

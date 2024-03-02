@@ -13,7 +13,7 @@
 
   user_id = $page.params.user_id;
 
-  let url = `http://localhost:3000/reviewer/assignedPapers/${user_id}`;
+  let url = `${import.meta.env.VITE_BACKEND}/reviewer/assignedPapers/${user_id}`;
   let unreadCount = null;
 
   onMount(async () => {
@@ -31,7 +31,7 @@
       console.log(data);
 
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;

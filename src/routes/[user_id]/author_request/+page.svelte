@@ -15,7 +15,7 @@
 
   onMount(async () => {
     try {
-      let url = `http://localhost:3000/author/get_request/${user_id}`;
+      let url = `${import.meta.env.VITE_BACKEND}/author/get_request/${user_id}`;
 
       const response = await fetch(url);
 
@@ -28,7 +28,7 @@
       console.log(data);
 
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();
@@ -40,7 +40,7 @@
 
   async function handleReject(paper_id) {
     const response = await fetch(
-      "http://localhost:3000/author/reject_request", // ekhane author er request delete hbe
+      `${import.meta.env.VITE_BACKEND}/author/reject_request`, // ekhane author er request delete hbe
       {
         method: "POST",
         headers: {
@@ -55,7 +55,7 @@
   }
 
   async function handleAccept(paper_id) {
-    let response = await fetch("http://localhost:3000/author/reject_request", {
+    let response = await fetch(`${import.meta.env.VITE_BACKEND}/author/reject_request`, {
       // ekhane workshop er request delete hbe
       method: "POST",
       headers: {
@@ -64,7 +64,7 @@
       body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
     });
 
-    response = await fetch("http://localhost:3000/author/accept_request", {
+    response = await fetch(`${import.meta.env.VITE_BACKEND}/author/accept_request`, {
       // request accept hoise , tai db te add korlam
       method: "POST",
       headers: {

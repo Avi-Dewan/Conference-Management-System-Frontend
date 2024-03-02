@@ -16,11 +16,11 @@
 
   user_id = $page.params.user_id;
 
-  let getAllWorkshopURL = `http://localhost:3000/workshop/all/${conference_id}`;
+  let getAllWorkshopURL = `${import.meta.env.VITE_BACKEND}/workshop/all/${conference_id}`;
 
   let allWorkshops = null;
 
-  // let instructor_auto_url = `http://localhost:3000/workshop/suggestTeachers`;
+  // let instructor_auto_url = `${import.meta.env.VITE_BACKEND}/workshop/suggestTeachers`;
 
   let suggestedInstructors = null;
 
@@ -29,11 +29,11 @@
 
   let filteredSuggestedInstructor = null;
 
-  let request_instructor_url = `http://localhost:3000/workshop/request`;
+  let request_instructor_url = `${import.meta.env.VITE_BACKEND}/workshop/request`;
 
-  let instructor_auto_url = `http://localhost:3000/workshop/auto_suggest`;
+  let instructor_auto_url = `${import.meta.env.VITE_BACKEND}/workshop/auto_suggest`;
 
-  let updateData_url = `http://localhost:3000/workshop/updateData`;
+  let updateData_url = `${import.meta.env.VITE_BACKEND}/workshop/updateData`;
 
   onMount(async () => {
     try {
@@ -55,7 +55,7 @@
             allWorkshops[i].workshop_time
           );
 
-          let already_sent_request_url = `http://localhost:3000/workshop/sent_request/${allWorkshops[i].workshop_id}`;
+          let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/workshop/sent_request/${allWorkshops[i].workshop_id}`;
           const workshop_response = await fetch(already_sent_request_url);
           if (!workshop_response.ok) {
             throw new Error("Failed to fetch data");
@@ -63,7 +63,7 @@
 
           let alreadyRequestedInstructor = await workshop_response.json();
 
-          let already_assigned_reviewer_url = `http://localhost:3000/workshop/accepted_request/${allWorkshops[i].workshop_id}`;
+          let already_assigned_reviewer_url = `${import.meta.env.VITE_BACKEND}/workshop/accepted_request/${allWorkshops[i].workshop_id}`;
           const accepted_response = await fetch(already_assigned_reviewer_url);
           if (!accepted_response.ok) {
             throw new Error("Failed to fetch data");
@@ -100,7 +100,7 @@
   //   onMount(async () => {
   //   try {
 
-  //     let already_sent_request_url = `http://localhost:3000/assign/sent_request/${paper_id}`;
+  //     let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/assign/sent_request/${paper_id}`;
   //     const response = await fetch(already_sent_request_url);
   //     if (!response.ok) {
   //       throw new Error("Failed to fetch data");
@@ -179,7 +179,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

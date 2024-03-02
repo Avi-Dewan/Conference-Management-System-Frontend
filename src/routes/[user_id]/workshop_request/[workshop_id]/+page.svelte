@@ -16,7 +16,7 @@
 
   onMount(async () => {
     try {
-      let url = `http://localhost:3000/workshop/get_request/${user_id}/${workshop_id}`; // ekhane workshop er link hbe
+      let url = `${import.meta.env.VITE_BACKEND}/workshop/get_request/${user_id}/${workshop_id}`; // ekhane workshop er link hbe
 
       const response = await fetch(url);
 
@@ -27,7 +27,7 @@
       data = await response.json();
 
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;
@@ -40,7 +40,7 @@
 
   async function handleReject(workshop_id, workshop_title) {
     let response = await fetch(
-      "http://localhost:3000/workshop/reject_request", // ekhane workshop er request delete hbe
+      `${import.meta.env.VITE_BACKEND}/workshop/reject_request`, // ekhane workshop er request delete hbe
       {
         method: "POST",
         headers: {
@@ -51,7 +51,7 @@
     );
 
     let conf_res = await fetch(
-      `http://localhost:3000/workshop/get_conference/${workshop_id}`
+      `${import.meta.env.VITE_BACKEND}/workshop/get_conference/${workshop_id}`
     );
 
     let conf_data = await conf_res.json();
@@ -60,7 +60,7 @@
 
     let chair_id = conf_data.chair_id;
 
-    let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
+    let res = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
 
     let full_name = await res.json();
 
@@ -71,7 +71,7 @@
       workshop_id: workshop_id,
     };
 
-    response = await fetch("http://localhost:3000/notification/send", {
+    response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +89,7 @@
 
   async function handleAccept(workshop_id, workshop_title) {
     let response = await fetch(
-      "http://localhost:3000/workshop/reject_request",
+      `${import.meta.env.VITE_BACKEND}/workshop/reject_request`,
       {
         // ekhane workshop er request delete hbe
         method: "POST",
@@ -100,7 +100,7 @@
       }
     );
 
-    response = await fetch("http://localhost:3000/workshop/accept_request", {
+    response = await fetch(`${import.meta.env.VITE_BACKEND}/workshop/accept_request`, {
       // request accept hoise , tai db te add korlam
       method: "POST",
       headers: {
@@ -110,7 +110,7 @@
     });
 
     let conf_res = await fetch(
-      `http://localhost:3000/workshop/get_conference/${workshop_id}`
+      `${import.meta.env.VITE_BACKEND}/workshop/get_conference/${workshop_id}`
     );
 
     let conf_data = await conf_res.json();
@@ -119,7 +119,7 @@
 
     let chair_id = conf_data.chair_id;
 
-    let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
+    let res = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
 
     let full_name = await res.json();
 
@@ -130,7 +130,7 @@
       workshop_id: workshop_id,
     };
 
-    response = await fetch("http://localhost:3000/notification/send", {
+    response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

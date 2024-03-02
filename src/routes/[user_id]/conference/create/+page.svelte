@@ -7,7 +7,7 @@
   import { onMount } from "svelte";
 
   async function createConference() {
-    const req = await fetch("http://localhost:3000/conference/create", {
+    const req = await fetch(`${import.meta.env.VITE_BACKEND}/conference/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +64,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

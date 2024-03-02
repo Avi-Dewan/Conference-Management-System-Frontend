@@ -20,7 +20,7 @@
   let data = [];
 
   console.log(user_id);
-  let url = `http://localhost:3000/notification/single/${notification_id}/${user_id}`;
+  let url = `${import.meta.env.VITE_BACKEND}/notification/single/${notification_id}/${user_id}`;
 
   const currentDate = new Date();
 
@@ -49,7 +49,7 @@
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

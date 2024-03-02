@@ -14,7 +14,7 @@
 
   user_id = $page.params.user_id;
 
-  let url = `http://localhost:3000/conference/all`;
+  let url = `${import.meta.env.VITE_BACKEND}/conference/all`;
 
   const currentDate = new Date();
   let unreadCount = null;
@@ -40,7 +40,7 @@
       }
 
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();

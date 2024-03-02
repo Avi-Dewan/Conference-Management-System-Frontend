@@ -16,7 +16,7 @@
 
   onMount(async () => {
     try {
-      let url = `http://localhost:3000/request/paper/${paper_id}`;
+      let url = `${import.meta.env.VITE_BACKEND}/request/paper/${paper_id}`;
 
       const response = await fetch(url);
 
@@ -27,7 +27,7 @@
       data = await response.json();
 
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;
@@ -38,7 +38,7 @@
   });
 
   async function handleReject(paper_id) {
-    let response = await fetch("http://localhost:3000/request/delete_request", {
+    let response = await fetch(`${import.meta.env.VITE_BACKEND}/request/delete_request`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@
     });
 
     response = await fetch(
-      `http://localhost:3000/paper/get_conference_chair/${paper_id}`
+      `${import.meta.env.VITE_BACKEND}/paper/get_conference_chair/${paper_id}`
     );
 
     if (!response.ok) {
@@ -56,12 +56,12 @@
 
     let chair_id = await response.json();
 
-    let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
+    let res = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
 
     let full_name = await res.json();
 
     res = await fetch(
-      `http://localhost:3000/paper/getConferenceInfo/${paper_id}`
+      `${import.meta.env.VITE_BACKEND}/paper/getConferenceInfo/${paper_id}`
     );
 
     let PaperInfoJSON = await res.json();
@@ -82,7 +82,7 @@
     };
 
     console.log(notification_body);
-    response = await fetch("http://localhost:3000/notification/send", {
+    response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +102,7 @@
   }
 
   async function handleAccept(paper_id) {
-    let response = await fetch("http://localhost:3000/request/delete_request", {
+    let response = await fetch(`${import.meta.env.VITE_BACKEND}/request/delete_request`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -110,7 +110,7 @@
       body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
     });
 
-    response = await fetch("http://localhost:3000/reviewer/accept", {
+    response = await fetch(`${import.meta.env.VITE_BACKEND}/reviewer/accept`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +119,7 @@
     });
 
     response = await fetch(
-      `http://localhost:3000/paper/get_conference_chair/${paper_id}`
+      `${import.meta.env.VITE_BACKEND}/paper/get_conference_chair/${paper_id}`
     );
 
     if (!response.ok) {
@@ -128,12 +128,12 @@
 
     let chair_id = await response.json();
 
-    let res = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
+    let res = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
 
     let full_name = await res.json();
 
     res = await fetch(
-      `http://localhost:3000/paper/getConferenceInfo/${paper_id}`
+      `${import.meta.env.VITE_BACKEND}/paper/getConferenceInfo/${paper_id}`
     );
 
     let PaperInfoJSON = await res.json();
@@ -153,7 +153,7 @@
       paper_id: paper_id,
     };
 
-    response = await fetch("http://localhost:3000/notification/send", {
+    response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -15,7 +15,7 @@
 
   let unreadCount = null;
 
-  let url = `http://localhost:3000/conference/open`;
+  let url = `${import.meta.env.VITE_BACKEND}/conference/open`;
 
   const currentDate = new Date();
 
@@ -39,7 +39,7 @@
       }
 
       const unreadNotificationCount = await fetch(
-        `http://localhost:3000/notification/unreadCount/${user_id}`
+        `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
       );
 
       unreadCount = await unreadNotificationCount.json();
