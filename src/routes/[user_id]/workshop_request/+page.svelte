@@ -154,6 +154,8 @@
       <a href="/{user_id}/Request">Paper Review</a>
       <a href="/{user_id}/workshop_request">Workshop Instructor</a>
       <a href="/{user_id}/author_request">Co authorship</a>
+      <a href="/{user_id}/author_poster_request">Poster Co authorship</a>
+      <a href="/{user_id}/author_poster_request">Keynote Speaker</a>
       <div class="animation start-home"></div>
     </nav>
     <br />
@@ -174,10 +176,10 @@
           <!-- <a href={item.pdf_link}>View Paper</a> -->
           <h3>Related Fields: {item.related_fields}</h3>
           <h3>Description: {item.workshop_description}</h3>
-          <!-- <a
+          <a
               href="/{user_id}/conference/conference_list/all/{item.conference_id}"
               >View Conference</a
-            > -->
+            >
 
           <div
             class="two-column"
@@ -251,7 +253,7 @@
     float: left;
     position: relative;
     margin: 1% 0%;
-    width: 600px;
+    width: 1000px;
     height: 50px;
     background: #34495e;
     border-radius: 8px;
@@ -301,5 +303,21 @@
   nav a:nth-child(3):hover ~ .animation {
     width: 200px;
     left: 400px;
+  }
+
+  nav a:nth-child(4) {
+    width: 200px;
+  }
+  nav a:nth-child(4):hover ~ .animation {
+    width: 200px;
+    left: 600px;
+  }
+
+  nav a:nth-child(5) {
+    width: 200px;
+  }
+  nav a:nth-child(5):hover ~ .animation {
+    width: 200px;
+    left: 800px;
   }
 </style>

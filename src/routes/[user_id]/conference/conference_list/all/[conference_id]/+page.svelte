@@ -99,6 +99,11 @@
         <button
           class="btn btn-neutral"
           on:click={() =>
+            goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`)}
+          >View Poster Submissions</button
+        >        
+        <button
+          on:click={() =>
             goto(`/${user_id}/conference/create_workshop/${conference_id}`)}
           >Create a workshop</button
         >
@@ -107,6 +112,11 @@
           on:click={() =>
             goto(`/${user_id}/conference/view_workshop/${conference_id}`)}
           >View Workshops</button
+        >
+        <button
+          on:click={() =>
+            goto(`/${user_id}/conference/edit_conference/${conference_id}`)}
+          >Edit Conference</button
         >
         <!-- <button
           on:click={() =>
@@ -123,11 +133,21 @@
         <button
           class="btn btn-success"
           on:click={() =>
+            goto(`/${user_id}/conference/submitPoster/${conference_id}`)}
+          >Submit a Poster</button
+        >
+        <button
+          on:click={() =>
             goto(`/${user_id}/conference/mysubmission/${conference_id}`)}
           >My submissions</button
         >
         <button
           class="btn btn-neutral"
+          on:click={() =>
+            goto(`/${user_id}/conference/myPostersubmission/${conference_id}`)}
+          >My Poster submissions</button
+        >        
+        <button
           on:click={() =>
             goto(`/${user_id}/conference/view_workshop_user/${conference_id}`)}
           >View Workshops</button
