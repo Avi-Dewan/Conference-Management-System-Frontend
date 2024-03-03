@@ -6,6 +6,7 @@
   import { goto } from "$app/navigation";
 
   import NavbarUser from "/src/components/navbar_user.svelte";
+  import "/src/app.css";
 
   let user_id, user, data;
 
@@ -85,10 +86,11 @@
 
     <nav style="margin-top: 2%;">
       <a href="/{user_id}/Request">Paper Review</a>
+      <a href="/{user_id}/PosterRequest">Poster Review</a>
       <a href="/{user_id}/workshop_request">Workshop Instructor</a>
       <a href="/{user_id}/author_request">Paper Co authorship</a>
-      <a href="/{user_id}/author_poster_request">Poster Co authorship</a>
-      <a href="/{user_id}/author_request">Keynote Speaker</a>
+      <a href="/{user_id}/author_poster_request">Poster Co authorship   </a>
+      <a href="/{user_id}/KeynoteRequest">Keynote Speaker</a>
       <div class="animation start-home"></div>
     </nav>
     <br />
@@ -98,24 +100,35 @@
     <br />
     <h1>Paper For Co-Authorship</h1>
 
+    <div class="header">
+      {#if data.length == 0}
+        <h2  style="margin-top: 30px;">You have no co-authorship request</h2>
+      {/if}
+    </div>
     <!-- <button on:click={handleClick}>Go to Another Page</button> -->
 
     <div class="cards">
       {#each data as item}
-        <div class="border_style">
-          <h2>{item.paper_title}</h2>
-          <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
-          <a href={item.pdf_link}>View Paper</a>
-          <h3>Related Fields: {item.related_fields}</h3>
-          <h3>Abstract: {item.abstract}</h3>
-          <a
-            href="/{user_id}/conference/conference_list/all/{item.conference_id}"
-            >View Conference</a
-          >
+      <div class="card bg-gray-200 shadow-xl mt-10">
+        <div class="card-body">
+          <h2 style="margin-top: 20px;">{item.paper_title}</h2>
 
+          <div style="margin-top: 20px;" class="card-actions justify">
+            <a class="btn btn-info" href={item.pdf_link}>View Paper</a>
+          </div>
+
+          <h3 style="margin-top: 20px;">Related Fields: {item.related_fields}</h3>
+          <h3 style="margin-top: 20px;">Abstract: {item.abstract}</h3>
+          
+          <div style="margin-top: 20px;" class="card-actions justify">
+            <a  class="btn btn-neutral"
+              href="/{user_id}/conference/conference_list/all/{item.conference_id}"
+              >View Conference</a
+            >
+          </div>  
           <div
             class="two-column"
-            style="display: block;margin-top:2%"
+            style="display: block;margin-top:0%"
             button-container
           >
             <button
@@ -128,6 +141,7 @@
             >
           </div>
         </div>
+      </div>
       {/each}
     </div>
   </main>
@@ -143,7 +157,7 @@
   }
 
   button {
-    margin: 5% 20px;
+    margin: 3% 4px;
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
@@ -185,7 +199,7 @@
     float: left;
     position: relative;
     margin: 1% 0%;
-    width: 1000px;
+    width: 1200px;
     height: 50px;
     background: #34495e;
     border-radius: 8px;
@@ -250,5 +264,12 @@
   nav a:nth-child(5):hover ~ .animation {
     width: 200px;
     left: 800px;
+  }
+  nav a:nth-child(6) {
+    width: 200px;
+  }
+  nav a:nth-child(6):hover ~ .animation {
+    width: 200px;
+    left: 1000px;
   }
 </style>

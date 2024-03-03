@@ -15,7 +15,7 @@
   
     let rating, review;
   
-    let url = `http://localhost:3000/poster/${poster_id}`;
+    let url = `${import.meta.env.VITE_BACKEND}/poster/${poster_id}`;
     let unreadCount = null;
   
     onMount(async () => {
@@ -32,7 +32,7 @@
         data = data[0];
   
         const unreadNotificationCount = await fetch(
-          `http://localhost:3000/notification/unreadCount/${user_id}`
+          `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
         );
         unreadCount = await unreadNotificationCount.json();
         unreadCount = unreadCount.unreadCount;
@@ -44,7 +44,7 @@
   
     async function handleSubmit(poster_title) {
       let response = await fetch(
-        `http://localhost:3000/poster/get_conference/${poster_id}`
+        `${import.meta.env.VITE_BACKEND}/poster/get_conference/${poster_id}`
       );
   
       let conference_id = await response.json();
@@ -52,12 +52,12 @@
       conference_id = conference_id[0].conference_id;
   
       response = await fetch(
-        `http://localhost:3000/poster/get_conference_chair/${poster_id}`
+        `${import.meta.env.VITE_BACKEND}/poster/get_conference_chair/${poster_id}`
       );
   
       let chair_id = await response.json();
   
-      response = await fetch(`http://localhost:3000/user/getFullName/${user_id}`);
+      response = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
   
       let reviewer_full_name = await response.json();
   
@@ -70,7 +70,7 @@
         conference_id: conference_id,
       };
   
-      response = await fetch("http://localhost:3000/notification/send", {
+      response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@
         }),
       });
   
-      response = await fetch("http://localhost:3000/poster/reviewer/review", {
+      response = await fetch(`${import.meta.env.VITE_BACKEND}/poster/reviewer/review`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

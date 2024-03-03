@@ -8,8 +8,8 @@
     let user_id;
   
     user_id = $page.params.user_id;
-    let url = `http://localhost:3000/conference/${conference_id}/postersWithAuthors`;
-    let conference_url = `http://localhost:3000/conference/${conference_id}`;
+    let url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}/postersWithAuthors`;
+    let conference_url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
     let posters = null;
     let conf_data = null;
   
@@ -42,7 +42,7 @@
     });
   
     async function handleReject(poster_id, poster_title) {
-      let response = await fetch("http://localhost:3000/chair/reject_poster", {
+      let response = await fetch(`${import.meta.env.VITE_BACKEND}/chair/reject_poster`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@
       let data = await response.json();
   
       let conf_res = await fetch(
-        `http://localhost:3000/poster/getConferenceInfo/${poster_id}`
+        `${import.meta.env.VITE_BACKEND}/poster/getConferenceInfo/${poster_id}`
       );
       let conf_data = await conf_res.json();
   
@@ -72,13 +72,13 @@
       // console.log(reviewer_id);
   
       let all_author_res = await fetch(
-        `http://localhost:3000/poster/all_authors/${poster_id}`
+        `${import.meta.env.VITE_BACKEND}/poster/all_authors/${poster_id}`
       );
   
       let all_author_id = await all_author_res.json();
   
       for (let i = 0; i < all_author_id.length; i++) {
-        await fetch("http://localhost:3000/notification/send", {
+        await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -95,7 +95,7 @@
     }
   
     async function handleAccept(poster_id, poster_title) {
-      let response = await fetch("http://localhost:3000/chair/accept_poster", {
+      let response = await fetch(`${import.meta.env.VITE_BACKEND}/chair/accept_poster`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +105,7 @@
       let data = await response.json();
   
       let conf_res = await fetch(
-        `http://localhost:3000/poster/getConferenceInfo/${poster_id}`
+        `${import.meta.env.VITE_BACKEND}/poster/getConferenceInfo/${poster_id}`
       );
       let conf_data = await conf_res.json();
   
@@ -124,13 +124,13 @@
       // console.log(reviewer_id);
   
       let all_author_res = await fetch(
-        `http://localhost:3000/poster/all_authors/${poster_id}`
+        `${import.meta.env.VITE_BACKEND}/poster/all_authors/${poster_id}`
       );
   
       let all_author_id = await all_author_res.json();
   
       for (let i = 0; i < all_author_id.length; i++) {
-        await fetch("http://localhost:3000/notification/send", {
+        await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -155,7 +155,7 @@
   
       console.log(reviewer_id);
   
-      let response = await fetch("http://localhost:3000/notification/send", {
+      let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -177,7 +177,7 @@
     onMount(async () => {
       try {
         const unreadNotificationCount = await fetch(
-          `http://localhost:3000/notification/unreadCount/${user_id}`
+          `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
         );
   
         unreadCount = await unreadNotificationCount.json();

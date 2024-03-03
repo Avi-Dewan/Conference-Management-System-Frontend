@@ -8,13 +8,15 @@
     import NavbarUser from "/src/components/navbar_user.svelte";
   
     let user_id, user, data;
-    let unreadCount = null;
   
+    let conference_id = $page.params.conference_id;
+    let notification_id = $page.params.notification_id;
     user_id = $page.params.user_id;
+    let unreadCount = null;
   
     onMount(async () => {
       try {
-        let url = `${import.meta.env.VITE_BACKEND}/poster/request/${user_id}`;
+        let url = `${import.meta.env.VITE_BACKEND}/request/keynote/${conference_id}`;
   
         const response = await fetch(url);
   
@@ -23,8 +25,6 @@
         }
   
         data = await response.json();
-
-
   
         const unreadNotificationCount = await fetch(
           `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
@@ -37,17 +37,17 @@
       }
     });
   
-    async function handleReject(poster_id) {
-      let response = await fetch(`${import.meta.env.VITE_BACKEND}/poster/request/delete_request`, {
+    async function handleReject(conference_id) {
+      let response = await fetch(`${import.meta.env.VITE_BACKEND}/keynote/request/delete_request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_id: user_id, poster_id: poster_id }),
+        body: JSON.stringify({ user_id: user_id, conference_id: conference_id }),
       });
   
       response = await fetch(
-        `${import.meta.env.VITE_BACKEND}/poster/get_conference_chair/${poster_id}`
+        `${import.meta.env.VITE_BACKEND}/keynote/get_conference_chair/${conference_id}`
       );
   
       if (!response.ok) {
@@ -60,11 +60,24 @@
   
       let full_name = await res.json();
   
-      let notification_body = full_name + " rejected your request for reviewing";
+      res = await fetch(
+        `${import.meta.env.VITE_BACKEND}/keynote/getConferenceInfo/${conference_id}`
+      );
+  
+      let ConferenceInfoJSON = await res.json();
+  
+      let conference_title = ConferenceInfoJSON.conference_title;
+      //let poster_title = PosterInfoJSON.poster_title;
+  
+      let notification_body =
+        full_name +
+        ` rejected your request for being a keynote speaker
+        in Conference : ${conference_title}`;
   
       let notification_json = {
-        type: "chair_poster_noti_accept_reject",
-        poster_id: poster_id,
+        type: "chair_keynote_noti_accept_reject",
+        outcome: "reject",
+        conference_id: conference_id,
       };
   
       console.log(notification_body);
@@ -84,45 +97,58 @@
   
       console.log(notification_json);
   
-      goto(`/${user_id}/home`).then(() => goto(thisPage));
+      goto(`/${user_id}/notification`);
     }
   
-    async function handleAccept(poster_id) {
-      let response = await fetch(`${import.meta.env.VITE_BACKEND}/poster/request/delete_request`, {
+    async function handleAccept(conference_id) {
+      let response = await fetch(`${import.meta.env.VITE_BACKEND}/keynote/request/delete_request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_id: user_id, poster_id: poster_id }),
+        body: JSON.stringify({ user_id: user_id, conference_id: conference_id }),
       });
   
-      let respons = await fetch(`${import.meta.env.VITE_BACKEND}/poster/reviewer/accept`, {
+      response = await fetch(`${import.meta.env.VITE_BACKEND}/keynote/reviewer/accept`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_id: user_id, poster_id: poster_id }),
+        body: JSON.stringify({ user_id: user_id, conference_id: conference_id }),
       });
   
-      let respon = await fetch(
-        `${import.meta.env.VITE_BACKEND}/poster/get_conference_chair/${poster_id}`
+      response = await fetch(
+        `${import.meta.env.VITE_BACKEND}/keynote/get_conference_chair/${conference_id}`
       );
   
-      if (!respon.ok) {
+      if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
   
-      let chair_id = await respon.json();
+      let chair_id = await response.json();
   
       let res = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
   
       let full_name = await res.json();
   
-      let notification_body = full_name + " accepted your request for reviewing";
+      res = await fetch(
+        `${import.meta.env.VITE_BACKEND}/keynote/getConferenceInfo/${conference_id}`
+      );
+  
+      let ConferenceInfoJSON = await res.json();
+  
+      let conference_title = ConferenceInfoJSON.conference_title;
+      //let poster_title = PosterInfoJSON.poster_title;
+  
+      let notification_body =
+        full_name +
+        ` accepted your request for being a keynote speaker
+        in Conference : ${conference_title}`;
   
       let notification_json = {
-        type: "chair_poster_noti_accept_reject",
-        poster_id: poster_id,
+        type: "chair_keynote_noti_accept_reject",
+        outcome: "accept",
+        conference_id: conference_id,
       };
   
       response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
@@ -139,41 +165,25 @@
   
       const thisPage = window.location.pathname;
   
-      goto(`/${user_id}/home`).then(() => goto(thisPage));
+      goto(`/${user_id}/notification`);
     }
   </script>
   
-  {#if data != null && unreadCount != null}
+  {#if data != null  && unreadCount != null}
     <main>
       <NavbarUser myVariable={unreadCount} />
-  
-      <nav style="margin-top: 2%;">
-        <a href="/{user_id}/Request">Paper Review</a>
-        <a href="/{user_id}/PosterRequest">Poster Review</a>
-        <a href="/{user_id}/workshop_request">Workshop Instructor</a>
-        <a href="/{user_id}/author_request">Paper Co authorship</a>
-        <a href="/{user_id}/author_poster_request">Poster Co authorship   </a>
-        <a href="/{user_id}/KeynoteRequest">Keynote Speaker</a>
-        <div class="animation start-home"></div>
-      </nav>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <h1>Poster For Review</h1>
+      <h1>Conference For Keynote</h1>
   
       <!-- <button on:click={handleClick}>Go to Another Page</button> -->
   
       <div class="cards">
         {#each data as item}
           <div class="border_style">
-            <h2>{item.poster_title}</h2>
+            <h2>{item.conference_title}</h2>
             <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
-            
-            <a href={item.pdf_link}>View Poster</a>
+            <!-- <a href={item.pdf_link}>View Poster</a>
             <h3>Related Fields: {item.related_fields}</h3>
-            <h3>Abstract: {item.abstract}</h3>
+            <h3>Abstract: {item.abstract}</h3> -->
             <a
               href="/{user_id}/conference/conference_list/all/{item.conference_id}"
               >View Conference</a
@@ -185,11 +195,11 @@
               button-container
             >
               <button
-                on:click={handleReject(item.poster_id)}
+                on:click={handleReject(item.conference_id)}
                 style="background-color:red;">Reject</button
               >
               <button
-                on:click={handleAccept(item.poster_id)}
+                on:click={handleAccept(item.conference_id)}
                 style="background-color:green;">Accept</button
               >
             </div>
@@ -247,81 +257,5 @@
     .button-container {
       text-align: center;
     }
-    nav {
-      float: left;
-      position: relative;
-      margin: 1% 0%;
-      width: 1200px;
-      height: 50px;
-      background: #34495e;
-      border-radius: 8px;
-      font-size: 0;
-      box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
-    }
-    nav a {
-      font-size: 15px;
-      text-transform: uppercase;
-      color: white;
-      text-decoration: none;
-      line-height: 50px;
-      position: relative;
-      z-index: 1;
-      display: inline-block;
-      text-align: center;
-    }
-    nav .animation {
-      position: absolute;
-      height: 100%;
-      /* height: 5px; */
-      top: 0;
-      /* bottom: 0; */
-      z-index: 0;
-      background: #1abc9c;
-      border-radius: 8px;
-      transition: all 0.5s ease 0s;
-    }
-    nav a:nth-child(1) {
-      width: 200px;
-    }
-    nav .start-home,
-    a:nth-child(1):hover ~ .animation {
-      width: 200px;
-      left: 0;
-    }
-    nav a:nth-child(2) {
-      width: 200px;
-    }
-    nav a:nth-child(2):hover ~ .animation {
-      width: 200px;
-      left: 200px;
-    }
-    nav a:nth-child(3) {
-      width: 200px;
-    }
-    nav a:nth-child(3):hover ~ .animation {
-      width: 200px;
-      left: 400px;
-    }
-    nav a:nth-child(4) {
-    width: 200px;
-  }
-  nav a:nth-child(4):hover ~ .animation {
-    width: 200px;
-    left: 600px;
-  }
-  nav a:nth-child(5) {
-    width: 200px;
-  }
-  nav a:nth-child(5):hover ~ .animation {
-    width: 200px;
-    left: 800px;
-  }
-  nav a:nth-child(6) {
-    width: 200px;
-  }
-  nav a:nth-child(6):hover ~ .animation {
-    width: 200px;
-    left: 1000px;
-  }
   </style>
   

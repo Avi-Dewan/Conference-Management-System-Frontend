@@ -6,6 +6,7 @@
   import { goto } from "$app/navigation";
 
   import NavbarUser from "/src/components/navbar_user.svelte";
+  import "/src/app.css";
 
   let user_id, user = null, getPapersSummary = null;;
   let unreadCount = null;
@@ -58,46 +59,68 @@
   <main>
     <NavbarUser myVariable={unreadCount} />
 
-    <h1>My Profile</h1>
+    <div class="header">
+      <h1 style="margin-top: 20px;">My profile</h1>
+    </div>
 
-      <p>
-        <b>Name:</b> {user.first_name} {user.last_name}<br><br>
-        <b>Email:</b> {user.email}<br><br>
-        <b>Date of Birth:</b> {user.date_of_birth}<br><br>
-        <b>Current Institution:</b> {user.current_institution}<br><br>
+      <p style="margin-top: 30px;">
+        <b>Name:</b> {user.first_name} {user.last_name}
+      </p>
+      <p style="margin-top: 20px;">
+        <b>Email:</b> {user.email}
+      </p>
+      <p style="margin-top: 20px;">
+        <b>Date of Birth:</b> {user.date_of_birth}
+      </p>
+      <p style="margin-top: 20px;">
+        <b>Current Institution:</b> {user.current_institution}
+      </p>
+      <p style="margin-top: 20px;">
         <b>Personal Links:</b><br>
         {#each user.personal_links as link}
           <a href={link}>{link}</a><br>
-        {/each}<br><br>
+        {/each}
+      </p>
+      <p style="margin-top: 20px;">
         <b>Expertise:</b>
         {#each user.expertise as expertise}
           {expertise},
         {/each}
       </p>
 
-      <button on:click={() => {goto(`/${user_id}/profile/edit`)}}>Edit Profile</button>
-      <br/>
-      <button on:click={() => {goto(`/${user_id}/profile/changePassword`)}}>Change Password</button>
+      <div style="margin-top: 20px;" class="card-actions justify">
+        <button  class="btn btn-primary" on:click={() => {goto(`/${user_id}/profile/edit`)}}>Edit Profile</button>
+      </div>
+
+      <div style="margin-top: 20px;" class="card-actions justify">
+        <button class="btn btn-accent" on:click={() => {goto(`/${user_id}/profile/changePassword`)}}>Change Password</button>
+      </div>
 
 
-    <h3>My Publications: </h3>
+    <h3 style="margin-top: 30px;">My Publications: </h3>
     <hr />
-
-    {#each getPapersSummary as item}
-    <div>
+     
+    <div class="card">
+      {#each getPapersSummary as item}
       {#if item.status == "accepted"}
-        <h3>Title: {item.paper_title}</h3>
-        <h4>Related fields: {item.related_fields}</h4>
-        <h4>Conference: {item.conference_title}</h4>
-        <h4>Authors: {item.authors}</h4>
-        <a href={item.pdf_link}>View Paper</a>
-      <hr />
+      <div class="card bg-gray-200 shadow-xl mt-10">
+        <div class="card-body">
+            <h3 style="margin-top: 20px; color:black">Title: {item.paper_title}</h3>
+            <h4 style="margin-top: 20px; color:darkgray">Related fields: {item.related_fields}</h4>
+            <h4 style="margin-top: 20px;">Conference: {item.conference_title}</h4>
+            <h4 style="margin-top: 20px;">Authors: {item.authors}</h4>
+            <div style="margin-top: 20px;" class="card-actions justify">
+              <a class="btn btn-info" href={item.pdf_link}>View Paper</a>
+            </div>
 
-      {/if}
+         
 
-      
+          </div>
+        </div>
+        {/if}
+      {/each}
     </div>
-  {/each}
+    
   </main>
 
   {:else} 
@@ -121,7 +144,6 @@
     padding: 8px 10px;
     border: none;
     border-radius: 4px;
-    background-color: #45484b;
     color: #fff;
     font-size: 16px;
     cursor: pointer;

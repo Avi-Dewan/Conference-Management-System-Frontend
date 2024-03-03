@@ -49,9 +49,27 @@
       <NavbarUser myVariable={unreadCount} />
     {/if}
 
+    <nav style="margin-top: 2%;">
+      <a href="/{user_id}/review">Reviewed Papers</a>
+      <a href="/{user_id}/PosterReview">Reviewed Posters</a>
+
+      <div class="animation start-home"></div>
+    </nav>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
     <div class="header">
       <h1>Paper Reviews</h1>
     </div>
+
+    {#if data.length == 0}
+      <div class="header">
+        <h2>You have not reviewed any paper yet</h2>
+      </div>
+    {/if }
 
     <div class="cards">
       {#each data as item}
@@ -182,5 +200,55 @@
   }
 
   h1 {
+  }
+
+
+  nav {
+    float: left;
+    position: relative;
+    margin: 1% 0%;
+    width: 400px;
+    height: 50px;
+    background: #34495e;
+    border-radius: 8px;
+    font-size: 0;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+  nav a {
+    font-size: 15px;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+    line-height: 50px;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    text-align: center;
+  }
+  nav .animation {
+    position: absolute;
+    height: 100%;
+    /* height: 5px; */
+    top: 0;
+    /* bottom: 0; */
+    z-index: 0;
+    background: #1abc9c;
+    border-radius: 8px;
+    transition: all 0.5s ease 0s;
+  }
+  nav a:nth-child(1) {
+    width: 200px;
+  }
+  nav .start-home,
+  a:nth-child(1):hover ~ .animation {
+    width: 200px;
+    left: 0;
+  }
+  nav a:nth-child(2) {
+    width: 200px;
+  }
+  nav a:nth-child(2):hover ~ .animation {
+    width: 200px;
+    left: 200px;
   }
 </style>
