@@ -147,10 +147,11 @@
 
     <nav style="margin-top: 2%;">
       <a href="/{user_id}/Request">Paper Review</a>
+      <a href="/{user_id}/PosterRequest">Poster Review</a>
       <a href="/{user_id}/workshop_request">Workshop Instructor</a>
       <a href="/{user_id}/author_request">Paper Co authorship</a>
       <a href="/{user_id}/author_poster_request">Poster Co authorship   </a>
-      <a href="/{user_id}/author_poster_request">Keynote Speaker</a>
+      <a href="/{user_id}/KeynoteRequest">Keynote Speaker</a>
       <div class="animation start-home"></div>
     </nav>
     <br />
@@ -247,7 +248,7 @@
     float: left;
     position: relative;
     margin: 1% 0%;
-    width: 1000px;
+    width: 1200px;
     height: 50px;
     background: #34495e;
     border-radius: 8px;
@@ -311,5 +312,12 @@
   nav a:nth-child(5):hover ~ .animation {
     width: 200px;
     left: 800px;
+  }
+  nav a:nth-child(6) {
+    width: 200px;
+  }
+  nav a:nth-child(6):hover ~ .animation {
+    width: 200px;
+    left: 1000px;
   }
 </style>

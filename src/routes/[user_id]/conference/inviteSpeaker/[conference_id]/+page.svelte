@@ -5,24 +5,24 @@
     import NavbarChair from "/src/components/navbar_chair.svelte";
   
     const main_user_id = $page.params.user_id;
-    const poster_id = $page.params.poster_id;
+    const conference_id = $page.params.conference_id;
   
-    let poster_details_url = `${import.meta.env.VITE_BACKEND}/poster/${poster_id}`;
-    let poster_author_url = `${import.meta.env.VITE_BACKEND}/poster/${poster_id}/author`;
-    let reviewer_auto_url = `${import.meta.env.VITE_BACKEND}/poster/assign/auto/${poster_id}`;
+    let conference_details_url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
+    //let paper_author_url = `${import.meta.env.VITE_BACKEND}/paper/${paper_id}/author`;
+    let reviewer_auto_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/auto/${conference_id}`;
   
-    let request_reviwer_url = `${import.meta.env.VITE_BACKEND}/poster/assign/request`;
-    let request_delete_url = `${import.meta.env.VITE_BACKEND}/poster/assign/request_delete`;
-    let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/poster/assign/sent_request/${poster_id}`;
+    let request_reviwer_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/request`;
+    let request_delete_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/request_delete`;
+    let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/sent_request/${conference_id}`;
   
-    let reviewer_manual_url = `${import.meta.env.VITE_BACKEND}/poster/assign/manual/${poster_id}`;
+    let reviewer_manual_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/auto/${conference_id}`;
   
-    let already_assigned_reviewer_url = `${import.meta.env.VITE_BACKEND}/poster/reviewer/assigned/${poster_id}`;
+    let already_assigned_reviewer_url = `${import.meta.env.VITE_BACKEND}/keynote/assigned/${conference_id}`;
   
-    let poster_details = null;
-    let poster_author_details = null;
+    let conference_details = null;
+    let paper_author_details = null;
   
-    let poster_authors = null;
+    let paper_authors = null;
   
     let authorSelect;
     let filterText = "";
@@ -40,21 +40,24 @@
     let showManual = false;
     let user_type;
   
-    let poster_title = null;
+    let paper_title = null;
   
     let unreadCount = null;
     //paper details
     onMount(async () => {
       try {
         user_type = sessionStorage.getItem("user_type");
-        const response = await fetch(poster_details_url);
+        const response = await fetch(conference_details_url);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
   
-        poster_details = await response.json();
-        console.log(poster_details);
-        poster_details = poster_details[0];
+        conference_details = await response.json();
+        console.log(conference_details);
+        //conference_details = conference_details[0];
+
+        console.log("conf det url")
+        console.log(conference_details)
   
         let user_id = main_user_id;
         const unreadNotificationCount = await fetch(
@@ -68,19 +71,19 @@
       }
     });
   
-    onMount(async () => {
-      try {
-        const response = await fetch(poster_author_url);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+    // onMount(async () => {
+    //   try {
+    //     const response = await fetch(paper_author_url);
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch data");
+    //     }
   
-        poster_author_details = await response.json();
-        poster_author_details = poster_author_details;
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    });
+    //     paper_author_details = await response.json();
+    //     paper_author_details = paper_author_details;
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // });
   
     //kader kader request kora hoise
     onMount(async () => {
@@ -147,42 +150,16 @@
       }
     });
   
-    async function requestReviewer(poster_id, user_id, poster_title) {
-
-      let notification_body = `You are requested to review the following poster ${poster_title}`;
-
-    let notification_json = {
-      type: 'poster_reviewer_request',
-      requested_user_id : user_id,
-      requested_poster_id : poster_id,
-      requested_poster_title : poster_title
-    };
-
-    let notification_response = await fetch(
-      `${import.meta.env.VITE_BACKEND}/notification/send`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: user_id,
-          notification_body: notification_body,
-          notification_json: notification_json,
-        }),
-      }
-    );
-
-    let notification_data = await notification_response.json();
+    async function requestReviewer(conference_id, user_id, conference_title) {
       const response = await fetch(request_reviwer_url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          poster_id: poster_id,
+          conference_id: conference_id,
           user_id: user_id,
-          poster_title: poster_title,
+          conference_title: conference_title,
         }),
       });
   
@@ -192,14 +169,14 @@
       goto(`/${main_user_id}/home`).then(() => goto(thisPage));
     }
   
-    async function removeRequest(poster_id, user_id) {
+    async function removeRequest(conference_id, user_id) {
       const response = await fetch(request_delete_url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          poster_id: poster_id,
+          conference_id: conference_id,
           user_id: user_id,
         }),
       });
@@ -224,21 +201,19 @@
   </script>
   
   <main>
-    {#if unreadCount != null && poster_details != null && poster_author_details != null && suggestedReviewer != null && alreadyRequestedReviewer != null && suggestedManualReviewer != null && alreadyAssignedReviewer != null}
+
+    {#if unreadCount != null && conference_details != null &&  suggestedReviewer != null }
+    <!-- {#if unreadCount != null && conference_details != null  && suggestedReviewer != null } -->
+
       <NavbarChair myVariable={unreadCount} />
       <div>
-        <h1>Title: {poster_details.poster_title}</h1>
-        <hr />
-        <h2>Authors:</h2>
-        {#each poster_author_details as item}
-          <h3>{item.full_name} , {item.current_institution}</h3>
-        {/each}
-        <hr />
-        <h2>Related Field: {poster_details.related_fields}</h2>
+        <h1>Title: {conference_details.conference_title}</h1>
+
+        <h2>Related Field: {conference_details.related_fields}</h2>
         <hr />
       </div>
       <div>
-        <h3 style="color:red">Already Requested Reviewer</h3>
+        <h3 style="color:red">Already Requested Keynote Speaker</h3>
         <div>
           <div class="two-column">
             {#each alreadyRequestedReviewer as item, index (item.user_id)}
@@ -248,7 +223,7 @@
                 <h4>Affliation: {item.current_institution}</h4>
   
                 <button
-                  on:click={() => removeRequest(poster_id, item.user_id)}
+                  on:click={() => removeRequest(conference_id, item.user_id)}
                   style="background-color:red;margin-left:0%"
                 >
                   Delete Request</button
@@ -261,7 +236,7 @@
       <hr />
   
       <div>
-        <h3 style="color: green;">Already Assigned Reviewer</h3>
+        <h3 style="color: green;">Already Assigned Keynote Speaker</h3>
   
         {#each alreadyAssignedReviewer as item, index (item.user_id)}
           <div>
@@ -304,9 +279,9 @@
                     <h4>Expertise: {item.expertise}</h4>
                     <button
                       on:click={requestReviewer(
-                        poster_id,
+                        conference_id,
                         item.user_id,
-                        poster_details.poster_title
+                        conference_details.conference_title
                       )}>Request</button
                     >
                   </div>
@@ -348,9 +323,9 @@
                   <h4>Expertise: {item.expertise}</h4>
                   <button
                     on:click={requestReviewer(
-                      poster_id,
+                      conference_id,
                       item.user_id,
-                      poster_details.poster_title
+                      conference_details.conference_title
                     )}>Request</button
                   >
                 </div>
@@ -358,7 +333,7 @@
             {/each}
           </div>
         {/if}
-        <button on:click={manualsuggestionSelect}>Assign Manually</button>
+        <!-- <button on:click={manualsuggestionSelect}>Assign Manually</button> -->
       </div>
     {/if}
   </main>

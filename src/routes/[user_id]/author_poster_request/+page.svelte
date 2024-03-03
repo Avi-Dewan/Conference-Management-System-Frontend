@@ -15,7 +15,7 @@
   
     onMount(async () => {
       try {
-        let url = `http://localhost:3000/poster/author/get_request/${user_id}`;
+        let url = `${import.meta.env.VITE_BACKEND}/poster/author/get_request/${user_id}`;
   
         const response = await fetch(url);
   
@@ -28,7 +28,7 @@
         console.log(data);
   
         const unreadNotificationCount = await fetch(
-          `http://localhost:3000/notification/unreadCount/${user_id}`
+          `${import.meta.env.VITE_BACKEND}/notification/unreadCount/${user_id}`
         );
   
         unreadCount = await unreadNotificationCount.json();
@@ -40,7 +40,7 @@
   
     async function handleReject(poster_id) {
       const response = await fetch(
-        "http://localhost:3000/poster/author/reject_request", // ekhane author er request delete hbe
+        `${import.meta.env.VITE_BACKEND}/poster/author/reject_request`, // ekhane author er request delete hbe
         {
           method: "POST",
           headers: {
@@ -55,7 +55,7 @@
     }
   
     async function handleAccept(poster_id) {
-      let response = await fetch("http://localhost:3000/poster/author/reject_request", {
+      let response = await fetch(`${import.meta.env.VITE_BACKEND}/poster/author/reject_request`, {
         // ekhane workshop er request delete hbe
         method: "POST",
         headers: {
@@ -64,7 +64,7 @@
         body: JSON.stringify({ user_id: user_id, poster_id: poster_id }),
       });
   
-      response = await fetch("http://localhost:3000/poster/author/accept_request", {
+      response = await fetch(`${import.meta.env.VITE_BACKEND}/poster/author/accept_request`, {
         // request accept hoise , tai db te add korlam
         method: "POST",
         headers: {
@@ -85,11 +85,11 @@
   
       <nav style="margin-top: 2%;">
         <a href="/{user_id}/Request">Paper Review</a>
-        <a href="/{user_id}/author_poster_request">Poster Review</a>
+        <a href="/{user_id}/PosterRequest">Poster Review</a>
         <a href="/{user_id}/workshop_request">Workshop Instructor</a>
         <a href="/{user_id}/author_request">Paper Co authorship</a>
-        <a href="/{user_id}/author_poster_request">Poster Co authorship</a>
-        <a href="/{user_id}/author_request">Paper Co authorship</a>
+        <a href="/{user_id}/author_poster_request">Poster Co authorship </a>
+        <a href="/{user_id}/KeynoteRequest">Keynote Speaker</a>
         <div class="animation start-home"></div>
       </nav>
       <br />
@@ -186,7 +186,7 @@
       float: left;
       position: relative;
       margin: 1% 0%;
-      width: 1000px;
+      width: 1200px;
       height: 50px;
       background: #34495e;
       border-radius: 8px;
@@ -251,6 +251,13 @@
   nav a:nth-child(5):hover ~ .animation {
     width: 200px;
     left: 800px;
+  }
+  nav a:nth-child(6) {
+    width: 200px;
+  }
+  nav a:nth-child(6):hover ~ .animation {
+    width: 200px;
+    left: 1000px;
   }
   </style>
   

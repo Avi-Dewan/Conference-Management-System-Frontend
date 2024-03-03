@@ -108,6 +108,11 @@
             goto(`/${user_id}/conference/view_workshop/${conference_id}`)}
           >View Workshops</button
         >
+        <button
+          on:click={() =>
+            goto(`/${user_id}/conference/inviteSpeaker/${conference_id}`)}
+          >Invite KeyNote Speaker</button
+        >
         <!-- <button
           on:click={() =>
             goto(`/${user_id}/conference/popular_workshop/${conference_id}`)}
