@@ -214,6 +214,8 @@
       </div>
       <hr class="border-t-2 border-gray-300 my-6" />
     </div>
+
+    
     <div>
       <hr class="border-t-2 border-gray-300 my-6" />
       <div>
