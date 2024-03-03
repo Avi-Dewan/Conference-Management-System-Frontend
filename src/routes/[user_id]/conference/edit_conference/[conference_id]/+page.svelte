@@ -5,15 +5,19 @@
 
   import { page } from "$app/stores";
   import { onMount } from "svelte";
+  import "/src/app.css";
 
   async function editConference() {
-    const req = await fetch(`${import.meta.env.VITE_BACKEND}/conference/${conference_id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const req = await fetch(
+      `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
   }
 
   let user_id, conference_id, conference;
@@ -46,7 +50,7 @@
         time: submission_deadline_time,
       };
     }
-    
+
     editConference();
     // alert(JSON.stringify(formData, null, 2));
     goto(`/${user_id}/conference/edit_conference/${conference_id}/success`);
@@ -70,7 +74,6 @@
       conference = await response.json();
 
       console.log(conference);
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -81,76 +84,78 @@
   {#if unreadCount != null && conference != null}
     <NavbarChair myVariable={unreadCount} />
 
-    <h1>Edit conference</h1>
+    <h1 class="mt-4">Edit conference</h1>
 
-    <h2>  {conference.conference_title}</h2>
-    <div class="form">
-      <div class="form-control">
-        <label for="conference_title">Title:</label>
-        <input
-          type="text"
-          id="conference_title"
-          bind:value={formData.conference_title}
-        />
-      </div>
-
-      <div class="form-control">
-        <label for="conference_description">Description:</label>
-
-        <input
-          type="text"
-          id="conference_title"
-          bind:value={formData.conference_description}
-        />
-      </div>
-
-      <div class="form-control">
-        <label for="webpage">Webpage:</label>
-        <input
-          type="text"
-          id="webpage"
-          bind:value={formData.conference_webpage}
-        />
-      </div>
-
-      <div class="form-control">
-        <label for="venue">Venue:</label>
-        <input type="text" id="venue" bind:value={formData.venue} />
-      </div>
-      <div class="form-control">
-        <label for="start_date">Start Date:</label>
-        <input type="date" id="venue" bind:value={formData.start_date} />
-      </div>
-      <div class="form-control">
-        <label for="end_date">End Date:</label>
-        <input type="date" id="end_date" bind:value={formData.end_date} />
-      </div>
-
-      <div class="form-control redFont">
-        <label>Submission Deadline</label>
-      </div>
-      <div class="form-control-submission">
-        <div class="column">
-          <label for="submission_deadline">Date:</label>
+    <h2 class="mt-3">Conference Title: {conference.conference_title}</h2>
+    <div class="mt-5">
+      <div class="form">
+        <div class="form-control">
+          <label for="conference_title">Title:</label>
           <input
-            type="date"
-            id="submission_deadline_date"
-            bind:value={submission_deadline_date}
+            type="text"
+            id="conference_title"
+            bind:value={formData.conference_title}
           />
         </div>
 
-        <div class="column">
-          <label for="submission_deadline">Time:</label>
+        <div class="form-control">
+          <label for="conference_description">Description:</label>
+
           <input
-            type="time"
-            id="submission_deadline_time"
-            bind:value={submission_deadline_time}
+            type="text"
+            id="conference_title"
+            bind:value={formData.conference_description}
           />
         </div>
-      </div>
 
-      <div class="form-control" style="display: block;">
-        <button on:click={handleSubmit}>Submit</button>
+        <div class="form-control">
+          <label for="webpage">Webpage:</label>
+          <input
+            type="text"
+            id="webpage"
+            bind:value={formData.conference_webpage}
+          />
+        </div>
+
+        <div class="form-control">
+          <label for="venue">Venue:</label>
+          <input type="text" id="venue" bind:value={formData.venue} />
+        </div>
+        <div class="form-control">
+          <label for="start_date">Start Date:</label>
+          <input type="date" id="venue" bind:value={formData.start_date} />
+        </div>
+        <div class="form-control">
+          <label for="end_date">End Date:</label>
+          <input type="date" id="end_date" bind:value={formData.end_date} />
+        </div>
+
+        <div class="form-control redFont">
+          <label>Submission Deadline</label>
+        </div>
+        <div class="form-control-submission">
+          <div class="column">
+            <label for="submission_deadline">Date:</label>
+            <input
+              type="date"
+              id="submission_deadline_date"
+              bind:value={submission_deadline_date}
+            />
+          </div>
+
+          <div class="column">
+            <label for="submission_deadline">Time:</label>
+            <input
+              type="time"
+              id="submission_deadline_time"
+              bind:value={submission_deadline_time}
+            />
+          </div>
+        </div>
+
+        <div class="form-control" style="display: block;">
+          <button on:click={handleSubmit}>Submit</button>
+        </div>
       </div>
     </div>
   {/if}

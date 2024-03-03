@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
-
+  import "/src/app.css";
   const main_user_id = $page.params.user_id;
   const workshop_id = $page.params.workshop_id;
 

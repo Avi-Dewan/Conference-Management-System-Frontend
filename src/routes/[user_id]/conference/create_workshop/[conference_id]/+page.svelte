@@ -10,6 +10,8 @@
 
   import { onMount } from "svelte";
 
+  import "/src/app.css";
+
   let user_id, user_type;
 
   user_id = $page.params.user_id;
@@ -77,70 +79,77 @@
   {#if unreadCount != null}
     <NavbarChair myVariable={unreadCount} />
 
-    <h1>Create a workshop</h1>
-
-    <div class="form">
-      <div class="form-control">
-        <label for="workshop_title">Workshop Title:</label>
-        <input
-          type="text"
-          id="workshop_title"
-          bind:value={formData.workshop_title}
-        />
-      </div>
-
-      <div class="form-control">
-        <label for="workshop_description">Description:</label>
-
-        <input
-          type="text"
-          id="workshop_title"
-          bind:value={formData.workshop_description}
-        />
-      </div>
-      <div class="form-control">
-        <label for="workshop_description">Probable Length (in hours):</label>
-
-        <input
-          type="text"
-          id="workshop_length"
-          bind:value={formData.workshop_length}
-        />
-      </div>
-
-      <div class="form-control">
-        <label for="resarch_field" style="margin-top: 50px;"
-          ><h2>Related Track</h2></label
-        >
-
-        <div class="two-column">
-          {#each researchFields as item, index (item)}
-            <div class="two-column">
-              <div>
-                <label style="width: 1px;"><h3>{item}</h3></label>
-              </div>
-              <div>
-                <button
-                  on:click={() => removeItem(index)}
-                  style="background-color:red;"
-                >
-                  Remove</button
-                >
-              </div>
-            </div>
-          {/each}
+    <h1 class="mt-6">Create a workshop</h1>
+    <div class="mt-5">
+      <div class="form">
+        <div class="form-control">
+          <label for="workshop_title">Workshop Title:</label>
+          <input
+            type="text"
+            id="workshop_title"
+            bind:value={formData.workshop_title}
+          />
         </div>
-      </div>
 
-      <div class="form-control">
-        <input type="text" bind:value={addfield} style="width:30%" />
-        <button on:click={handleAdd} style="margin-left: 3%;height:40px;">
-          Add
-        </button>
-      </div>
+        <div class="form-control">
+          <label for="workshop_description">Description:</label>
 
-      <div class="form-control" style="display: block;">
-        <button on:click={handleSubmit}>Submit</button>
+          <input
+            type="text"
+            id="workshop_title"
+            bind:value={formData.workshop_description}
+          />
+        </div>
+        <div class="form-control">
+          <label for="workshop_description">Probable Length (in hours):</label>
+
+          <input
+            type="text"
+            id="workshop_length"
+            bind:value={formData.workshop_length}
+          />
+        </div>
+
+        <div class="form-control">
+          <label for="resarch_field" style="margin-top: 50px;"
+            ><h2 class="mb-5">Related Track</h2></label
+          >
+
+          <div class="two-column">
+            {#each researchFields as item, index (item)}
+              <div class="two-column">
+                <div>
+                  <label style="width: 1px;"><b>{item}</b></label>
+                </div>
+                <div>
+                  <button
+                    on:click={() => removeItem(index)}
+                    style="background-color:red;"
+                  >
+                    Remove</button
+                  >
+                </div>
+              </div>
+            {/each}
+          </div>
+        </div>
+
+        <div>
+          <input
+            type="text"
+            bind:value={addfield}
+            placeholder="Type here"
+            class="input w-full max-w-xs"
+          />
+
+          <button class="btn bg-blue-300 ml-4" on:click={handleAdd}>
+            Add
+          </button>
+        </div>
+
+        <div class="form-control" style="display: block;">
+          <button on:click={handleSubmit}>Submit</button>
+        </div>
       </div>
     </div>
   {/if}
