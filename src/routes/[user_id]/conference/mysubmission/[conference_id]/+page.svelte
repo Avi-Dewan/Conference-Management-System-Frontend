@@ -124,7 +124,7 @@
 
     {#if conf_data != null && paper_data != null}
       <hr class="border-t-2 border-gray-300 my-6" />
-      <h1 class="mt-5">{conf_data.conference_title}</h1>
+      <h1 class="mt-5">Conference Title: {conf_data.conference_title}</h1>
       <hr class="border-t-2 border-gray-300 my-6" />
 
       {#each paper_data as item}

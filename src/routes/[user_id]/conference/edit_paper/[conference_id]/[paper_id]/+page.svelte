@@ -8,6 +8,7 @@
   import { onMount } from "svelte";
 
   import { goto } from "$app/navigation";
+  import "/src/app.css";
 
   let user_id = $page.params.user_id,
     user_type;
@@ -62,7 +63,9 @@
 
   onMount(async () => {
     try {
-      paper_detail = await fetch(`${import.meta.env.VITE_BACKEND}/paper/${paper_id}`);
+      paper_detail = await fetch(
+        `${import.meta.env.VITE_BACKEND}/paper/${paper_id}`
+      );
 
       let paper_author = await fetch(
         `${import.meta.env.VITE_BACKEND}/paper/${paper_id}/author`
@@ -124,17 +127,20 @@
 
     // console.log(reviewer_id);
 
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: chair_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/notification/send`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: chair_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      }
+    );
 
     data = await response.json();
 
@@ -320,30 +326,33 @@
     <NavbarUser />
 
     {#if data != null && conf_data != null && paper_detail != null}
-      <h1>Submit a Paper</h1>
+      <h1 class="mt-5 mb-5">Submit a Paper</h1>
 
       <div class="form">
         <div class="form-control">
           <h2>Paper Title</h2>
           <input
+            class="mt-5"
             type="text"
             id="paper_title"
             bind:value={formData.paper_title}
           />
         </div>
 
-        <div class="">
+        <div class="mt-5">
           <h2>Paper Authors:</h2>
           {#each authors as item}
-            <h4>{item.full_name}</h4>
+            <div class="mt-5 ml-1">
+              <b>{item.full_name}</b>
+            </div>
           {/each}
         </div>
 
         <div class="form-control">
-          <h3 style="margin-top: 8%;">Research Track</h3>
+          <h3 style="margin-top: 2%;">Research Track</h3>
 
           <div>
-            <select bind:value={selectedTrack}>
+            <select class="mt-5" bind:value={selectedTrack}>
               {#each conf_track as item}
                 <option value={item}>{item}</option>
               {/each}
@@ -354,14 +363,21 @@
         <div style="margin-top: 5%;">
           <h3>Abstract</h3>
           <textarea
+            class="mt-4"
             style="height: 150px; width:700px;border-radius:1em"
             bind:value={formData.abstract}
           ></textarea>
         </div>
 
         <form class="form-control">
-          <h3>Attach Paper</h3>
-          <input id="file" type="file" bind:value={file_path} bind:files />
+          <h3 class="mt-5">Attach Paper</h3>
+          <input
+            class="mt-5"
+            id="file"
+            type="file"
+            bind:value={file_path}
+            bind:files
+          />
         </form>
         <div class="form-control" style="display: block;">
           <button on:click={handleSubmit}>Submit</button>
