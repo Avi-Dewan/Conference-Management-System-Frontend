@@ -10,6 +10,7 @@
   import { onMount } from "svelte";
 
   import { goto } from "$app/navigation";
+  import "/src/app.css";
 
   let user_id, user_type;
 
@@ -122,25 +123,32 @@
     {/if}
 
     {#if conf_data != null && paper_data != null}
-      <h2>Conference Title: {conf_data.conference_title}</h2>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <h1 class="mt-5">{conf_data.conference_title}</h1>
+      <hr class="border-t-2 border-gray-300 my-6" />
 
       {#each paper_data as item}
-        <div>
-          <h3>Paper title: {item.paper_title}</h3>
-
+        <hr class="border-t-2 border-gray-300 my-6" />
+        <div style="margin-top: 15px;">
+          <h2>Paper title: {item.paper_title}</h2>
+          <hr class="border-t-2 border-gray-300 my-6" />
           <p>
-            <b>Authors: </b>
+            <b class="mt-5">Authors: </b>
             {#each item.authors as author, index (author)}
               {author.full_name}{index < item.authors.length - 1 ? ", " : ""}
             {/each}
           </p>
-          <p><b>Abstract:</b>{item.abstract}</p>
+          <p class="mt-5"><b> Abstract: </b>{item.abstract}</p>
           <p></p>
-          <p><b>Research Area:</b>{item.related_fields}</p>
+          <p class="mt-5"><b>Research Area:</b> {item.related_fields}</p>
 
-          <a href={item.pdf_link}>View Paper</a>
+          <div class="mt-5">
+            <a href={item.pdf_link}>View Paper</a>
+          </div>
 
-          <h3>Status: {item.status}</h3>
+          <div class="mt-5">
+            <b>Status: {item.status}</b>
+          </div>
 
           {#if item.status == "pending"}
             {#if item.conference_submission_status == "open"}

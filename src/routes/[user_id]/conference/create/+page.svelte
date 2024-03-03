@@ -2,18 +2,21 @@
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
   import { goto } from "$app/navigation";
-
+  import "/src/app.css";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
 
   async function createConference() {
-    const req = await fetch(`${import.meta.env.VITE_BACKEND}/conference/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const req = await fetch(
+      `${import.meta.env.VITE_BACKEND}/conference/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
   }
 
   let user_id;
@@ -79,7 +82,7 @@
   {#if unreadCount != null}
     <NavbarChair myVariable={unreadCount} />
 
-    <h1>Create a conference</h1>
+    <h1 class="mt-5 mb-5">Create a conference</h1>
 
     <div class="form">
       <div class="form-control">
@@ -147,11 +150,11 @@
       </div>
 
       <div class="form-control">
-        <label for="resarch_field" style="margin-top: 150px;"
+        <label for="resarch_field" style="margin-top: 10px;"
           ><h2>Related Fields</h2></label
         >
 
-        <div class="two-column">
+        <div class="two-column" style="margin-top: 20px;">
           {#each researchFields as item, index (item)}
             <div class="two-column">
               <div>
@@ -170,9 +173,15 @@
         </div>
       </div>
 
-      <div class="form-control">
-        <input type="text" bind:value={addfield} style="width:30%" />
-        <button on:click={handleAdd} style="margin-left: 3%;height:40px;">
+      <div>
+        <input
+          type="text"
+          placeholder="Type here"
+          class="input input-bordered input-success w-full max-w-xs"
+          bind:value={addfield}
+          style="width:30%"
+        />
+        <button sty on:click={handleAdd} class="btn btn-success ml-4">
           Add
         </button>
       </div>
