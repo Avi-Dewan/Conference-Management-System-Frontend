@@ -15,7 +15,8 @@
   $: user_id = $page.params.user_id;
 
   let unreadCount = null;
-
+  let filtered_data = [];
+  let searchQuery = "";
   let url = `${import.meta.env.VITE_BACKEND}/conference/open`;
 
   const currentDate = new Date();
@@ -30,6 +31,7 @@
       }
 
       data = await response.json();
+      filtered_data = data;
 
       for (let i = 0; i < data.length; i++) {
         const submissionDeadline = new Date(
@@ -70,7 +72,32 @@
       <div class="animation start-home"></div>
     </nav>
     <div class="cards">
-      {#each data as item}
+      <div class="mt-20">
+        <input
+          type="text"
+          class="input input-bordered input-accent w-full max-w-xs"
+          bind:value={searchQuery}
+          placeholder="Search by conference name..."
+          on:input={() => {
+            filtered_data = data.filter(
+              (item) =>
+                // item.paper_title
+                //   .toLowerCase()
+                //   .toLowerCase()
+                //   .indexOf(searchQuery.toLowerCase()) !== -1 ||
+                item.conference_title
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) !== -1
+            );
+
+            if (searchQuery == "") {
+              filtered_data = data;
+            }
+          }}
+        />
+        <button class="search-button">Search</button>
+      </div>
+      {#each filtered_data as item}
         <div class="card bg-gray-200 shadow-xl mt-10">
           <div class="card-body">
             <h1>{item.conference_title}</h1>
