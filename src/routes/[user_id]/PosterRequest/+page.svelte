@@ -6,6 +6,7 @@
     import { goto } from "$app/navigation";
   
     import NavbarUser from "/src/components/navbar_user.svelte";
+    import "/src/app.css";
   
     let user_id, user, data;
     let unreadCount = null;
@@ -162,40 +163,61 @@
       <br />
       <br />
       <h1>Poster For Review</h1>
+
+      <div class="header">
+        {#if data.length == 0}
+          <h2  style="margin-top: 30px;">You have no poster to review</h2>
+        {/if}
+      </div>
   
       <!-- <button on:click={handleClick}>Go to Another Page</button> -->
-  
-      <div class="cards">
-        {#each data as item}
-          <div class="border_style">
-            <h2>{item.poster_title}</h2>
-            <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
-            
-            <a href={item.pdf_link}>View Poster</a>
-            <h3>Related Fields: {item.related_fields}</h3>
-            <h3>Abstract: {item.abstract}</h3>
-            <a
-              href="/{user_id}/conference/conference_list/all/{item.conference_id}"
-              >View Conference</a
-            >
-  
-            <div
-              class="two-column"
-              style="display: block;margin-top:2%"
-              button-container
-            >
-              <button
-                on:click={handleReject(item.poster_id)}
-                style="background-color:red;">Reject</button
+   
+        <div class="cards">
+          {#each data as item}
+          <div class="card bg-gray-200 shadow-xl mt-10">
+            <div class="card-body">
+              <h2 style="margin-top: 20px;">{item.poster_title}</h2>
+              <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
+              
+              <div style="margin-top: 20px;" class="card-actions justify">
+                <a class="btn btn-info" href={item.pdf_link}>View Poster</a>
+              </div>
+
+              <h3 style="margin-top: 20px;" >Related Fields: {item.related_fields}</h3>
+              <h3 style="margin-top: 20px;" >Abstract: {item.abstract}</h3>
+              
+              
+              <div style="margin-top: 20px;" class="card-actions justify">
+              <a class="btn btn-neutral"
+                href="/{user_id}/conference/conference_list/all/{item.conference_id}"
+                >View Conference</a
               >
-              <button
-                on:click={handleAccept(item.poster_id)}
-                style="background-color:green;">Accept</button
+              </div>
+
+
+    
+              <div
+                class="two-column"
+                style="display: block;margin-top:2%"
+                button-container
               >
+                <button
+                  on:click={handleReject(item.poster_id)}
+                  style="background-color:red;">Reject</button
+                >
+                <button
+                  on:click={handleAccept(item.poster_id)}
+                  style="background-color:green;">Accept</button
+                >
+              </div>
             </div>
           </div>
-        {/each}
-      </div>
+          {/each}
+        </div>
+
+      
+
+
     </main>
   {/if}
   
@@ -209,7 +231,7 @@
     }
   
     button {
-      margin: 5% 20px;
+      margin: 3% 4px;
       padding: 8px 20px;
       border: none;
       border-radius: 4px;

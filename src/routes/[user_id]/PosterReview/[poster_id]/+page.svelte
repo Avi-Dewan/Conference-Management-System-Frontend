@@ -3,6 +3,7 @@
     import NavbarUser from "/src/components/navbar_user.svelte";
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
+    import "/src/app.css";
   
     import { page } from "$app/stores";
   
@@ -95,7 +96,7 @@
         }),
       });
   
-      goto(`/${user_id}/review`);
+      goto(`/${user_id}/PosterReview`);
     }
   </script>
   
@@ -105,13 +106,24 @@
   
     {#if data != null}
       <div>
-        <h2>{data.poster_title}</h2>
-        <p>Related field: {data.related_fields}</p>
-        <p>Abstract : {data.abstract}</p>
-        <h3>PDF link : <a href={data.pdf_link}> view pdf </a></h3>
+        <br>
+
+        <div class="header">
+          <h2>{data.poster_title}</h2>
+        </div>
+
+        <p style="margin-top: 20px" > <b> Related field:</b> {data.related_fields}</p>
+        <p style="margin-top: 20px"> <b> Abstract : </b>{data.abstract}</p>
+        <h3 style="margin-top: 20px" >PDF link : <a href={data.pdf_link}> view pdf </a></h3>
       </div>
+
+      <br>
   
-      <h1>Write review</h1>
+      <div class="header">
+        <h1>Write review</h1>
+      </div>
+      
+      <br>
   
       <div class="form">
         <div class="form-control">
