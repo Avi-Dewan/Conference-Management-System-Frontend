@@ -360,6 +360,45 @@
                 on:click={handleAccept(item.paper_id, item.paper_title)}
                 style="background-color:green;">Accept</button
               >
+              <hr class="border-t-2 border-gray-300 my-6" />
+              <div class="column">
+                <div class="mt-8">
+                  <b for="submission_deadline">Submission Deadline:</b>
+                  <input
+                    type="date"
+                    class="input w-full max-w-xs bg-gray-200"
+                    id="submission_deadline_date"
+                    bind:value={submission_deadline_date}
+                  />
+                  <input
+                    class="input w-full max-w-xs bg-gray-200"
+                    type="time"
+                    id="submission_deadline_time"
+                    bind:value={submission_deadline_time}
+                  />
+                </div>
+                <div class="mt-5">
+                  <button
+                    on:click={handleRevise(item.paper_id, item.paper_title)}
+                    style="background-color:black;">Revise</button
+                  >
+                </div>
+              </div>
+              <hr class="border-t-2 border-gray-300 my-6" />
+            </div>
+            <!-- <div
+              class="two-column"
+              style="display: block;margin-top:20px"
+              button-container
+            >
+              <button
+                on:click={handleReject(item.paper_id, item.paper_title)}
+                style="background-color:red;">Reject</button
+              >
+              <button
+                on:click={handleAccept(item.paper_id, item.paper_title)}
+                style="background-color:green;">Accept</button
+              >
               <div class="column">
                 <label for="submission_deadline">Date:</label>
                 <input
@@ -377,7 +416,7 @@
                   style="background-color:black;">Revise</button
                 >
               </div>
-            </div>
+            </div> -->
           {:else if item.status == "revise"}
             <div style="margin-top: 20px;">
               <button

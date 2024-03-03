@@ -8,6 +8,7 @@
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
 
+  import "/src/app.css";
   import { onMount } from "svelte";
 
   let user_id, user_type;
@@ -200,34 +201,55 @@
     {#if allWorkshops != null}
       <div class="cards">
         {#each allWorkshops as item}
-          <h2>{item.workshop_title}</h2>
-          <h3 style="color:black">Related Fields: {item.related_fields}</h3>
-          <h4>Description: {item.workshop_description}</h4>
-
-          <h3>Interested People: {item.count}</h3>
-
-          <h3>Requested Instructor: {item.requested}</h3>
-          <h3>Assigned Instructor: {item.assigned}</h3>
+          <hr class="border-t-2 border-gray-300 my-6" />
+          <h2 class="mt-6">{item.workshop_title}</h2>
+          <b class="mt-3" style="color:black"
+            >Related Fields: {item.related_fields}</b
+          >
+          <h4 class="mt-5 bg-black-200">Description:</h4>
+          <p>{item.workshop_description}</p>
+          <div class="mt-3">
+            <b>Interested People: {item.count}</b>
+          </div>
+          <div class="mt-5">
+            <b>Requested Instructor: {item.requested}</b>
+          </div>
+          <div class="mt-5">
+            <b>Assigned Instructor: {item.assigned}</b>
+          </div>
           <!-- {#each item.requested as requested}
           <h3>{requested.full_name} , {requested.current_institution}</h3>
         {/each} -->
-
-          {#if item.workshop_time != null}
-            <h4>Time: {item.workshop_time.time}</h4>
-            <h4>Date: {item.workshop_time.date}</h4>
-          {:else}
-            <h4 style="color: red;">Time: Not yet assigned</h4>
-            <h4 style="color: red;">Date: Not yet assigned</h4>
-          {/if}
-
-          <h3>
-            Assign time:
-            <input type="time" bind:value={workshop_time} />
-          </h3>
-          <h3>
-            Assign Date:
-            <input type="date" bind:value={workshop_date} />
-          </h3>
+          <div class="mt-5 mb-5">
+            {#if item.workshop_time != null}
+              <b style="color:red;">Time: {item.workshop_time.time}</b>
+              <b style="color:red;">Date: {item.workshop_time.date}</b>
+            {:else}
+              <b style="color: red;">Time & Date not yet assigned</b>
+            {/if}
+          </div>
+          <div>
+            <b>
+              Assign time:
+              <input
+                type="time"
+                placeholder="Type here"
+                class="input input-bordered input-success w-full max-w-xs"
+                bind:value={workshop_time}
+              />
+            </b>
+          </div>
+          <div class="mt-4">
+            <b>
+              Assign Date:
+              <input
+                type="date"
+                placeholder="Type here"
+                class="input input-bordered input-success w-full max-w-xs"
+                bind:value={workshop_date}
+              />
+            </b>
+          </div>
 
           <div class="form-control">
             {#if item.showSuggest == true}

@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
-
+  import "/src/app.css";
   const main_user_id = $page.params.user_id;
   const workshop_id = $page.params.workshop_id;
 
@@ -232,54 +232,91 @@
   {#if workshop_details != null && alreadyAssignedInstructor != null && alreadyRequestedInstructor != null && unreadCount != null}
     <NavbarChair myVariable={unreadCount} />
     <div>
-      <h1>Title: {workshop_details.workshop_title}</h1>
-      <!-- <hr />
-        <h2>Authors:</h2>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <h1 class="mt-5 mb-5">Title: {workshop_details.workshop_title}</h1>
+      <hr class="border-t-2 border-gray-300 my-6" />
 
-        
-        {#each paper_author_details as item}
-          <h3>{item.full_name} , {item.current_institution}</h3>
-        {/each}
-        <hr /> -->
-      <h2>Related Field: {workshop_details.related_fields}</h2>
-      <hr />
+      <div class="mt-5">
+        <b class="mt-3">Related Field: {workshop_details.related_fields}</b>
+      </div>
+      <hr class="border-t-2 border-gray-300 my-6" />
     </div>
+
+
     <div>
-      <h3 style="color:red">Already Requested Instructor</h3>
+      <hr class="border-t-2 border-gray-300 my-6" />
+    <div>
+      <h3 class="mt-5" style="color:red">Already Requested Instructor</h3>
+    </div>
+    <hr class="border-t-2 border-gray-300 my-6" />
       <div>
         <div class="two-column">
           {#each alreadyRequestedInstructor as item, index (item.user_id)}
-            <div>
-              <h3>Name: {item.full_name}</h3>
-              <h4>Expertise: {item.expertise}</h4>
-              <h4>Affliation: {item.current_institution}</h4>
+            <div class = "mt-4">
 
+              <div class = "mt-3">
+                <b>Name: {item.full_name}</b>
+              </div>
+
+              <div class = "mt-3">
+                <b>Expertise: {item.expertise}</b>
+              </div>
+
+              <div class = "mt-3">
+                <b>Affliation: {item.current_institution}</b>
+              </div>
+
+              <div class = "mt-3">
               <button
                 on:click={() => removeRequest(workshop_id, item.user_id)}
                 style="background-color:red;margin-left:0%"
               >
                 Delete Request</button
               >
+              </div>
+
+
             </div>
           {/each}
         </div>
       </div>
     </div>
-    <hr />
+    
+
 
     <div>
-      <h3 style="color: green;">Already Assigned Instructor</h3>
+      
+        <hr class="border-t-2 border-gray-300 my-6" />
+      <h3 class="mt-10" style="color: green;">Already Assigned Instructor</h3>
 
       {#each alreadyAssignedInstructor as item}
-        <div>
-          <h3>Name: {item.full_name}</h3>
-          <h4>Expertise: {item.expertise}</h4>
-          <h4>Affliation: {item.current_institution}</h4>
-          <hr />
+        <div class= "mt-4">
+
+          <div class="mt-3">
+            <b>Name: {item.full_name}</b>
+          </div>
+
+          <div class="mt-3">
+            <b class="mt-2">Expertise: {item.expertise}</b>
+          </div>
+
+          <div class="mt-2">
+            <b>Affliation: {item.current_institution}<b>
+          </div>
+
         </div>
+
+        
       {/each}
+      <hr class="border-t-2 border-gray-300 my-6" />
     </div>
-    <div style="margin-top: 10%;">
+
+    
+
+
+
+    <div style="margin-top: 10px;">
+      <hr class="border-t-2 border-gray-300 my-6" />
       <h2>Workshop Instructor Suggestion:</h2>
       <div class="form-control">
         {#if showAuto == true}
@@ -304,15 +341,19 @@
               }}
             />
             {#each filteredSuggestedInstructor as item (item.user_id)}
-              <div>
-                <div class="card">
-                  <h3>Name: {item.full_name}</h3>
-                  <h4>Affliation: {item.current_institution}</h4>
-                  <h4>Expertise: {item.expertise}</h4>
+              <div class="card w-98 text-black-200">
+                <div class="card-body bg-gray-100">
+
+                  <b>Name: {item.full_name}</b>
+                  <b>Affliation: {item.current_institution}</b>
+                  <b>Expertise: {item.expertise}</b>
+
+                  <div class="card-actions justify-end">
                   <button
                     on:click={requestInstructor(workshop_id, item.user_id)}
                     >Request</button
                   >
+                  </div>
                 </div>
               </div>
             {/each}
@@ -433,6 +474,7 @@
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+    width: 20%;
   }
 
   button {
@@ -510,7 +552,7 @@
     padding: 10px;
   }
   .scrollable-window button {
-    margin-left: 500px;
+    margin-left: 800px;
     margin-bottom: 20px;
     height: 20%; /* Adjust height as needed */
     overflow-y: auto;

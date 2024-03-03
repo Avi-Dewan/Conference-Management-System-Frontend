@@ -271,7 +271,7 @@
       <h1 class="mt-5">{conf_data.conference_title}</h1>
       <hr class="border-t-2 border-gray-300 my-6" />
       {#each papers as item}
-        <hr />
+        <hr class="border-t-2 border-black-300 my-6 mt-5" />
         <div style="margin-top: 15px;">
           <h2>Paper Title: {item.paper_title}</h2>
           <hr class="border-t-2 border-gray-300 my-6" />
@@ -359,25 +359,34 @@
                 on:click={handleAccept(item.paper_id, item.paper_title)}
                 style="background-color:green;">Accept</button
               >
+              <hr class="border-t-2 border-gray-300 my-6" />
               <div class="column">
-                <label for="submission_deadline">Date:</label>
-                <input
-                  type="date"
-                  id="submission_deadline_date"
-                  bind:value={submission_deadline_date}
-                />
-                <input
-                  type="time"
-                  id="submission_deadline_time"
-                  bind:value={submission_deadline_time}
-                />
-                <button
-                  on:click={handleRevise(item.paper_id, item.paper_title)}
-                  style="background-color:black;">Revise</button
-                >
+                <div class="mt-8">
+                  <b for="submission_deadline">Submission Deadline:</b>
+                  <input
+                    type="date"
+                    class="input w-full max-w-xs bg-gray-200"
+                    id="submission_deadline_date"
+                    bind:value={submission_deadline_date}
+                  />
+                  <input
+                    class="input w-full max-w-xs bg-gray-200"
+                    type="time"
+                    id="submission_deadline_time"
+                    bind:value={submission_deadline_time}
+                  />
+                </div>
+                <div class="mt-5">
+                  <button
+                    on:click={handleRevise(item.paper_id, item.paper_title)}
+                    style="background-color:black;">Revise</button
+                  >
+                </div>
               </div>
+              <hr class="border-t-2 border-gray-300 my-6" />
             </div>
           {:else if item.status == "revise"}
+            <hr class="border-t-2 border-gray-300 my-6" />
             <div style="margin-top: 20px;">
               <button
                 on:click={handleReject(item.paper_id, item.paper_title)}
@@ -388,6 +397,7 @@
                 style="background-color:green;">Accept</button
               >
             </div>
+            <hr class="border-t-2 border-gray-300 my-6" />
           {/if}
         </div>
 
