@@ -104,7 +104,7 @@
             {:else if item.status == "rejected"}
               <h4 class="mb-4">Status: <b style="color: red;">rejected</b></h4>
             {:else}
-              <h4 class="mb-4">Status: <b style="color: red;">rejected</b></h4>
+              <h4 class="mb-4">Status: <b style="color: orange;">{item.status}</b></h4>
             {/if}
             <div class="card-actions">
               <button
