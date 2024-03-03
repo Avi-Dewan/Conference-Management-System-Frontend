@@ -89,11 +89,11 @@
       </p>
 
       <div style="margin-top: 20px;" class="card-actions justify">
-        <button  class="btn btn-primary" on:click={() => {goto(`/${user_id}/profile/edit`)}}>Edit Profile</button>
+        <button  class="btn btn-info" on:click={() => {goto(`/${user_id}/profile/edit`)}}>Edit Profile</button>
       </div>
 
       <div style="margin-top: 20px;" class="card-actions justify">
-        <button class="btn btn-accent" on:click={() => {goto(`/${user_id}/profile/changePassword`)}}>Change Password</button>
+        <button class="btn btn-success" on:click={() => {goto(`/${user_id}/profile/changePassword`)}}>Change Password</button>
       </div>
 
 
@@ -112,9 +112,6 @@
             <div style="margin-top: 20px;" class="card-actions justify">
               <a class="btn btn-info" href={item.pdf_link}>View Paper</a>
             </div>
-
-         
-
           </div>
         </div>
         {/if}
@@ -122,9 +119,6 @@
     </div>
     
   </main>
-
-  {:else} 
-  <h1>Loading...</h1>
 {/if}
 
 <style>

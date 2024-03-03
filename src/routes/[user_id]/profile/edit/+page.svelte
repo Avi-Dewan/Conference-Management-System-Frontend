@@ -6,6 +6,7 @@
   import { goto } from "$app/navigation";
 
   import NavbarUser from "/src/components/navbar_user.svelte";
+  import "/src/app.css";
 
   let user_id, user = null;;
   let unreadCount = null;
@@ -113,9 +114,9 @@
 
     <NavbarUser myVariable={unreadCount} />
 
-    <h1>Edit Profile</h1>
+    <h1 style="margin-top: 30px;">Edit Profile</h1>
 
-    <div class="form">
+    <div class="form" style="margin-top: 30px;">
       <div class="form-control">
         <label for="first_name">First Name:</label>
         <input
@@ -158,10 +159,11 @@
         <label for="personal_links" style="margin-top: 10px;"
           ><h2>Personal Links</h2></label
         >
+        <br>
         <div class="two-column">
           {#each personal_links as item, index (item)}
             <div class="two-column">
-              <div>
+              <div style="margin-top: 10px;">
                 <label style="width: 1px;"><h3>{item}</h3></label>
               </div>
               <div>
@@ -179,15 +181,18 @@
 
       <div class="form-control">
         <input type="text" bind:value={link} style="width:30%" />
-        <button on:click={handleAddLink} style="margin-left: 3%;height:40px;">
-          Add
-        </button>
+        <div style="margin-top: 1px;" class="card-actions justify">
+          <button class="btn btn-primary" on:click={handleAddLink}>
+            Add
+          </button>
+        </div>
       </div>
 
       <div class="form-control">
         <label for="resarch_field" style="margin-top: 10px;"
           ><h2>Expertise</h2></label
         >
+        <br>
         <div class="two-column">
           {#each expertise as item, index (item)}
             <div class="two-column">
@@ -209,13 +214,16 @@
 
       <div class="form-control">
         <input type="text" bind:value={addfield} style="width:30%" />
-        <button on:click={handleAddExpertise} style="margin-left: 3%;height:40px;">
+        <div style="margin-top: 1px;" class="card-actions justify">
+        <button on:click={handleAddExpertise} class="btn btn-primary">
           Add
         </button>
+
+        </div>
       </div>
 
       <div class="form-control" style="display: block;">
-        <button on:click={handleSubmit}>Submit</button>
+        <button class="btn btn-accent" on:click={handleSubmit}>Submit</button>
       </div>
     </div>
 
@@ -283,7 +291,6 @@
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
     color: #fff;
     font-size: 16px;
     cursor: pointer;

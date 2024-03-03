@@ -4,6 +4,7 @@
 
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
+  import "/src/app.css";
 
 
   async function createUser() {
@@ -147,9 +148,11 @@
 
     <div class="form-control">
       <input type="text" bind:value={link} style="width:30%" />
-      <button on:click={handleAddLink} style="margin-left: 3%;height:40px;">
-        Add
-      </button>
+      <div style="margin-top: 1px;" class="card-actions justify">
+        <button class="btn btn-primary" on:click={handleAddLink} >
+          Add
+        </button>
+      </div>
     </div>
 
     
@@ -196,13 +199,17 @@
 
     <div class="form-control">
       <input type="text" bind:value={addfield} style="width:30%" />
-      <button on:click={handleAddExpertise} style="margin-left: 3%;height:40px;">
+      <div style="margin-top: 1px;" class="card-actions justify">
+
+      <button on:click={handleAddExpertise} class="btn btn-primary">
         Add
       </button>
+
+      </div>
     </div>
 
     <div class="form-control" style="display: block;">
-      <button on:click={handleSubmit}>Submit</button>
+      <button class="btn btn-success" on:click={handleSubmit}>Submit</button>
     </div>
   </div>
 </main>
@@ -268,7 +275,6 @@
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
     color: #fff;
     font-size: 16px;
     cursor: pointer;

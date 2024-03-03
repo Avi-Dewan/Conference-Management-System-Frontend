@@ -250,16 +250,19 @@
         <h1 style="margin-top: 20px;">Title: {conference_details.conference_title}</h1>
 
         <h2 style="margin-top: 20px;">Related Field: {conference_details.related_fields}</h2>
-        <hr>
+              <hr class="border-t-2 border-gray-300 my-6" />
+
       </div>
 
-      <hr>
+            <hr class="border-t-2 border-gray-300 my-6" />
+
 
       <div>
         
         <div>
           <h3 style="margin-top: 20px; margin-bottom:10px color:red">Already Requested Keynote Speaker</h3>
-          <hr>
+                <hr class="border-t-2 border-gray-300 my-6" />
+
         </div>
         
 
@@ -285,13 +288,15 @@
           </div>
         </div>
         <br>
-        <hr />
+              <hr class="border-t-2 border-gray-300 my-6" />
+
       </div>
   
       <div>
         <div>
           <h3 style="color: green; margin-top: 10px; margin-bottom: 10px">Already Assigned Keynote Speaker</h3>
-          <hr>
+                <hr class="border-t-2 border-gray-300 my-6" />
+
         </div>
   
         {#each alreadyAssignedReviewer as item, index (item.user_id)}
@@ -299,7 +304,8 @@
             <h3 style="margin-top: 20px;">Name: {item.full_name}</h3>
             <h4 style="margin-top: 10px;">Expertise: {item.expertise}</h4>
             <h4 style="margin-top: 10px;">Affliation: {item.current_institution}</h4>
-            <hr />
+                  <hr class="border-t-2 border-gray-300 my-6" />
+
           </div>
         {/each}
       </div>
@@ -329,11 +335,13 @@
                 }}
               />
               {#each filteredSuggestedReviewer as item (item.user_id)}
-                <div>
-                  <div class="card">
+              <div class="card w-98 text-black-200">
+                <div class="card-body bg-gray-100">
                     <h3>Name: {item.full_name}</h3>
                     <h4>Affliation: {item.current_institution}</h4>
                     <h4>Expertise: {item.expertise}</h4>
+                <div class="card-actions justify-end">
+
                     <button
                       on:click={requestReviewer(
                         conference_id,
@@ -341,13 +349,16 @@
                         conference_details.conference_title
                       )}>Request</button
                     >
+                </div>
                   </div>
                 </div>
               {/each}
             </div>
           {/if}
-          <button on:click={suggestionSelect}>View Suggestion</button>
-        </div>
+          <div class="card-actions justify-end">
+            <button on:click={suggestionSelect}>View Suggestion</button>
+          </div>
+          </div>
       </div>
   
       <div class="form-control">

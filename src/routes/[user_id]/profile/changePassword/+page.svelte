@@ -93,10 +93,10 @@
 
     <NavbarUser myVariable={unreadCount} />
 
-    <h1>Change Password</h1>
+    <h1 style="margin-top: 20px;">Change Password</h1>
 
-    <p> <b> User: </b> {user.first_name} {user.last_name}</p>
-    <p> <b> Email: </b> {user.email}</p>
+    <p  style="margin-top: 20px;"> <b> User: </b> {user.first_name} {user.last_name}</p>
+    <p  style="margin-top: 20px; margin-bottom:20px"> <b> Email: </b> {user.email}</p>
    
       
       <div class="form-control">
