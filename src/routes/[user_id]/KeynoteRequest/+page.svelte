@@ -7,6 +7,7 @@
   
     import NavbarUser from "/src/components/navbar_user.svelte";
     import "/src/app.css";
+    import "/src/app.css";
   
     let user_id, user, data;
   
@@ -190,22 +191,35 @@
       <br />
 
       <h1>Conference For Keynote</h1>
+
+      <div class="header">
+        {#if data.length == 0}
+          <h2  style="margin-top: 30px;">You have no KeyNote Speaker request</h2>
+        {/if}
+      </div>
   
       <!-- <button on:click={handleClick}>Go to Another Page</button> -->
   
       <div class="cards">
         {#each data as item}
-          <div class="card bg-gray-200 shadow-xl mt-10">
-            <div class="card-body">
-            <h2>{item.conference_title}</h2>
 
-            <div style="margin-top: 20px;" class="card-actions justify">
-              
-            <a class="btn btn-primary"
+
+        <div class="card bg-gray-200 shadow-xl mt-10">
+
+          <div class="card-body">
+            <h2 style="margin-top: 20px;" >{item.conference_title}</h2>
+
+            <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
+            <!-- <a href={item.pdf_link}>View Poster</a>
+            <h3>Related Fields: {item.related_fields}</h3>
+            <h3>Abstract: {item.abstract}</h3> -->
+
+          <div style="margin-top: 20px;" class="card-actions justify">
+            <a class="btn btn-info"
               href="/{user_id}/conference/conference_list/all/{item.conference_id}"
-              >View Conference</a
-            >
-            </div>
+              >View Conference</a>
+
+          </div>
   
             <div
               class="two-column"
@@ -222,7 +236,7 @@
               >
             </div>
           </div>
-        </div>
+      </div>
         {/each}
       </div>
     </main>
@@ -238,7 +252,7 @@
     }
   
     button {
-      margin: 2% 8px;
+      margin: 3% 4px;
       padding: 8px 20px;
       border: none;
       border-radius: 4px;

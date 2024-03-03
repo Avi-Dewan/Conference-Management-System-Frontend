@@ -4,6 +4,7 @@
   import { onMount } from "svelte";
 
   import { goto } from "$app/navigation";
+  import "/src/app.css";
 
   import NavbarUser from "/src/components/navbar_user.svelte";
 
@@ -155,23 +156,26 @@
     <h1>Workshop For Review</h1>
 
     <!-- <button on:click={handleClick}>Go to Another Page</button> -->
-
     <div class="cards">
       {#each data as item}
-        <div class="border_style">
-          <h2>{item.workshop_title}</h2>
+      <div class="card bg-gray-200 shadow-xl mt-10">
+        <div class="card-body">
+          <h2 style="margin-top: 20px;">{item.workshop_title}</h2>
           <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
           <!-- <a href={item.pdf_link}>View Paper</a> -->
-          <h3>Related Fields: {item.related_fields}</h3>
-          <h3>Description: {item.workshop_description}</h3>
-          <a
+          <h3 style="margin-top: 20px;">Related Fields: {item.related_fields}</h3>
+          <h3 style="margin-top: 20px;">Description: {item.workshop_description}</h3>
+          <div style="margin-top: 20px;" class="card-actions justify">
+
+          <a class="btn btn-neutral"
               href="/{user_id}/conference/conference_list/all/{item.conference_id}"
               >View Conference</a
             >
+            </div>
 
           <div
             class="two-column"
-            style="display: block;margin-top:2%"
+            style="display: block;margin-top:1%"
             button-container
           >
             <button
@@ -184,8 +188,10 @@
             >
           </div>
         </div>
+      </div>
       {/each}
     </div>
+    
   </main>
 {/if}
 
