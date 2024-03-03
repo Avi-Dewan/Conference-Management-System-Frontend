@@ -7,6 +7,7 @@
   
     import NavbarUser from "/src/components/navbar_user.svelte";
     import "/src/app.css";
+    import "/src/app.css";
   
     let user_id, user, data;
   
@@ -188,6 +189,7 @@
       <br />
       <br />
       <br />
+
       <h1>Conference For Keynote</h1>
 
       <div class="header">
@@ -221,7 +223,7 @@
   
             <div
               class="two-column"
-              style="display: block;margin-top:2%"
+              style="display: block;margin-top:1%"
               button-container
             >
               <button

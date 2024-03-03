@@ -7,6 +7,8 @@
 
   import NavbarUser from "/src/components/navbar_user.svelte";
 
+  import "/src/app.css";
+
   let user_id, user, data;
   let unreadCount = null;
   user_id = $page.params.user_id;
@@ -54,23 +56,29 @@
   }
 
   async function handleAccept(paper_id) {
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/author/reject_request`, {
-      // ekhane workshop er request delete hbe
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/author/reject_request`,
+      {
+        // ekhane workshop er request delete hbe
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
+      }
+    );
 
-    response = await fetch(`${import.meta.env.VITE_BACKEND}/author/accept_request`, {
-      // request accept hoise , tai db te add korlam
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
-    });
+    response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/author/accept_request`,
+      {
+        // request accept hoise , tai db te add korlam
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
+      }
+    );
 
     const thisPage = window.location.pathname;
 
@@ -87,9 +95,45 @@
 
     <div class="cards">
       {#each data as item}
-        <div class="border_style">
+        <div class="card bg-gray-200 shadow-xl mt-10">
+          <div class="card-body">
+            <h2 style="margin-top: 20px;">{item.paper_title}</h2>
+
+            <div style="margin-top: 20px;" class="card-actions justify">
+              <a class="btn btn-info" href={item.pdf_link}>View Paper</a>
+            </div>
+
+            <h3 style="margin-top: 20px;">
+              Related Fields: {item.related_fields}
+            </h3>
+            <h3 style="margin-top: 20px;">Abstract: {item.abstract}</h3>
+
+            <div style="margin-top: 20px;" class="card-actions justify">
+              <a
+                class="btn btn-neutral"
+                href="/{user_id}/conference/conference_list/all/{item.conference_id}"
+                >View Conference</a
+              >
+            </div>
+            <div
+              class="two-column"
+              style="display: block;margin-top:0%"
+              button-container
+            >
+              <button
+                on:click={handleReject(item.paper_id)}
+                style="background-color:red;">Reject</button
+              >
+              <button
+                on:click={handleAccept(item.paper_id)}
+                style="background-color:green;">Accept</button
+              >
+            </div>
+          </div>
+        </div>
+        <!-- <div class="border_style">
           <h2>{item.paper_title}</h2>
-          <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
+           <h3>Pdf Link: {item.pdf_link}</h3> 
           <a href={item.pdf_link}>View Paper</a>
           <h3>Related Fields: {item.related_fields}</h3>
           <h3>Abstract: {item.abstract}</h3>
@@ -112,7 +156,7 @@
               style="background-color:green;">Accept</button
             >
           </div>
-        </div>
+        </div> -->
       {/each}
     </div>
   </main>

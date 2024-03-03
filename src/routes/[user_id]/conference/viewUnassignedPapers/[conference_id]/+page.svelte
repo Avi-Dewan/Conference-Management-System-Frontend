@@ -3,7 +3,8 @@
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
-
+  import "/src/app.css";
+  import { goto } from "$app/navigation";
   const conference_id = $page.params.conference_id;
   let user_id;
 
@@ -41,13 +42,16 @@
     }
   });
   async function handleReject(paper_id, paper_title) {
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/chair/reject_paper`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ paper_id: paper_id }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/chair/reject_paper`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paper_id: paper_id }),
+      }
+    );
 
     let data = await response.json();
 
@@ -94,13 +98,16 @@
   }
 
   async function handleAccept(paper_id, paper_title) {
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/chair/accept_paper`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ paper_id: paper_id }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/chair/accept_paper`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paper_id: paper_id }),
+      }
+    );
     let data = await response.json();
 
     let conf_res = await fetch(
@@ -154,17 +161,20 @@
 
     console.log(reviewer_id);
 
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: reviewer_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/notification/send`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: reviewer_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      }
+    );
 
     const thisPage = window.location.pathname;
 
@@ -191,9 +201,89 @@
   {#if papers != null && conf_data != null && unreadCount != null}
     <NavbarChair myVariable={unreadCount} />
     <div>
-      <h1>{conf_data.conference_title}</h1>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <h1 class="mt-5">{conf_data.conference_title}</h1>
+      <hr class="border-t-2 border-gray-300 my-6" />
       {#each papers as item}
-        <hr />
+        <div style="margin-top: 15px;">
+          <h2>Paper Title: {item.paper_title}</h2>
+          <hr class="border-t-2 border-gray-300 my-6" />
+          <p class="mt-5"><b>Author:</b> {item.authors}</p>
+          <p class="mt-5"><b>Research Field:</b> {item.related_fields}</p>
+          <p class="mt-5"><b>Abstract:</b> {item.abstract}</p>
+          {#if item.status == "accepted"}
+            <p class="mt-5" style="color:green;">
+              <b>Status:</b>
+              {item.status}
+            </p>
+          {:else}
+            <p class="mt-5" style="color:red;">
+              <b>Status:</b>
+              {item.status}
+            </p>
+          {/if}
+          <hr class="border-t-2 border-gray-300 my-6" />
+          <p class="mt-5">
+            <b> <u> Requested Reviewer: </u></b>
+            {#if item.requestedReviewers.length == 0}
+              None
+            {:else}
+              {item.requestedReviewers}
+            {/if}
+          </p>
+          <hr class="border-t-2 border-gray-300 my-6" />
+          <p class="mt-5"><b> <u> Assigned Reviewers and reviews: </u></b></p>
+          <hr class="border-t-2 border-gray-300 my-6" />
+          {#each item.reviews as rev}
+            <div class="mt-2">
+              <p><b>{rev.full_name}</b></p>
+              {#if rev.rating != null}
+                <p>Rating: {rev.rating}</p>
+              {:else}
+                <p>Rating: None</p>
+              {/if}
+              {#if rev.review != null}
+                <p class="mt-2">Review:</p>
+                <p style="white-space: pre-wrap;">{rev.review}</p>
+              {:else}
+                <p style="color:red">Not given review yet</p>
+                <div class="mt-5">
+                  <button
+                    class="mt-5"
+                    style="background-color: red;"
+                    on:click={() => {
+                      handleNotify(
+                        rev.user_id,
+                        item.paper_id,
+                        item.paper_title
+                      );
+                    }}
+                  >
+                    Notify {rev.full_name}
+                  </button>
+                </div>
+                <br />
+                <br />
+              {/if}
+              <br />
+              <hr class="border-t-2 border-gray-300 my-6" />
+            </div>
+          {/each}
+          <button
+            class="btn bg-green-300"
+            on:click={() => window.open(item.pdf_link, "_blank")}
+            >View file</button
+          >
+          {#if item.status != "accepted" && item.status != "rejected" && item.status != "revise"}
+            <button
+              class="btn bg-red-300"
+              on:click={() =>
+                goto(`/${user_id}/conference/assignReviewer/${item.paper_id}`)}
+              >Assign</button
+            >
+          {/if}
+        </div>
+        <!-- <hr />
         <div style="margin-top: 70px;">
           <h2>Paper Title: {item.paper_title}</h2>
           <p><b>Author:</b> {item.authors}</p>
@@ -232,7 +322,7 @@
             }}>Assign</button
           >
 
-          <div class="two-column" style="display: block" button-container>
+           <div class="two-column" style="display: block" button-container>
             <button
               on:click={handleReject(item.paper_id, item.paper_title)}
               style="background-color:red;">Reject</button
@@ -241,8 +331,8 @@
               on:click={handleAccept(item.paper_id, item.paper_title)}
               style="background-color:green;">Accept</button
             >
-          </div>
-        </div>
+          </div> 
+        </div> -->
       {/each}
     </div>
   {/if}
@@ -255,15 +345,5 @@
   }
 
   h1 {
-  }
-  button {
-    margin: 2% 0%;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: blue;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
   }
 </style>

@@ -12,6 +12,8 @@
   import { onMount } from "svelte";
   import "/src/app.css";
 
+  import "/src/app.css";
+
   let user_id, user_type;
 
   user_id = $page.params.user_id;
@@ -68,119 +70,76 @@
       goto(
         `/${user_id}/viewRequest/${notification_id}/reviewRequest/${paper_id}`
       );
-    } 
-
-
-    else if (notification_json.type == "poster_reviewer_request") {
+    } else if (notification_json.type == "poster_reviewer_request") {
       let poster_id = notification_json.requested_poster_id;
       goto(
         `/${user_id}/viewRequest/${notification_id}/reviewPosterRequest/${poster_id}`
       );
-    }  
-    
-    else if (notification_json.type == "chair_noti_accept_reject") {
+    } else if (notification_json.type == "chair_noti_accept_reject") {
       let paper_id = notification_json.paper_id;
       goto(`/${user_id}/conference/assignReviewer/${paper_id}`);
-    }
-    
-    
-    else if (notification_json.type == "notify_reviewer") {
+    } else if (notification_json.type == "notify_reviewer") {
       let paper_id = notification_json.paper_id;
 
       goto(`/${user_id}/review/${paper_id}`);
-    }
-    
-    
-    else if (notification_json.type == "chair_noti_from_reviewer") {
+    } else if (notification_json.type == "chair_noti_from_reviewer") {
       let paper_id = notification_json.paper_id;
       let conference_id = notification_json.conference_id;
 
       goto(
         `/${user_id}/conference/viewSubmission/${conference_id}/${paper_id}`
       );
-    }
-    
-    
-    else if (notification_json.type == "notify_chair_paper") {
+    } else if (notification_json.type == "notify_chair_paper") {
       let conference_id = notification_json.conference_id;
 
       goto(`/${user_id}/conference/viewSubmission/${conference_id}`);
-    }
-    
-    
-    else if (notification_json.type == "notify_author_accept/reject") {
+    } else if (notification_json.type == "notify_author_accept/reject") {
       let conference_id = notification_json.conference_id;
 
       goto(`/${user_id}/conference/mysubmission/${conference_id}`);
-    }
-    
-    
-    else if (notification_json.type == "notify_coauthor_paper") {
+    } else if (notification_json.type == "notify_coauthor_paper") {
       let paper_id = notification_json.paper_id;
       goto(`/${user_id}/author_request/${paper_id}`);
-    }
-    
-    
-    else if (notification_json.type == "workshop_request_notify") {
+    } else if (notification_json.type == "workshop_request_notify") {
       let workshop_id = notification_json.workshop_id;
       goto(`/${user_id}/workshop_request/${workshop_id}`);
-    }
-    
-    
-    else if (notification_json.type == "notify_chair_workshop_accept/reject"){
+    } else if (
+      notification_json.type == "notify_chair_workshop_accept/reject"
+    ) {
       let workshop_id = notification_json.workshop_id;
       goto(`/${user_id}/conference/assignInstructor/${workshop_id}`);
-    }
-    
-    else if (notification_json.type == "notify_chair_poster") {
+    } else if (notification_json.type == "notify_chair_poster") {
       let conference_id = notification_json.conference_id;
       goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`);
-    }
-
-    else if (notification_json.type == "notify_coauthor_poster") {
+    } else if (notification_json.type == "notify_coauthor_poster") {
       let poster_id = notification_json.poster_id;
-      console.log("poster id ki ase ekhane??")
-      console.log(poster_id)
+      console.log("poster id ki ase ekhane??");
+      console.log(poster_id);
       goto(`/${user_id}/author_poster_request/${poster_id}`);
-    }
-    
-    
-    else if (notification_json.type == "notify_author_poster_accept/reject") {
+    } else if (notification_json.type == "notify_author_poster_accept/reject") {
       let conference_id = notification_json.conference_id;
 
       goto(`/${user_id}/conference/myPostersubmission/${conference_id}`);
-    }
-
-    else if (notification_json.type == "notify_reviewer_poster") {
+    } else if (notification_json.type == "notify_reviewer_poster") {
       let poster_id = notification_json.poster_id;
       goto(`/${user_id}/PosterReview/${poster_id}`);
-    }
-
-
-
-    else if (notification_json.type == "chair_poster_noti_accept_reject") {
+    } else if (notification_json.type == "chair_poster_noti_accept_reject") {
       let poster_id = notification_json.poster_id;
       goto(`/${user_id}/conference/assignPosterReviewer/${poster_id}`);
-    }
-    else if (notification_json.type == "poster_reviewer_request") {
+    } else if (notification_json.type == "poster_reviewer_request") {
       let poster_id = notification_json.requested_poster_id;
       goto(
         `/${user_id}/viewRequest/${notification_id}/reviewRequest/${poster_id}`
       );
-    }
-
-    else if (notification_json.type == "keynote_request") {
+    } else if (notification_json.type == "keynote_request") {
       let conference_id = notification_json.requested_conference_id;
       goto(
         `/${user_id}/viewRequest/${notification_id}/reviewKeynoteRequest/${conference_id}`
       );
-    }
-
-    else if (notification_json.type == "chair_keynote_noti_accept_reject") {
+    } else if (notification_json.type == "chair_keynote_noti_accept_reject") {
       let conference_id = notification_json.conference_id;
       goto(`/${user_id}/conference/inviteSpeaker/${conference_id}`);
     }
-
   }
   let unreadCount = null;
   onMount(async () => {
@@ -207,43 +166,43 @@
 
     {#if data != null}
       <div>
-        <br>
+        <br />
         <div class="header">
           <h2>My Notifications:</h2>
         </div>
 
         <div class="card">
           {#each data as item}
+            <div class="card bg-gray-200 shadow-xl mt-10">
+              <div class="card-body">
+                <h3>{item.notification_body}</h3>
 
-          <div class="card bg-gray-200 shadow-xl mt-10">
-            <div class="card-body">
-            <h3>{item.notification_body}</h3>
+                {#if item.notification_json.type == "reviewer_request"}
+                  <h4 style="color: red;">
+                    Title: {item.notification_json.requested_paper_title}
+                  </h4>
+                {/if}
 
-            {#if item.notification_json.type == "reviewer_request"}
-              <h4 style="color: red;">
-                Title: {item.notification_json.requested_paper_title}
-              </h4>
-            {/if}
+                {#if item.notification_status == "unread"}
+                  <h4>Status: <b style="color: red;"> Unread </b></h4>
+                {:else}
+                  <h4>Status: <b style="color: green;"> Read </b></h4>
+                {/if}
 
-            {#if item.notification_status == "unread"}
-              <h4>Status: <b style="color: red;"> Unread </b></h4>
-            {:else}
-              <h4>Status: <b style="color: green;"> Read </b></h4>
-            {/if}
-
-              <div style="margin-top: 20px;" class="card-actions justify">
-                <button
-                  on:click={() => {
-                    handleDetails(item.notification_id, item.notification_json);
-                  }}>Go details</button
-                >
+                <div style="margin-top: 20px;" class="card-actions justify">
+                  <button
+                    on:click={() => {
+                      handleDetails(
+                        item.notification_id,
+                        item.notification_json
+                      );
+                    }}>Go details</button
+                  >
                 </div>
               </div>
             </div>
           {/each}
-
         </div>
-
       </div>
     {/if}
   {/if}

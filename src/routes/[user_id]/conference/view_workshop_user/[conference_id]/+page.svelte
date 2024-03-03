@@ -10,6 +10,7 @@
   import NavbarUser from "/src/components/navbar_user.svelte";
 
   import { onMount } from "svelte";
+  import "/src/app.css";
 
   let user_id, user_type;
   let button_label = "Interested";
@@ -180,16 +181,25 @@
     {#if allWorkshops != null}
       <div class="cards">
         {#each allWorkshops as item}
-          <h2>{item.workshop_title}</h2>
-          <h3 style="color:black">Related Fields: {item.related_fields}</h3>
-          <h4>Description: {item.workshop_description}</h4>
-
+          <hr class="border-t-2 border-gray-300 my-6" />
+          <h2 class="mb-3">{item.workshop_title}</h2>
+          <b class="mt-4" style="color:black"
+            >Related Fields: {item.related_fields}</b
+          >
+          <h4 class="mt-5">Description:</h4>
+          <p class="mt-3">{item.workshop_description}</p>
+          <hr class="border-t-2 border-gray-300 my-6" />
           {#if item.workshop_time != null}
-            <h4>Time: {item.workshop_time.time}</h4>
-            <h4>Date: {item.workshop_time.date}</h4>
+            <div class="mt-4">
+              <b>Time: {item.workshop_time.time}</b>
+            </div>
+            <div class="mt-3">
+              <b>Date: {item.workshop_time.date}</b>
+            </div>
           {:else}
-            <h4 style="color: red;">Time: Not yet assigned</h4>
-            <h4 style="color: red;">Date: Not yet assigned</h4>
+            <div class="mt-4">
+              <b style="color: red;">Time & Date not yet assigned</b>
+            </div>
 
             <!-- <h3>
               Assign time:
@@ -249,18 +259,23 @@
             </div> -->
           {/if}
           {#if item.interest == "no"}
-            <button on:click={updateValue(item.workshop_id, "Interested")}
+            <button
+              class="btn bg-green-500 mt-5"
+              on:click={updateValue(item.workshop_id, "Interested")}
               >Interested</button
             >
           {:else}
-            <button on:click={updateValue(item.workshop_id, "no")}
+            <button
+              class="btn bg-red-500 mt-5"
+              style="color:white;"
+              on:click={updateValue(item.workshop_id, "no")}
               >Not Interested</button
             >
           {/if}
 
           <!-- <button on:click={updateValue(item.workshop_id)} >Not Interested</button> -->
 
-          <hr />
+          <hr class="border-t-2 border-gray-300 my-6" />
         {/each}
       </div>
     {/if}
@@ -324,39 +339,6 @@
     border-radius: 4px;
     box-sizing: border-box;
     font-size: 16px;
-  }
-
-  button {
-    margin-top: 0%;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  .form-control button {
-    margin-top: 5%;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  button {
-    margin-top: 0%;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
   }
 
   .form-control button:hover {

@@ -3,6 +3,7 @@
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import NavbarChair from "/src/components/navbar_chair.svelte";
+    import "/src/app.css";
   
     const main_user_id = $page.params.user_id;
     const conference_id = $page.params.conference_id;
@@ -12,6 +13,7 @@
     let reviewer_auto_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/auto/${conference_id}`;
   
     let request_reviwer_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/request`;
+    let request_new_reviwer_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/requestNew`;
     let request_delete_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/request_delete`;
     let already_sent_request_url = `${import.meta.env.VITE_BACKEND}/keynote/assign/sent_request/${conference_id}`;
   
@@ -43,6 +45,55 @@
     let paper_title = null;
   
     let unreadCount = null;
+
+    let form_co_author_without_account = {
+      first_name: "",
+      last_name: "",
+      email: "",
+      affiliation: "",
+    };
+
+    async function requestReviewerNew(conference_id, conference_title, coAuthor) {
+      const response = await fetch(request_new_reviwer_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          conference_id: conference_id,
+          conference_title: conference_title,
+          coAuthor: coAuthor,
+        }),
+      });
+  
+      const thisPage = window.location.pathname;
+  
+      console.log(user_type, "before");
+      goto(`/${main_user_id}/home`).then(() => goto(thisPage));
+    } 
+
+    function handleAdd_CoAuthor() {
+    // console.log("hello");
+    if (
+      form_co_author_without_account.first_name != "" &&
+      form_co_author_without_account.last_name != "" &&
+      form_co_author_without_account.email != "" &&
+      form_co_author_without_account.affiliation != ""
+    ) {
+
+      // conference_id, conference_details.conference_title, form_co_author_without_account
+
+      requestReviewerNew(conference_id, conference_details.conference_title, form_co_author_without_account);
+      
+      form_co_author_without_account = {
+        first_name: "",
+        last_name: "",
+        email: "",
+        affiliation: "",
+      };
+    }
+  }
+
     //paper details
     onMount(async () => {
       try {
@@ -71,19 +122,7 @@
       }
     });
   
-    // onMount(async () => {
-    //   try {
-    //     const response = await fetch(paper_author_url);
-    //     if (!response.ok) {
-    //       throw new Error("Failed to fetch data");
-    //     }
-  
-    //     paper_author_details = await response.json();
-    //     paper_author_details = paper_author_details;
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // });
+   
   
     //kader kader request kora hoise
     onMount(async () => {
@@ -206,49 +245,67 @@
     <!-- {#if unreadCount != null && conference_details != null  && suggestedReviewer != null } -->
 
       <NavbarChair myVariable={unreadCount} />
-      <div>
-        <h1>Title: {conference_details.conference_title}</h1>
+      <div class="header">
 
-        <h2>Related Field: {conference_details.related_fields}</h2>
-        <hr />
+        <h1 style="margin-top: 20px;">Title: {conference_details.conference_title}</h1>
+
+        <h2 style="margin-top: 20px;">Related Field: {conference_details.related_fields}</h2>
+        <hr>
       </div>
+
+      <hr>
+
       <div>
-        <h3 style="color:red">Already Requested Keynote Speaker</h3>
+        
         <div>
-          <div class="two-column">
+          <h3 style="margin-top: 20px; margin-bottom:10px color:red">Already Requested Keynote Speaker</h3>
+          <hr>
+        </div>
+        
+
+        <div >
+          <div class="two-column" style="margin-top: 5px;">
             {#each alreadyRequestedReviewer as item, index (item.user_id)}
-              <div>
-                <h3>Name: {item.full_name}</h3>
-                <h4>Expertise: {item.expertise}</h4>
-                <h4>Affliation: {item.current_institution}</h4>
-  
-                <button
+              
+              <div class="mt-4">
+                <h3 style="margin-top: 20px;">Name: {item.full_name}</h3>
+                <h4 style="margin-top: 10px;">Expertise: {item.expertise}</h4>
+                <h4 style="margin-top: 10px;">Affliation: {item.current_institution}</h4>
+                <div class="mt-3">
+                  <button
                   on:click={() => removeRequest(conference_id, item.user_id)}
                   style="background-color:red;margin-left:0%"
                 >
                   Delete Request</button
                 >
+                </div>
+                
               </div>
             {/each}
           </div>
         </div>
+        <br>
+        <hr />
       </div>
-      <hr />
   
       <div>
-        <h3 style="color: green;">Already Assigned Keynote Speaker</h3>
+        <div>
+          <h3 style="color: green; margin-top: 10px; margin-bottom: 10px">Already Assigned Keynote Speaker</h3>
+          <hr>
+        </div>
   
         {#each alreadyAssignedReviewer as item, index (item.user_id)}
           <div>
-            <h3>Name: {item.full_name}</h3>
-            <h4>Expertise: {item.expertise}</h4>
-            <h4>Affliation: {item.current_institution}</h4>
+            <h3 style="margin-top: 20px;">Name: {item.full_name}</h3>
+            <h4 style="margin-top: 10px;">Expertise: {item.expertise}</h4>
+            <h4 style="margin-top: 10px;">Affliation: {item.current_institution}</h4>
             <hr />
           </div>
         {/each}
       </div>
+
       <div style="margin-top: 10%;">
-        <h2>Reviewer Suggestion:</h2>
+        <h2>Keynote Speaker Suggestion:</h2>
         <div class="form-control">
           {#if showAuto == true}
             <div class="scrollable-window">
@@ -334,6 +391,59 @@
           </div>
         {/if}
         <!-- <button on:click={manualsuggestionSelect}>Assign Manually</button> -->
+      </div>
+
+
+      <div>
+        <br>
+
+        <h2 style="margin-top: 10px;"> Input speaker details if not  in suggestion: </h2>
+
+        <br>
+      </div>
+
+      <div class="form-control">
+        <div>
+          <label for="first_name">First Name:</label>
+          <input
+            type="text"
+            id="first_name"
+            bind:value={form_co_author_without_account.first_name}
+          />
+        </div>
+
+        <div>
+          <label for="last_name"> Last Name:</label>
+          <input
+            type="text"
+            id="last_name"
+            bind:value={form_co_author_without_account.last_name}
+          />
+        </div>
+      </div>
+
+      <div class="form-control">
+        <label for="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          bind:value={form_co_author_without_account.email}
+        />
+      </div>
+
+      <div class="form-control">
+        <label for="affiliation">Affiliation:</label>
+        <input
+          type="text"
+          id="affiliation"
+          bind:value={form_co_author_without_account.affiliation}
+        />
+      </div>
+
+      <div >
+        <button class="btn btn-primary" on:click={handleAdd_CoAuthor} style="height:40px;">
+          Add co-author
+        </button>
       </div>
     {/if}
   </main>
