@@ -8,14 +8,15 @@
   import { onMount } from "svelte";
 
   import { goto } from "$app/navigation";
-  import "/src/app.css";
 
   let user_id = $page.params.user_id;
   let conference_id = $page.params.conference_id;
+
   function goBack() {
-    goto(`/${user_id}/conference/conference_list/all`);
+    goto(`/${user_id}/conference/conference_list/all/${conference_id}`);
   }
   let unreadCount = null;
+
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
@@ -32,14 +33,12 @@
 
 <main>
   {#if unreadCount != null}
-    <NavbarUser myVariable={unreadCount} />
+    <NavbarChair myVariable={unreadCount} />
     <div>
       <div class="success-dialog">
-        <h3 class="mt-4" style="color: black;">
-          Success! Your File was submitted.
-        </h3>
+        <h3 style="color: black;">Success! Your conference created.</h3>
 
-        <button class="mt-4" on:click={goBack}>Ok</button>
+        <button on:click={goBack}>Ok</button>
       </div>
     </div>
   {/if}
@@ -84,6 +83,7 @@
   .success-dialog.show {
     opacity: 0.5;
   }
+
   main {
     max-width: 90%;
     margin: 2% auto;

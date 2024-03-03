@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
+  import "/src/app.css";
 
   const user_id = $page.params.user_id;
 
@@ -73,23 +74,37 @@
         <br />
         <br />
         <hr />
-        <h2>Pending Papers:</h2>
 
-        {#each pending_papers as item}
-          <div>
+        <div class="header">
+          <h2>Pending Papers:</h2>
+        </div>
+
+        <div class="card">
+
+          {#each pending_papers as item}
+            <div class="card bg-gray-200 shadow-xl mt-10">
+              <div class="card-body">
+              <hr />
+              <h3>Paper Title: {item.paper_title}</h3>
+              <h4>Authors: {item.authors}</h4>
+              <h4>Related Fields: {item.related_fields}</h4>
+              <h4>Conference name: {item.conference_title}</h4>
+
+              <div style="margin-top: 20px;" class="card-actions justify">
+
+              <button class="btn btn-primary"
+                on:click={() => {
+                  handleViewPaper(item.conference_id, item.paper_id);
+                }}>View details</button
+              >
+                </div>
+              </div>
+            </div>
             <hr />
-            <h3>Paper Title: {item.paper_title}</h3>
-            <h4>Authors: {item.authors}</h4>
-            <h4>Related Fields: {item.related_fields}</h4>
-            <h4>Conference name: {item.conference_title}</h4>
-            <button
-              on:click={() => {
-                handleViewPaper(item.conference_id, item.paper_id);
-              }}>View details</button
-            >
-          </div>
-          <hr />
-        {/each}
+          {/each}
+
+        </div>  
+        
       {/if}
     </div>
   {/if}

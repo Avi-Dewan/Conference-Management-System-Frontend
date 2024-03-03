@@ -206,35 +206,43 @@
 
     {#if data != null}
       <div>
-        <h2>My Notifications:</h2>
-        {#each data as item}
-          <h3>{item.notification_body}</h3>
+        <br>
+        <div class="header">
+          <h2>My Notifications:</h2>
+        </div>
 
-          {#if item.notification_json.type == "reviewer_request"}
-            <h4 style="color: red;">
-              Title: {item.notification_json.requested_paper_title}
-            </h4>
-          {/if}
+        <div class="card">
+          {#each data as item}
 
-          <!-- {#if item.notification_json.type == "notify_chair_paper"}
-        <h4 style="color: red;">
-          A new paper on the conference {item.notification_json.conference_id} has been submitted
-        </h4>
-        {/if} -->
+          <div class="card bg-gray-200 shadow-xl mt-10">
+            <div class="card-body">
+            <h3>{item.notification_body}</h3>
 
-          {#if item.notification_status == "unread"}
-            <h4>Status: <b style="color: red;"> Unread </b></h4>
-          {:else}
-            <h4>Status: <b style="color: green;"> Read </b></h4>
-          {/if}
+            {#if item.notification_json.type == "reviewer_request"}
+              <h4 style="color: red;">
+                Title: {item.notification_json.requested_paper_title}
+              </h4>
+            {/if}
 
-          <button
-            on:click={() => {
-              handleDetails(item.notification_id, item.notification_json);
-            }}>Go details</button
-          >
-        {/each}
-        <div></div>
+            {#if item.notification_status == "unread"}
+              <h4>Status: <b style="color: red;"> Unread </b></h4>
+            {:else}
+              <h4>Status: <b style="color: green;"> Read </b></h4>
+            {/if}
+
+              <div style="margin-top: 20px;" class="card-actions justify">
+                <button
+                  on:click={() => {
+                    handleDetails(item.notification_id, item.notification_json);
+                  }}>Go details</button
+                >
+                </div>
+              </div>
+            </div>
+          {/each}
+
+        </div>
+
       </div>
     {/if}
   {/if}

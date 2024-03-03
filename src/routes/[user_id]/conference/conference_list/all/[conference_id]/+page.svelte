@@ -9,6 +9,7 @@
 
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import "/src/app.css";
 
   let user_id, user_type;
 
@@ -65,48 +66,60 @@
       <NavbarUser myVariable={unreadCount} />
     {/if}
     <div>
-      <h1>Conference Title: {data.conference_title}</h1>
-      <h3>Venue: {data.venue}</h3>
-      <h3>
+      <h1 class="mt-10 mb-2">Conference Title: {data.conference_title}</h1>
+      <h4>Venue: {data.venue}</h4>
+      <h4>
         Webpage: <a href={data.conference_webpage}>{data.conference_webpage}</a>
-      </h3>
-      <h2>Research Areas: {data.related_fields}</h2>
-      <h3>Start date: {data.start_date}</h3>
-      <h3>End date: {data.end_date}</h3>
+      </h4>
+      <h3 class="mt-4">Research Areas: {data.related_fields}</h3>
+      <h4 class="mt-4">Start date: {data.start_date}</h4>
+      <h4>End date: {data.end_date}</h4>
       {#if data.status == "Open"}
-        <h2 style="color:green">Status: {data.status}</h2>
+        <h3 class="mt-4" style="color:green">Status: {data.status}</h3>
       {:else}
-        <h2 style="color:red">Status: {data.status}</h2>
+        <h3 class="mt-4" style="color:red">Status: {data.status}</h3>
       {/if}
-      <h3 style="color: red;">
+      <h3 class="mt-4" style="color: red;">
         Submission Deadline:
         <p>
           Time: {data.submission_deadline.time} , Date: {data
             .submission_deadline.date}
         </p>
       </h3>
-      <h3>Description: {data.conference_description}</h3>
+      <h3 class="mt-4">Description:</h3>
+      <p class="mt-4 mb-10">{data.conference_description}</p>
 
       {#if user_type == "chair"}
         <button
+          class="btn btn-success"
           on:click={() =>
             goto(`/${user_id}/conference/viewSubmission/${conference_id}`)}
           >View Submissions</button
         >
         <button
+          class="btn btn-neutral"
           on:click={() =>
-            goto(`/${user_id}/conference/viewPosterSubmission/${conference_id}`)}
-          >View Poster Submissions</button
-        >        
+            goto(
+              `/${user_id}/conference/viewPosterSubmission/${conference_id}`
+            )}>View Poster Submissions</button
+        >
         <button
+          class="btn btn-success"
           on:click={() =>
             goto(`/${user_id}/conference/create_workshop/${conference_id}`)}
           >Create a workshop</button
         >
         <button
+          class="btn btn-neutral"
           on:click={() =>
             goto(`/${user_id}/conference/view_workshop/${conference_id}`)}
           >View Workshops</button
+        >
+        <button
+          class="btn btn-success"
+          on:click={() =>
+            goto(`/${user_id}/conference/edit_conference/${conference_id}`)}
+          >Edit Conference</button
         >
         <button
           on:click={() =>
@@ -120,37 +133,44 @@
         > -->
       {:else if data.status == "Open"}
         <button
+          class="btn btn-neutral"
           on:click={() =>
             goto(`/${user_id}/conference/submitPaper/${conference_id}`)}
           >Submit a Paper</button
         >
         <button
+          class="btn btn-success"
           on:click={() =>
             goto(`/${user_id}/conference/submitPoster/${conference_id}`)}
           >Submit a Poster</button
         >
         <button
+          class="btn btn-neutral"
           on:click={() =>
             goto(`/${user_id}/conference/mysubmission/${conference_id}`)}
           >My submissions</button
         >
         <button
+          class="btn btn-neutral"
           on:click={() =>
             goto(`/${user_id}/conference/myPostersubmission/${conference_id}`)}
           >My Poster submissions</button
-        >        
+        >
         <button
+          class="btn btn-neutral"
           on:click={() =>
             goto(`/${user_id}/conference/view_workshop_user/${conference_id}`)}
           >View Workshops</button
         >
       {:else if user_type == "user"}
         <button
+          class="btn btn-success"
           on:click={() =>
             goto(`/${user_id}/conference/mysubmission/${conference_id}`)}
           >My submissions</button
         >
         <button
+          class="btn btn-neutral"
           on:click={() =>
             goto(`/${user_id}/conference/view_workshop_user/${conference_id}`)}
           >View Workshops</button
@@ -167,16 +187,5 @@
   }
 
   h1 {
-  }
-
-  button {
-    margin-top: 0%;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
   }
 </style>

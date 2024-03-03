@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
-
+  import "/src/app.css";
   const main_user_id = $page.params.user_id;
   const paper_id = $page.params.paper_id;
 
@@ -201,52 +201,72 @@
   {#if unreadCount != null && paper_details != null && paper_author_details != null && suggestedReviewer != null && alreadyRequestedReviewer != null && suggestedManualReviewer != null && alreadyAssignedReviewer != null}
     <NavbarChair myVariable={unreadCount} />
     <div>
-      <h1>Title: {paper_details.paper_title}</h1>
-      <hr />
-      <h2>Authors:</h2>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <h1 class="mt-5 mb-5">Title: {paper_details.paper_title}</h1>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <b class="mt-4">Authors:</b>
       {#each paper_author_details as item}
-        <h3>{item.full_name} , {item.current_institution}</h3>
+        <p>{item.full_name} , {item.current_institution}</p>
       {/each}
-      <hr />
-      <h2>Related Field: {paper_details.related_fields}</h2>
-      <hr />
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <div class="mt-5">
+        <b class="mt-3">Related Field: {paper_details.related_fields}</b>
+      </div>
+      <hr class="border-t-2 border-gray-300 my-6" />
     </div>
     <div>
-      <h3 style="color:red">Already Requested Reviewer</h3>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <div>
+        <h4 class="mt-5" style="color:red">Already Requested Reviewer</h4>
+      </div>
+      <hr class="border-t-2 border-gray-300 my-6" />
       <div>
         <div class="two-column">
           {#each alreadyRequestedReviewer as item, index (item.user_id)}
-            <div>
-              <h3>Name: {item.full_name}</h3>
-              <h4>Expertise: {item.expertise}</h4>
-              <h4>Affliation: {item.current_institution}</h4>
-
-              <button
-                on:click={() => removeRequest(paper_id, item.user_id)}
-                style="background-color:red;margin-left:0%"
-              >
-                Delete Request</button
-              >
+            <div class="mt-4">
+              <div class="mt-3">
+                <b>Name: {item.full_name}</b>
+              </div>
+              <div class="mt-3">
+                <b>Expertise: {item.expertise}</b>
+              </div>
+              <div class="mt-3">
+                <b>Affliation: {item.current_institution}</b>
+              </div>
+              <div class="mt-3">
+                <button
+                  on:click={() => removeRequest(paper_id, item.user_id)}
+                  style="background-color:red;margin-left:0%"
+                >
+                  Delete Request</button
+                >
+              </div>
             </div>
           {/each}
         </div>
       </div>
     </div>
-    <hr />
 
     <div>
-      <h3 style="color: green;">Already Assigned Reviewer</h3>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <h4 class="mt-10" style="color: green;">Already Assigned Reviewer</h4>
 
       {#each alreadyAssignedReviewer as item, index (item.user_id)}
-        <div>
-          <h3>Name: {item.full_name}</h3>
-          <h4>Expertise: {item.expertise}</h4>
-          <h4>Affliation: {item.current_institution}</h4>
-          <hr />
+        <div class="mt-4">
+          <div class="mt-3">
+            <b>Name: {item.full_name} </b>
+          </div>
+          <div class="mt-3">
+            <b class="mt-2">Expertise: {item.expertise}</b>
+          </div>
+          <div class="mt-2">
+            <b>Affliation: {item.current_institution}</b>
+          </div>
         </div>
+        <hr class="border-t-2 border-gray-300 my-6" />
       {/each}
     </div>
-    <div style="margin-top: 10%;">
+    <div style="margin-top:10px;">
       <h2>Reviewer Suggestion:</h2>
       <div class="form-control">
         {#if showAuto == true}
@@ -271,7 +291,30 @@
               }}
             />
             {#each filteredSuggestedReviewer as item (item.user_id)}
-              <div>
+              <div class="card w-98 text-black-200">
+                <div class="card-body bg-gray-100">
+                  <div>
+                    <b>Name: {item.full_name} </b>
+                  </div>
+                  <div>
+                    <b>Affliation: {item.current_institution}</b>
+                  </div>
+
+                  <div>
+                    <b>Expertise: {item.expertise}</b>
+                  </div>
+                  <div class="card-actions justify-end">
+                    <button
+                      on:click={requestReviewer(
+                        paper_id,
+                        item.user_id,
+                        paper_details.paper_title
+                      )}>Request</button
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- <div>
                 <div class="card">
                   <h3>Name: {item.full_name}</h3>
                   <h4>Affliation: {item.current_institution}</h4>
@@ -284,11 +327,11 @@
                     )}>Request</button
                   >
                 </div>
-              </div>
+              </div> -->
             {/each}
           </div>
         {/if}
-        <button on:click={suggestionSelect}>View Suggestion</button>
+        <button class="btn" on:click={suggestionSelect}>View Suggestion</button>
       </div>
     </div>
 
@@ -315,11 +358,40 @@
             }}
           />
           {#each filteredManualReviewer as item (item.user_id)}
-            <div>
+            <div class="card w-98 text-black-200">
+              <div class="card-body bg-gray-100">
+                <div>
+                  <b>Name: {item.full_name} </b>
+                </div>
+                <div>
+                  <b>Affliation: {item.current_institution}</b>
+                </div>
+
+                <div>
+                  <b>Expertise: {item.expertise}</b>
+                </div>
+                <div class="card-actions justify-end">
+                  <button
+                    on:click={requestReviewer(
+                      paper_id,
+                      item.user_id,
+                      paper_details.paper_title
+                    )}>Request</button
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- <div>
               <div class="card">
-                <h3>Name: {item.full_name}</h3>
-                <h4>Affliation: {item.current_institution}</h4>
-                <h4>Expertise: {item.expertise}</h4>
+                <div>
+                  <b>Name: {item.full_name}</b>
+                </div>
+                <div>
+                  <b>Affliation: {item.current_institution}</b>
+                </div>
+                <div>
+                  <b>Expertise: {item.expertise}</b>
+                </div>
                 <button
                   on:click={requestReviewer(
                     paper_id,
@@ -328,11 +400,13 @@
                   )}>Request</button
                 >
               </div>
-            </div>
+            </div> -->
           {/each}
         </div>
       {/if}
-      <button on:click={manualsuggestionSelect}>Assign Manually</button>
+      <button class="btn" on:click={manualsuggestionSelect}
+        >Assign Manually</button
+      >
     </div>
   {/if}
 </main>
@@ -351,7 +425,6 @@
     margin-top: 2%;
     border: 1px solid grey;
     max-width: 80%;
-    text-align: center;
   }
 
   .form {
@@ -407,6 +480,7 @@
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+    width: 20%;
   }
 
   button {
@@ -484,7 +558,7 @@
     padding: 10px;
   }
   .scrollable-window button {
-    margin-left: 500px;
+    margin-left: 800px;
     margin-bottom: 20px;
     height: 20%; /* Adjust height as needed */
     overflow-y: auto;

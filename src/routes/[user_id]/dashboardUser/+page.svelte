@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_user.svelte";
-
+  import "/src/app.css";
   const user_id = $page.params.user_id;
 
   let searchQuery = "";
@@ -90,7 +90,33 @@
       <h2>Your papers:</h2>
 
       {#each filteredPapers as item}
-        <div>
+        <div class="card bg-gray-200 shadow-xl mt-10">
+          <div class="card-body">
+            <h2>Paper Title: {item.paper_title}</h2>
+            <h4>Authors: {item.authors}</h4>
+            <h4 class="mt-4">Conference name: {item.conference_title}</h4>
+            <h4 class="mt-4">Related fields: {item.related_fields}</h4>
+
+            {#if item.status == "accepted"}
+              <h4 class="mb-4">
+                Status: <b style="color: green;"> accepted</b>
+              </h4>
+            {:else if item.status == "rejected"}
+              <h4 class="mb-4">Status: <b style="color: red;">rejected</b></h4>
+            {:else}
+              <h4 class="mb-4">Status: <b style="color: red;">rejected</b></h4>
+            {/if}
+            <div class="card-actions">
+              <button
+                class="btn"
+                on:click={() => {
+                  handleViewPaper(item.conference_id);
+                }}>View Paper</button
+              >
+            </div>
+          </div>
+        </div>
+        <!-- <div>
           <hr />
           <h3>Paper Title: {item.paper_title}</h3>
           <h4>Authors: {item.authors}</h4>
@@ -115,8 +141,8 @@
               handlePendingReview(item.conference_id);
             }}>View papers with pending reviews</button
           >
-        {/if} -->
-        </div>
+        {/if}
+        </div> -->
         <hr />
       {/each}
     {/if}

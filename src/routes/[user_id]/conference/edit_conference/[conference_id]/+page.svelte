@@ -2,38 +2,35 @@
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
   import { goto } from "$app/navigation";
-  import "/src/app.css";
+
   import { page } from "$app/stores";
   import { onMount } from "svelte";
 
-  async function createConference() {
-    const req = await fetch(
-      `${import.meta.env.VITE_BACKEND}/conference/create`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+  async function editConference() {
+    const req = await fetch(`${import.meta.env.VITE_BACKEND}/conference/${conference_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
   }
 
-  let user_id;
+  let user_id, conference_id, conference;
 
   user_id = $page.params.user_id;
+  conference_id = $page.params.conference_id;
 
   let researchFields = [];
   let addfield = "";
   let formData = {
-    conference_title: "",
-    conference_description: "",
-    conference_webpage: "",
-    venue: "",
+    conference_title: null,
+    conference_description: null,
+    conference_webpage: null,
+    venue: null,
     start_date: null,
     end_date: null,
     submission_deadline: null,
-    related_fields: null,
     chair_id: user_id,
   };
 
@@ -42,28 +39,21 @@
 
   function handleSubmit() {
     formData.related_fields = researchFields;
-    formData.submission_deadline = {
-      date: submission_deadline_date,
-      time: submission_deadline_time,
-    };
 
-    createConference();
-    // alert(JSON.stringify(formData, null, 2));
-    goto(`/${user_id}/conference/create/success`);
-  }
-
-  function handleAdd() {
-    // console.log("hello");
-    if (addfield != "") {
-      researchFields = [...researchFields, String(addfield)];
-      addfield = "";
+    if (submission_deadline_date != "" || submission_deadline_time != "") {
+      formData.submission_deadline = {
+        date: submission_deadline_date,
+        time: submission_deadline_time,
+      };
     }
-  }
-  function removeItem(index) {
-    researchFields = researchFields.filter((_, i) => i != index);
+    
+    editConference();
+    // alert(JSON.stringify(formData, null, 2));
+    goto(`/${user_id}/conference/edit_conference/${conference_id}/success`);
   }
 
   let unreadCount = null;
+
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
@@ -72,6 +62,15 @@
 
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;
+
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`
+      );
+
+      conference = await response.json();
+
+      console.log(conference);
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -79,11 +78,12 @@
 </script>
 
 <main>
-  {#if unreadCount != null}
+  {#if unreadCount != null && conference != null}
     <NavbarChair myVariable={unreadCount} />
 
-    <h1 class="mt-5 mb-5">Create a conference</h1>
+    <h1>Edit conference</h1>
 
+    <h2>  {conference.conference_title}</h2>
     <div class="form">
       <div class="form-control">
         <label for="conference_title">Title:</label>
@@ -147,43 +147,6 @@
             bind:value={submission_deadline_time}
           />
         </div>
-      </div>
-
-      <div class="form-control">
-        <label for="resarch_field" style="margin-top: 10px;"
-          ><h2>Related Fields</h2></label
-        >
-
-        <div class="two-column" style="margin-top: 20px;">
-          {#each researchFields as item, index (item)}
-            <div class="two-column">
-              <div>
-                <label style="width: 1px;"><h3>{item}</h3></label>
-              </div>
-              <div>
-                <button
-                  on:click={() => removeItem(index)}
-                  style="background-color:red;"
-                >
-                  Remove</button
-                >
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
-
-      <div>
-        <input
-          type="text"
-          placeholder="Type here"
-          class="input input-bordered input-success w-full max-w-xs"
-          bind:value={addfield}
-          style="width:30%"
-        />
-        <button sty on:click={handleAdd} class="btn btn-success ml-4">
-          Add
-        </button>
       </div>
 
       <div class="form-control" style="display: block;">

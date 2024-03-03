@@ -2,7 +2,7 @@
   import { createClient } from "@supabase/supabase-js";
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
-
+  import "/src/app.css";
   import { page } from "$app/stores";
 
   import { onMount } from "svelte";
@@ -63,25 +63,33 @@
     last_name: "",
     email: "",
     affiliation: "",
-
   };
 
   function handleAdd_CoAuthor() {
     // console.log("hello");
-    if (form_co_author_without_account.first_name != "" && form_co_author_without_account.last_name != "" && form_co_author_without_account.email != "" && form_co_author_without_account.affiliation != "") {
-      co_authors_wihtout_account = [...co_authors_wihtout_account, form_co_author_without_account];
-      
+    if (
+      form_co_author_without_account.first_name != "" &&
+      form_co_author_without_account.last_name != "" &&
+      form_co_author_without_account.email != "" &&
+      form_co_author_without_account.affiliation != ""
+    ) {
+      co_authors_wihtout_account = [
+        ...co_authors_wihtout_account,
+        form_co_author_without_account,
+      ];
+
       form_co_author_without_account = {
         first_name: "",
         last_name: "",
         email: "",
         affiliation: "",
-
       };
     }
   }
   function removeCoAuthor(index) {
-    co_authors_wihtout_account = co_authors_wihtout_account.filter((_, i) => i != index);
+    co_authors_wihtout_account = co_authors_wihtout_account.filter(
+      (_, i) => i != index
+    );
   }
 
   async function submitPaper() {
@@ -93,11 +101,10 @@
       body: JSON.stringify(formData),
     });
 
-    let {co_authors_wihtout_account_id, paper_id} = await req.json();
+    let { co_authors_wihtout_account_id, paper_id } = await req.json();
 
     console.log("co authors without account id", co_authors_wihtout_account_id);
     console.log("paper id", paper_id);
-
 
     const response_chair = await fetch(
       `${import.meta.env.VITE_BACKEND}/conference/conference_chair/${conference_id}`
@@ -124,17 +131,20 @@
 
     // console.log(reviewer_id);
 
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: chair_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/notification/send`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: chair_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      }
+    );
 
     data = await response.json();
 
@@ -162,17 +172,20 @@
       console.log("printing co authors");
       console.log(formData.co_authors[i]);
 
-      response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: formData.co_authors[i].user_id,
-          notification_body: author_notification_body,
-          notification_json: author_notification_json,
-        }),
-      });
+      response = await fetch(
+        `${import.meta.env.VITE_BACKEND}/notification/send`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: formData.co_authors[i].user_id,
+            notification_body: author_notification_body,
+            notification_json: author_notification_json,
+          }),
+        }
+      );
 
       data = await response.json();
     }
@@ -181,21 +194,23 @@
       console.log("printing co authors without account");
       console.log(co_authors_wihtout_account_id[i]);
 
-      response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: co_authors_wihtout_account_id[i],
-          notification_body: author_notification_body,
-          notification_json: author_notification_json,
-        }),
-      });
+      response = await fetch(
+        `${import.meta.env.VITE_BACKEND}/notification/send`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: co_authors_wihtout_account_id[i],
+            notification_body: author_notification_body,
+            notification_json: author_notification_json,
+          }),
+        }
+      );
 
       data = await response.json();
     }
-
   }
 
   onMount(async () => {
@@ -209,8 +224,8 @@
 
       data = await response.json();
       wholeData = data;
-      console.log("whole data printing")
-      console.log(wholeData)
+      console.log("whole data printing");
+      console.log(wholeData);
 
       for (let i = 0; i < wholeData.length; i++) {
         if (wholeData[i]["user_id"] === user_id) {
@@ -218,7 +233,6 @@
           i--; // decrement i to adjust for the removed element
         }
       }
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -347,11 +361,11 @@
     <NavbarUser />
 
     {#if data != null && conf_data != null}
-      <h1>Submit a Paper</h1>
+      <h1 class="mt-5 mb-5">Submit a Paper</h1>
 
       <div class="form">
         <div class="form-control">
-          <h2>Paper Title</h2>
+          <h2 class="mb-4">Paper Title</h2>
           <input
             type="text"
             id="paper_title"
@@ -360,23 +374,41 @@
         </div>
 
         <div class="form-control">
-          <h2>Co-Authors</h2>
+          <h2 class="mb-5">Co-Authors</h2>
 
           {#if show == false}
-            <div class="two-column">
+            <div class="container">
               {#each authors as item, index (item)}
-                <div class="two-column">
-                  <div>
+                <div class="column">
+                  <div class="card w-96 bg-gray-200 mt-10">
+                    <div class="card-body">
+                      <h3>Name: {item.full_name}</h3>
+                      <p>Affiliation: {item.current_institution}</p>
+                      <p>Expertise: {item.expertise}</p>
+
+                      <div class="card-actions justify-end mt-4">
+                        <button
+                          class="btn"
+                          on:click={() => removeItem(index)}
+                          style="background-color:red;"
+                        >
+                          Remove</button
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div>
                     <label style="width: 1px;"><h4>{item.full_name}</h4></label>
                   </div>
                   <div>
                     <button
+                      class="btn"
                       on:click={() => removeItem(index)}
                       style="background-color:red;"
                     >
                       Remove</button
                     >
-                  </div>
+                  </div> -->
                 </div>
               {/each}
             </div>
@@ -404,7 +436,26 @@
                 }}
               />
               {#each data as item (item.user_id)}
-                <div>
+                <div class="card text-primary-content">
+                  <div class="card-body">
+                    <h3>Name: {item.full_name}</h3>
+                    <h4>Affliation: {item.current_institution}</h4>
+                    <h4>Expertise: {item.expertise}</h4>
+                    <div class="card-actions justify-end mt-4">
+                      <button
+                        class="btn"
+                        style="background-color:green;color:white"
+                        on:click={handleAdd({
+                          full_name: item.full_name,
+                          current_institution: item.current_institution,
+                          expertise: item.expertise,
+                          user_id: item.user_id,
+                        })}>Add as Co-author</button
+                      >
+                    </div>
+                  </div>
+                </div>
+                <!-- <div>
                   <div class="card">
                     <h3>Name: {item.full_name}</h3>
                     <h4>Affliation: {item.current_institution}</h4>
@@ -416,44 +467,77 @@
                       })}>Add</button
                     >
                   </div>
-                </div>
+                </div> -->
               {/each}
             </div>
           {/if}
-          <button on:click={authorSelect}>Choose Authors</button>
+          <button
+            class="mt-4 mb-3 btn"
+            style="background-color: gray;color:white"
+            on:click={authorSelect}>Choose Co-authors</button
+          >
         </div>
 
-
         <div class="form-control">
-            <h2>Insert co-author info if they do not have account on the system</h2>
+          <h2 class="mb-5">
+            Insert co-author info if they do not have account on the system
+          </h2>
+          <div>
+            {#each co_authors_wihtout_account as item, index (item)}
+              <div class="column">
+                <div class="card w-96 bg-gray-200">
+                  <div class="card-body">
+                    <h4><b>Name: {item.first_name} {item.last_name} </b></h4>
+                    <p>Email:{item.email}</p>
+                    <p>Affliation:{item.affiliation}</p>
 
-            <div class="two-column">
-              {#each co_authors_wihtout_account as item, index (item)}
-                <div class="two-column">
-                  <div>
-                    <h4>  {item.first_name} {item.last_name}</h4>
-                    <h5>  {item.email}</h5>
-                    <h5>  {item.affiliation}</h5>                
+                    <div class="card-actions justify-end mt-4">
+                      <button
+                        class="btn"
+                        on:click={() => removeCoAuthor(index)}
+                        style="background-color:red;"
+                      >
+                        Remove</button
+                      >
+                    </div>
+                  </div>
+                </div>
+                <!-- <div>
+                    <label style="width: 1px;"><h4>{item.full_name}</h4></label>
                   </div>
                   <div>
                     <button
-                      on:click={() => removeCoAuthor(index)}
+                      class="btn"
+                      on:click={() => removeItem(index)}
                       style="background-color:red;"
                     >
                       Remove</button
                     >
-                  </div>
+                  </div> -->
+              </div>
+              <!-- <div class="two-column">
+                <div>
+                  <h4>{item.first_name} {item.last_name}</h4>
+                  <h5>{item.email}</h5>
+                  <h5>{item.affiliation}</h5>
                 </div>
-              {/each}
-            </div>
-
+                <div>
+                  <button
+                    on:click={() => removeCoAuthor(index)}
+                    style="background-color:red;"
+                  >
+                    Remove</button
+                  >
+                </div>
+              </div> -->
+            {/each}
+          </div>
         </div>
-        <br/>
-        <br/>
-        
-        <div class="form-control">
+        <br />
+        <br />
 
-          <div class="column">
+        <div class="form-control">
+          <div>
             <label for="first_name">First Name:</label>
             <input
               type="text"
@@ -462,29 +546,35 @@
             />
           </div>
 
-          <div class="column" > 
+          <div>
             <label for="last_name"> Last Name:</label>
             <input
               type="text"
               id="last_name"
-              style="margin-left: 3%"
               bind:value={form_co_author_without_account.last_name}
             />
           </div>
         </div>
 
-
         <div class="form-control">
           <label for="email">Email:</label>
-          <input type="text" id="email" bind:value={form_co_author_without_account.email} />
-        </div>
-        
-        <div class="form-control">
-          <label for="affiliation">Affiliation:</label>
-          <input type="text" id="affiliation" bind:value={form_co_author_without_account.affiliation} />
+          <input
+            type="text"
+            id="email"
+            bind:value={form_co_author_without_account.email}
+          />
         </div>
 
         <div class="form-control">
+          <label for="affiliation">Affiliation:</label>
+          <input
+            type="text"
+            id="affiliation"
+            bind:value={form_co_author_without_account.affiliation}
+          />
+        </div>
+
+        <div class="btn btn-success">
           <button on:click={handleAdd_CoAuthor} style="height:40px;">
             Add co-author
           </button>
@@ -511,11 +601,15 @@
         </div>
 
         <form class="form-control">
-          <h3>Attach Paper</h3>
+          <h3 class="mt-4 mb-4">Attach Paper</h3>
           <input id="file" type="file" bind:value={file_path} bind:files />
         </form>
-        <div class="form-control" style="display: block;">
-          <button on:click={handleSubmit}>Submit</button>
+        <div>
+          <button
+            style="background-color: green;color:white"
+            class="btn mt-4"
+            on:click={handleSubmit}>Submit</button
+          >
         </div>
       </div>
     {/if}
@@ -523,22 +617,12 @@
 </main>
 
 <style>
-  .card button {
+  /* .card button {
     position: relative;
     left: 40%;
     bottom: 10px;
-  }
-  .two-column {
-    margin-top: -1%;
-    column-count: 2; /* Split into two columns */
-    column-gap: 30%; /* Adjust gap between columns */
-  }
-  .two-column button {
-    margin-left: -10%;
-  }
-  .two-column div {
-    break-inside: avoid; /* Prevent breaking elements between columns */
-  }
+  } */
+
   input {
     height: 50px;
     width: 500px;
@@ -591,7 +675,7 @@
     font-size: 16px;
   }
 
-  .form-control button {
+  /* .form-control button {
     margin-top: 5%;
     padding: 8px 20px;
     border: none;
@@ -600,7 +684,7 @@
     color: #fff;
     font-size: 16px;
     cursor: pointer;
-  }
+  } */
 
   .form-control button:hover {
     background-color: #0056b3;
@@ -642,12 +726,12 @@
     display: flex;
     flex-direction: column;
   }
-  .column button {
+  /* .column button {
     margin-left: 18%;
     margin-top: 1%;
     background-color: green;
     height: 40px;
-  }
+  } */
 
   /* Clear floats after the columns */
   .row:after {

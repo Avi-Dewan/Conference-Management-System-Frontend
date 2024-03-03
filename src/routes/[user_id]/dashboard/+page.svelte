@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
   import NavbarChair from "/src/components/navbar_chair.svelte";
+  import "/src/app.css";
 
   const user_id = $page.params.user_id;
 
@@ -70,6 +71,7 @@
         <div class="animation start-home"></div>
       </nav>
     </div>
+
     <div>
       {#if getConferencesSummary != null}
         <br />
@@ -78,45 +80,59 @@
         <br />
         <br />
         <hr />
-        <h2>Your conferences:</h2>
 
+        <div class="header"> <h2>Your conferences:</h2> </div>
+
+        
+      <div class="card">
         {#each getConferencesSummary as item}
-          <div>
-            <hr />
-            <h3>Title: {item.conference_title}</h3>
-            <h4>Total submitted papers: {item.submitted_paper_count}</h4>
-            <h4 style="color: red;">
-              Total Papers without any reviewer assigned: {item.paper_count_with_no_reviewer_assigned}
-            </h4>
-            <h4 style="color: red;">
-              Total Papers with pending reviews: {item.paper_count_with_pending_review}
-            </h4>
-            <h4 style="color: black;">
-              Total workshops: {item.workshop_count}
-            </h4>
 
-            <button
-              on:click={() => {
-                handleViewConference(item.conference_id);
-              }}>View Conference</button
-            >
-            {#if item.paper_count_with_no_reviewer_assigned != 0}
-              <button
-                on:click={() => {
-                  handleUnassignedReviewer(item.conference_id);
-                }}>View papers with unassigned reviewer</button
-              >
-            {/if}
-            {#if item.paper_count_with_pending_review != 0}
-              <button
-                on:click={() => {
-                  handlePendingReview(item.conference_id);
-                }}>View papers with pending reviews</button
-              >
-            {/if}
+          <div class="card bg-gray-200 shadow-xl mt-10">
+            <div class="card-body">
+              
+              <h3>Title: {item.conference_title}</h3>
+              <h4>Total submitted papers: {item.submitted_paper_count}</h4>
+              <h4 style="color: red;">
+                Total Papers without any reviewer assigned: {item.paper_count_with_no_reviewer_assigned}
+              </h4>
+              <h4 style="color: red;">
+                Total Papers with pending reviews: {item.paper_count_with_pending_review}
+              </h4>
+              <h4 style="color: black;">
+                Total workshops: {item.workshop_count}
+              </h4>
+
+              <div style="margin-top: 20px;" class="card-actions justify">
+                <button class="btn btn-primary"
+                  on:click={() => {
+                    handleViewConference(item.conference_id);
+                  }}>View Conference</button
+                >
+              </div>
+              {#if item.paper_count_with_no_reviewer_assigned != 0}
+                <div style="margin-top: 20px;" class="card-actions justify">
+                  
+                  <button class="btn btn-primary"
+                    on:click={() => {
+                      handleUnassignedReviewer(item.conference_id);
+                    }}>View papers with unassigned reviewer</button
+                  >
+                </div>
+              {/if}
+              {#if item.paper_count_with_pending_review != 0}
+                <div style="margin-top: 20px;" class="card-actions justify">
+                  <button class="btn btn-primary"
+                    on:click={() => {
+                      handlePendingReview(item.conference_id);
+                    }}>View papers with pending reviews</button
+                  >
+                </div>
+              {/if}
+            </div>
           </div>
           <hr />
         {/each}
+      </div>
       {/if}
     </div>
   {/if}

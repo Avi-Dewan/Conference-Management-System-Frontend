@@ -5,6 +5,7 @@
   import Card from "/src/components/card.svelte";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import "/src/app.css";
 
   let data = [];
 
@@ -73,7 +74,39 @@
 
     <div class="cards">
       {#each data as item}
-        <h2>{item.conference_title}</h2>
+        <div class="card bg-gray-200 shadow-xl mt-10">
+          <div class="card-body">
+            <h1>{item.conference_title}</h1>
+            <p style="margin-top: 20px;">{item.conference_description}</p>
+            <h3 style="margin-top: 20px;">
+              Related Fields: {item.related_fields}
+            </h3>
+            <h4 style="margin-top: 20px;">
+              Webpage:
+              <a href={item.conference_webpage}>{item.conference_webpage}</a>
+            </h4>
+            {#if item.status == "Open"}
+              <h3 style="color: green;margin-top: 20px;">
+                Status: {item.status}
+              </h3>
+            {:else}
+              <h3 style="color: red;margin-top: 20px;">
+                Status: {item.status}
+              </h3>
+            {/if}
+            <div style="margin-top: 20px;" class="card-actions justify">
+              <button
+                class="btn btn-primary"
+                on:click={() =>
+                  goto(
+                    `/${user_id}/conference/conference_list/all/${item.conference_id}`
+                  )}>View Details</button
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- <h2>{item.conference_title}</h2>
         <h3 style="color:black">Related Fields: {item.related_fields}</h3>
         <h4>Webpage:</h4>
         <a href={item.conference_webpage}>{item.conference_webpage}</a>
@@ -90,7 +123,7 @@
             )}
         >
           View Details
-        </button>
+        </button> -->
         <hr />
       {/each}
     </div>
