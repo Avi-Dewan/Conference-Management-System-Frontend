@@ -203,20 +203,30 @@
         {#each allWorkshops as item}
           <hr class="border-t-2 border-gray-300 my-6" />
           <h2 class="mt-6">{item.workshop_title}</h2>
-          <b class="mt-3" style="color:black"
-            >Related Fields: {item.related_fields}</b
-          >
+          <div class="mt-4">
+            <b class="mt-5" style="color:black"
+              >Related Fields: {item.related_fields}</b
+            >
+          </div>
+          <hr class="border-t-2 border-gray-300 my-6" />
           <h4 class="mt-5 bg-black-200">Description:</h4>
           <p>{item.workshop_description}</p>
+          <hr class="border-t-2 border-gray-300 my-6" />
+
           <div class="mt-3">
             <b>Interested People: {item.count}</b>
           </div>
+
+          <hr class="border-t-2 border-gray-300 my-6" />
           <div class="mt-5">
             <b>Requested Instructor: {item.requested}</b>
           </div>
+
+          <hr class="border-t-2 border-gray-300 my-6" />
           <div class="mt-5">
             <b>Assigned Instructor: {item.assigned}</b>
           </div>
+          <hr class="border-t-2 border-gray-300 my-6" />
           <!-- {#each item.requested as requested}
           <h3>{requested.full_name} , {requested.current_institution}</h3>
         {/each} -->
@@ -227,6 +237,7 @@
             {:else}
               <b style="color: red;">Time & Date not yet assigned</b>
             {/if}
+            <hr class="border-t-2 border-gray-300 my-6" />
           </div>
           <div>
             <b>
@@ -300,6 +311,7 @@
           <!-- {/if} -->
 
           <hr />
+          <hr class="border-t-2 border-gray-300 my-6" />
         {/each}
       </div>
     {/if}

@@ -22,6 +22,7 @@
   let url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
 
   const currentDate = new Date();
+  let key_note_url = `http://localhost:3000/conference/${conference_id}/get_key_note`;
 
   onMount(async () => {
     try {
@@ -58,9 +59,23 @@
       console.error("Error fetching data:", error);
     }
   });
+
+  let key_note_names = null;
+
+  onMount(async () => {
+    try {
+      key_note_names = await fetch(
+        `${import.meta.env.VITE_BACKEND}/conference/${conference_id}/get_key_note`
+      );
+
+      key_note_names = await key_note_names.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
 </script>
 
-{#if data != "" && unreadCount != null}
+{#if data != "" && unreadCount != null && key_note_names != null}
   <main>
     {#if user_type == "chair"}
       <NavbarChair myVariable={unreadCount} />
@@ -74,23 +89,43 @@
       <h4>
         Webpage: <a href={data.conference_webpage}>{data.conference_webpage}</a>
       </h4>
+      <hr class="border-t-2 border-gray-300 my-6" />
       <h3 class="mt-4">Research Areas: {data.related_fields}</h3>
       <h4 class="mt-4">Start date: {data.start_date}</h4>
       <h4>End date: {data.end_date}</h4>
-      {#if data.status == "Open"}
-        <h3 class="mt-4" style="color:green">Status: {data.status}</h3>
-      {:else}
-        <h3 class="mt-4" style="color:red">Status: {data.status}</h3>
+      <hr class="border-t-2 border-gray-300 my-6" />
+      <div>
+        <b class="mt-4" style="color: red;">
+          Submission Deadline:
+          <p>
+            Time: {data.submission_deadline.time} , Date: {data
+              .submission_deadline.date}
+          </p>
+        </b>
+      </div>
+      <div class="mt-8">
+        {#if data.status == "Open"}
+          <b class="mt-4" style="color:green">Status: {data.status}</b>
+        {:else}
+          <b class="mt-4" style="color:red">Status: {data.status}</b>
+        {/if}
+      </div>
+
+      <hr class="border-t-2 border-gray-300 my-6" />
+
+      {#if key_note_names.length > 0}
+        <hr class="border-t-2 border-gray-300 my-6" />
+        <h4 class="mt-4">Keynote Speakers:</h4>
+        {#each key_note_names as key_note_name}
+          <div class="mt-4">
+            <b class="mt-4 text-lg">{key_note_name.full_name}</b>
+          </div>
+        {/each}
       {/if}
-      <h3 class="mt-4" style="color: red;">
-        Submission Deadline:
-        <p>
-          Time: {data.submission_deadline.time} , Date: {data
-            .submission_deadline.date}
-        </p>
-      </h3>
+      <hr class="border-t-2 border-gray-300 my-6" />
       <h3 class="mt-4">Description:</h3>
       <p class="mt-4 mb-10">{data.conference_description}</p>
+      <hr class="border-t-2 border-gray-300 my-6" />
 
       {#if user_type == "chair"}
         <button
@@ -125,6 +160,7 @@
           >Edit Conference</button
         >
         <button
+          class="btn btn-neutral"
           on:click={() =>
             goto(`/${user_id}/conference/inviteSpeaker/${conference_id}`)}
           >Invite KeyNote Speaker</button
