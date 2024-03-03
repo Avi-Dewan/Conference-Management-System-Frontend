@@ -4,6 +4,7 @@
   
     import Card from "/src/components/card.svelte";
     import { onMount } from "svelte";
+    import "/src/app.css";
   
     let data = [];
   
@@ -65,19 +66,26 @@
       <div class="header">
         <h1>Poster Reviews</h1>
       </div>
+
+      {#if data.length == 0}
+        <div class="header">
+          <h2>You have not reviewed any poster yet</h2>
+        </div>
+      {/if }
   
       <div class="cards">
         {#each data as item}
-          <hr />
-          <div>
-            <h2>{item.poster_title}</h2>
-            <h3>Related field: {item.related_fields}</h3>
-            <h3>Abstract : {item.abstract}</h3>
-            <h3>PDF link : <a href={item.pdf_link}> view pdf </a></h3>
+
+          <div class="card bg-gray-200 shadow-xl mt-10">
+          <div class="card-body">
+            <h2 style="margin-top: 20px;">{item.poster_title}</h2>
+            <h3 style="margin-top: 20px;">Related field: {item.related_fields}</h3>
+            <h3 style="margin-top: 20px;">Abstract : {item.abstract}</h3>
+            <h3 style="margin-top: 20px;">PDF link : <a href={item.pdf_link}> view pdf </a></h3>
   
-            {#if item.review_status == "reviewed"}
+            <!-- {#if item.review_status == "reviewed"}
               {#if item.poster_status == "revise"}
-                <h3>
+                <h3 style="margin-top: 20px;">
                   Review status: <b style="color:red"
                     >{item.review_status} but need Revise</b
                   >
@@ -108,12 +116,14 @@
                   </h3>
                 </h3>
               {/if}
-            {:else}
-              <h3>
+            {:else} -->
+              <h3 style="margin-top: 20px;">
                 Review status: <b style="color:red">{item.review_status}</b>
               </h3>
-              <h3><a href="/{user_id}/PosterReview/{item.poster_id}">Give review</a></h3>
-            {/if}
+              <h3 style="margin-top: 20px;" ><a class="btn btn-primary" href="/{user_id}/PosterReview/{item.poster_id}">Give review</a></h3>
+            <!-- {/if} -->
+          </div>
+
           </div>
         {/each}
       </div>

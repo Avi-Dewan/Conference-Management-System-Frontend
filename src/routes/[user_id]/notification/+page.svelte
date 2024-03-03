@@ -10,6 +10,7 @@
   import { goto } from "$app/navigation";
 
   import { onMount } from "svelte";
+  import "/src/app.css";
 
   let user_id, user_type;
 
