@@ -17,6 +17,9 @@
   let submission_deadline_date = "";
   let submission_deadline_time = "";
 
+  let filtered_data = [];
+  let searchQuery = "";
+
   onMount(async () => {
     try {
       const response = await fetch(url);
@@ -25,6 +28,7 @@
       }
 
       papers = await response.json();
+      filtered_data = papers;
 
       console.log(papers);
     } catch (error) {
@@ -270,7 +274,33 @@
       <hr class="border-t-2 border-gray-300 my-6" />
       <h1 class="mt-5">{conf_data.conference_title}</h1>
       <hr class="border-t-2 border-gray-300 my-6" />
-      {#each papers as item}
+
+      <div class="mt-10">
+        <input
+          type="text"
+          class="input input-bordered input-accent w-full max-w-xs"
+          bind:value={searchQuery}
+          placeholder="Search by paper name..."
+          on:input={() => {
+            filtered_data = papers.filter(
+              (item) =>
+                // item.paper_title
+                //   .toLowerCase()
+                //   .toLowerCase()
+                //   .indexOf(searchQuery.toLowerCase()) !== -1 ||
+                item.paper_title
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) !== -1
+            );
+
+            if (searchQuery == "") {
+              filtered_data = data;
+            }
+          }}
+        />
+        <button class="search-button">Search</button>
+      </div>
+      {#each filtered_data as item}
         <hr class="border-t-2 border-black-300 my-6 mt-5" />
         <div style="margin-top: 15px;">
           <h2>Paper Title: {item.paper_title}</h2>

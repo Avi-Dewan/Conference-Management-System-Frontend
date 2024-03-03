@@ -63,9 +63,9 @@
 
     <div class="search-container">
       <input
-        class="search-input"
-        bind:value={searchQuery}
         type="text"
+        class="input input-bordered input-accent w-full max-w-xs"
+        bind:value={searchQuery}
         placeholder="Search by conference name or paper title..."
         on:input={() => {
           filteredPapers = getPapersSummary.filter(
@@ -104,7 +104,9 @@
             {:else if item.status == "rejected"}
               <h4 class="mb-4">Status: <b style="color: red;">rejected</b></h4>
             {:else}
-              <h4 class="mb-4">Status: <b style="color: orange;">{item.status}</b></h4>
+              <h4 class="mb-4">
+                Status: <b style="color: orange;">{item.status}</b>
+              </h4>
             {/if}
             <div class="card-actions">
               <button

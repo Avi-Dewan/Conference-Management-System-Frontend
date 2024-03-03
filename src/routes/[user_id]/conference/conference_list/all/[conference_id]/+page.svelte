@@ -16,6 +16,8 @@
   user_id = $page.params.user_id;
 
   let data = [];
+  let filtered_data = [];
+  let searchQuery = "";
 
   let url = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
 
@@ -33,7 +35,7 @@
       }
 
       data = await response.json();
-
+      filtered_data = data;
       const submissionDeadline = new Date(
         `${data.submission_deadline.date}T${data.submission_deadline.time}`
       );
@@ -65,6 +67,7 @@
     {:else}
       <NavbarUser myVariable={unreadCount} />
     {/if}
+
     <div>
       <h1 class="mt-10 mb-2">Conference Title: {data.conference_title}</h1>
       <h4>Venue: {data.venue}</h4>

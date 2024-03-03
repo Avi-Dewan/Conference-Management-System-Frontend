@@ -18,6 +18,8 @@
 
   let conf_data = null;
 
+  let searchQuery = "";
+
   let confurl = `${import.meta.env.VITE_BACKEND}/conference/${conference_id}`;
   let myPaperInConferenceURL = `${import.meta.env.VITE_BACKEND}/paper/mysubmission/${conference_id}/${user_id}`;
 
@@ -25,6 +27,8 @@
 
   let paper_data = null;
   let review_data = null;
+  let filtered_data = [];
+
   onMount(async () => {
     try {
       user_type = sessionStorage.getItem("user_type");
@@ -54,6 +58,7 @@
       }
 
       paper_data = await response.json();
+      filtered_data = paper_data;
 
       console.log(paper_data);
 
@@ -127,7 +132,33 @@
       <h1 class="mt-5">Conference Title: {conf_data.conference_title}</h1>
       <hr class="border-t-2 border-gray-300 my-6" />
 
-      {#each paper_data as item}
+      <div class="mt-10">
+        <input
+          type="text"
+          class="input input-bordered input-accent w-full max-w-xs"
+          bind:value={searchQuery}
+          placeholder="Search by paper name..."
+          on:input={() => {
+            filtered_data = paper_data.filter(
+              (item) =>
+                // item.paper_title
+                //   .toLowerCase()
+                //   .toLowerCase()
+                //   .indexOf(searchQuery.toLowerCase()) !== -1 ||
+                item.paper_title
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) !== -1
+            );
+
+            if (searchQuery == "") {
+              filtered_data = data;
+            }
+          }}
+        />
+        <button class="search-button">Search</button>
+      </div>
+
+      {#each filtered_data as item}
         <hr class="border-t-2 border-gray-300 my-6" />
         <div style="margin-top: 15px;">
           <h2>Paper title: {item.paper_title}</h2>
