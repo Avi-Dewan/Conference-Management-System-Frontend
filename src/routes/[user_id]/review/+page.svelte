@@ -53,6 +53,12 @@
       <h1>Paper Reviews</h1>
     </div>
 
+    {#if data.length == 0}
+      <div class="header">
+        <h2>You have not reviewed any paper yet</h2>
+      </div>
+    {/if }
+
     <div class="cards">
       {#each data as item}
         
