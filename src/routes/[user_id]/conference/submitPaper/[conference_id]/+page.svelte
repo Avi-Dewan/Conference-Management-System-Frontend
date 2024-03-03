@@ -2,7 +2,9 @@
   import { createClient } from "@supabase/supabase-js";
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import NavbarUser from "/src/components/navbar_user.svelte";
+
   import "/src/app.css";
+
   import { page } from "$app/stores";
 
   import { onMount } from "svelte";
