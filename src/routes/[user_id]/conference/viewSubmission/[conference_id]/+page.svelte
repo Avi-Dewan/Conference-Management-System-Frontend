@@ -294,7 +294,7 @@
             );
 
             if (searchQuery == "") {
-              filtered_data = data;
+              filtered_data = papers;
             }
           }}
         />
