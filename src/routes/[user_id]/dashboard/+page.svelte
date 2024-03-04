@@ -6,7 +6,9 @@
   import "/src/app.css";
 
   const user_id = $page.params.user_id;
+  let filtered_data = [];
 
+  let searchQuery = "";
   let getConferencesSummaryURL = `${import.meta.env.VITE_BACKEND}/conference/${user_id}/all`;
 
   let getConferencesSummary = null;
@@ -22,6 +24,7 @@
       let data = await response.json();
 
       getConferencesSummary = data;
+      filtered_data = data;
 
       console.log(data);
     } catch (error) {
@@ -83,7 +86,33 @@
         <div class="header"><h2>Your conferences:</h2></div>
 
         <div class="card">
-          {#each getConferencesSummary as item}
+          <div class="mt-8">
+            <input
+              type="text"
+              class="input input-bordered input-accent w-full max-w-xs"
+              bind:value={searchQuery}
+              placeholder="Search by conference name..."
+              on:input={() => {
+                filtered_data = getConferencesSummary.filter(
+                  (item) =>
+                    // item.paper_title
+                    //   .toLowerCase()
+                    //   .toLowerCase()
+                    //   .indexOf(searchQuery.toLowerCase()) !== -1 ||
+                    item.conference_title
+                      .toLowerCase()
+                      .indexOf(searchQuery.toLowerCase()) !== -1
+                );
+
+                if (searchQuery == "") {
+                  filtered_data = getConferencesSummary;
+                }
+              }}
+            />
+            <button class="search-button">Search</button>
+          </div>
+
+          {#each filtered_data as item}
             <div class="card bg-gray-200 shadow-xl mt-10">
               <div class="card-body">
                 <h3>Title: {item.conference_title}</h3>

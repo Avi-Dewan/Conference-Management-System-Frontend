@@ -7,6 +7,7 @@
 
   const user_id = $page.params.user_id;
 
+  let searchQuery = "";
   let getUnassigned_workshopsURL = `${import.meta.env.VITE_BACKEND}/workshop/unassignedInstructor/${user_id}`;
 
   let unassigned_workshops = null;
@@ -22,6 +23,7 @@
       let data = await response.json();
 
       unassigned_workshops = data;
+      filtered_data = data;
 
       console.log(unassigned_workshops);
     } catch (error) {
@@ -33,6 +35,7 @@
     goto(`/${user_id}/conference/assignInstructor/${workshop_id}`);
   }
   let unreadCount = null;
+  let filtered_data = [];
   onMount(async () => {
     try {
       const unreadNotificationCount = await fetch(
@@ -78,7 +81,32 @@
         </div>
 
         <div class="card">
-          {#each unassigned_workshops as item}
+          <div class="mt-8">
+            <input
+              type="text"
+              class="input input-bordered input-accent w-full max-w-xs"
+              bind:value={searchQuery}
+              placeholder="Search by workshop  name..."
+              on:input={() => {
+                filtered_data = unassigned_workshops.filter(
+                  (item) =>
+                    // item.paper_title
+                    //   .toLowerCase()
+                    //   .toLowerCase()
+                    //   .indexOf(searchQuery.toLowerCase()) !== -1 ||
+                    item.workshop_title
+                      .toLowerCase()
+                      .indexOf(searchQuery.toLowerCase()) !== -1
+                );
+
+                if (searchQuery == "") {
+                  filtered_data = unassigned_workshops;
+                }
+              }}
+            />
+            <button class="search-button">Search</button>
+          </div>
+          {#each filtered_data as item}
             <div class="card bg-gray-200 shadow-xl mt-10">
               <div class="card-body">
                 <h3>Title: {item.workshop_title}</h3>

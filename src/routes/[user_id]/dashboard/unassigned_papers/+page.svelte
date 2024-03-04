@@ -5,6 +5,8 @@
   import NavbarChair from "/src/components/navbar_chair.svelte";
   import "/src/app.css";
 
+  let searchQuery = "";
+  let filtered_data = [];
   const user_id = $page.params.user_id;
 
   let getUnassigned_papersURL = `${
@@ -24,6 +26,7 @@
       let data = await response.json();
 
       unassigned_papers = data;
+      filtered_data = data;
 
       console.log(unassigned_papers);
     } catch (error) {
@@ -81,7 +84,32 @@
         </div>
 
         <div class="card">
-          {#each unassigned_papers as item}
+          <div class="mt-8">
+            <input
+              type="text"
+              class="input input-bordered input-accent w-full max-w-xs"
+              bind:value={searchQuery}
+              placeholder="Search by paper name..."
+              on:input={() => {
+                filtered_data = unassigned_papers.filter(
+                  (item) =>
+                    // item.paper_title
+                    //   .toLowerCase()
+                    //   .toLowerCase()
+                    //   .indexOf(searchQuery.toLowerCase()) !== -1 ||
+                    item.paper_title
+                      .toLowerCase()
+                      .indexOf(searchQuery.toLowerCase()) !== -1
+                );
+
+                if (searchQuery == "") {
+                  filtered_data = unassigned_papers;
+                }
+              }}
+            />
+            <button class="search-button">Search</button>
+          </div>
+          {#each filtered_data as item}
             <div class="card bg-gray-200 shadow-xl mt-10">
               <div class="card-body">
                 <hr />

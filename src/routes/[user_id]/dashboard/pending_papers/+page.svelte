@@ -7,6 +7,9 @@
 
   const user_id = $page.params.user_id;
 
+  let searchQuery = "";
+  let filtered_data = [];
+
   let getPending_papersURL = `${
     import.meta.env.VITE_BACKEND
   }/conference/pendingPapers/${user_id}`;
@@ -24,6 +27,7 @@
       let data = await response.json();
 
       pending_papers = data;
+      filtered_data = data;
 
       console.log(pending_papers);
     } catch (error) {
@@ -80,7 +84,32 @@
         </div>
 
         <div class="card">
-          {#each pending_papers as item}
+          <div class="mt-8">
+            <input
+              type="text"
+              class="input input-bordered input-accent w-full max-w-xs"
+              bind:value={searchQuery}
+              placeholder="Search by paper name..."
+              on:input={() => {
+                filtered_data = pending_papers.filter(
+                  (item) =>
+                    // item.paper_title
+                    //   .toLowerCase()
+                    //   .toLowerCase()
+                    //   .indexOf(searchQuery.toLowerCase()) !== -1 ||
+                    item.paper_title
+                      .toLowerCase()
+                      .indexOf(searchQuery.toLowerCase()) !== -1
+                );
+
+                if (searchQuery == "") {
+                  filtered_data = pending_papers;
+                }
+              }}
+            />
+            <button class="search-button">Search</button>
+          </div>
+          {#each filtered_data as item}
             <div class="card bg-gray-200 shadow-xl mt-10">
               <div class="card-body">
                 <hr />
