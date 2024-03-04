@@ -26,8 +26,8 @@
         {#if myVariable > 0}
           <li>
             <a href="/{user_id}/notification" style="color: red;"
-              >My notification [{myVariable}]</a
-            >
+              ><b>My notification [{myVariable}] </b>
+            </a>
           </li>
         {:else}
           <li><a href="/{user_id}/notification">My notification</a></li>

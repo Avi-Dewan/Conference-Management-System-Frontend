@@ -583,7 +583,7 @@
         </div>
 
         <div class="form-control">
-          <h3 style="margin-top: 8%;">Research Track</h3>
+          <h3 style="margin-top: 8%;">Research Field</h3>
 
           <div>
             <select bind:value={selectedTrack}>

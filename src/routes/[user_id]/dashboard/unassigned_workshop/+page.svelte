@@ -81,13 +81,12 @@
           {#each unassigned_workshops as item}
             <div class="card bg-gray-200 shadow-xl mt-10">
               <div class="card-body">
-                
                 <h3>Title: {item.workshop_title}</h3>
                 <h4>Related Fields: {item.related_fields}</h4>
                 <h4>Conference : {item.conference.conference_title}</h4>
                 <div style="margin-top: 20px;" class="card-actions justify">
-
-                  <button class="btn btn-primary"
+                  <button
+                    class="btn btn-success"
                     on:click={() => {
                       handleViewWorkshop(item.workshop_id);
                     }}>View details</button

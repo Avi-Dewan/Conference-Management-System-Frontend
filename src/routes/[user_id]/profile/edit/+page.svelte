@@ -8,13 +8,13 @@
   import NavbarUser from "/src/components/navbar_user.svelte";
   import "/src/app.css";
 
-  let user_id, user = null;;
+  let user_id,
+    user = null;
   let unreadCount = null;
 
   user_id = $page.params.user_id;
 
   let getPapersURL = `${import.meta.env.VITE_BACKEND}/paper/allPapers/${user_id}`;
-
 
   onMount(async () => {
     try {
@@ -35,26 +35,27 @@
       );
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   });
 
   async function editProfile() {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND}/user/${user_id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/user/${user_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     const data = await response.json();
 
     goto(`/${user_id}/profile/myProfile`);
   }
-
 
   let expertise = [];
   let addfield = "";
@@ -71,9 +72,6 @@
     personal_links: null,
     expertise: null,
   };
-
-
-
 
   function handleSubmit() {
     formData.expertise = expertise;
@@ -109,9 +107,7 @@
 </script>
 
 <main>
-
   {#if user != null && unreadCount != null}
-
     <NavbarUser myVariable={unreadCount} />
 
     <h1 style="margin-top: 30px;">Edit Profile</h1>
@@ -119,47 +115,43 @@
     <div class="form" style="margin-top: 30px;">
       <div class="form-control">
         <label for="first_name">First Name:</label>
-        <input
-          type="text"
-          id="first_name"
-          bind:value={formData.first_name}
-        />
+        <input type="text" id="first_name" bind:value={formData.first_name} />
       </div>
 
       <div class="form-control">
         <label for="last_name">Last Name:</label>
 
-        <input
-          type="text"
-          id="clast_name"
-          bind:value={formData.last_name}
-        />
+        <input type="text" id="clast_name" bind:value={formData.last_name} />
       </div>
 
       <div class="form-control">
         <label for="date_of_birth">Date of Birth:</label>
-        <input type="date" id="date_of_birth" bind:value={formData.date_of_birth} />
+        <input
+          type="date"
+          id="date_of_birth"
+          bind:value={formData.date_of_birth}
+        />
       </div>
 
       <div class="form-control">
         <label for="current_institution">Current Affiliation:</label>
-        <input type="text" id="current_institution" bind:value={formData.current_institution} />
+        <input
+          type="text"
+          id="current_institution"
+          bind:value={formData.current_institution}
+        />
       </div>
 
       <div class="form-control">
         <label for="email">Email:</label>
-        <input
-          type="text"
-          id="email"
-          bind:value={formData.email}
-        />
+        <input type="text" id="email" bind:value={formData.email} />
       </div>
 
       <div class="form-control">
         <label for="personal_links" style="margin-top: 10px;"
           ><h2>Personal Links</h2></label
         >
-        <br>
+        <br />
         <div class="two-column">
           {#each personal_links as item, index (item)}
             <div class="two-column">
@@ -182,7 +174,7 @@
       <div class="form-control">
         <input type="text" bind:value={link} style="width:30%" />
         <div style="margin-top: 1px;" class="card-actions justify">
-          <button class="btn btn-primary" on:click={handleAddLink}>
+          <button class="btn btn-success" on:click={handleAddLink}>
             Add
           </button>
         </div>
@@ -192,7 +184,7 @@
         <label for="resarch_field" style="margin-top: 10px;"
           ><h2>Expertise</h2></label
         >
-        <br>
+        <br />
         <div class="two-column">
           {#each expertise as item, index (item)}
             <div class="two-column">
@@ -215,10 +207,9 @@
       <div class="form-control">
         <input type="text" bind:value={addfield} style="width:30%" />
         <div style="margin-top: 1px;" class="card-actions justify">
-        <button on:click={handleAddExpertise} class="btn btn-primary">
-          Add
-        </button>
-
+          <button on:click={handleAddExpertise} class="btn btn-success">
+            Add
+          </button>
         </div>
       </div>
 
@@ -226,8 +217,7 @@
         <button class="btn btn-accent" on:click={handleSubmit}>Submit</button>
       </div>
     </div>
-
-    {/if}
+  {/if}
 </main>
 
 <style>

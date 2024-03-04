@@ -31,20 +31,22 @@
       );
       unreadCount = await unreadNotificationCount.json();
       unreadCount = unreadCount.unreadCount;
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   });
 
   async function handleReject(paper_id) {
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/request/delete_request`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/request/delete_request`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
+      }
+    );
 
     response = await fetch(
       `${import.meta.env.VITE_BACKEND}/paper/get_conference_chair/${paper_id}`
@@ -56,7 +58,9 @@
 
     let chair_id = await response.json();
 
-    let res = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
+    let res = await fetch(
+      `${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`
+    );
 
     let full_name = await res.json();
 
@@ -82,17 +86,20 @@
     };
 
     console.log(notification_body);
-    response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: chair_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
+    response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/notification/send`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: chair_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      }
+    );
 
     const thisPage = window.location.pathname;
 
@@ -102,13 +109,16 @@
   }
 
   async function handleAccept(paper_id) {
-    let response = await fetch(`${import.meta.env.VITE_BACKEND}/request/delete_request`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/request/delete_request`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id, paper_id: paper_id }),
+      }
+    );
 
     response = await fetch(`${import.meta.env.VITE_BACKEND}/reviewer/accept`, {
       method: "POST",
@@ -128,7 +138,9 @@
 
     let chair_id = await response.json();
 
-    let res = await fetch(`${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`);
+    let res = await fetch(
+      `${import.meta.env.VITE_BACKEND}/user/getFullName/${user_id}`
+    );
 
     let full_name = await res.json();
 
@@ -153,17 +165,20 @@
       paper_id: paper_id,
     };
 
-    response = await fetch(`${import.meta.env.VITE_BACKEND}/notification/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: chair_id,
-        notification_body: notification_body,
-        notification_json: notification_json,
-      }),
-    });
+    response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/notification/send`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: chair_id,
+          notification_body: notification_body,
+          notification_json: notification_json,
+        }),
+      }
+    );
 
     const thisPage = window.location.pathname;
 
@@ -171,54 +186,55 @@
   }
 </script>
 
-{#if data != null  && unreadCount != null}
+{#if data != null && unreadCount != null}
   <main>
     <NavbarUser myVariable={unreadCount} />
     <br />
     <br />
-  
+
     <h1>Paper For Review</h1>
 
     <!-- <button on:click={handleClick}>Go to Another Page</button> -->
 
     <div class="cards">
       {#each data as item}
-      <div class="card bg-gray-200 shadow-xl mt-10">
-        <div class="card-body">
-          <h2 style="margin-top: 20px;">{item.paper_title}</h2>
-          <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
+        <div class="card bg-gray-200 shadow-xl mt-10">
+          <div class="card-body">
+            <h2 style="margin-top: 20px;">{item.paper_title}</h2>
+            <!-- <h3>Pdf Link: {item.pdf_link}</h3> -->
 
-          <div style="margin-top: 20px;" class="card-actions justify">
-            <a class="btn btn-info" href={item.pdf_link}>View Paper</a>
-          </div>
+            <h3 style="margin-top: 20px;">
+              Related Fields: {item.related_fields}
+            </h3>
+            <h3 style="margin-top: 20px;">Abstract: {item.abstract}</h3>
 
-          <h3 style="margin-top: 20px;" >Related Fields: {item.related_fields}</h3>
-          <h3 style="margin-top: 20px;" >Abstract: {item.abstract}</h3>
-          
-          <div style="margin-top: 20px;" class="card-actions justify">
-          <a class="btn btn-neutral"
-            href="/{user_id}/conference/conference_list/all/{item.conference_id}"
-            >View Conference</a
-          >
+            <div style="margin-top: 20px;" class="card-actions justify">
+              <a class="btn btn-info" href={item.pdf_link}>View Paper</a>
+            </div>
 
-          </div>
+            <div style="margin-top: 20px;" class="card-actions justify">
+              <a
+                class="btn btn-neutral"
+                href="/{user_id}/conference/conference_list/all/{item.conference_id}"
+                >View Conference</a
+              >
+            </div>
 
-          <div
-            class="two-column"
-            style="display: block;margin-top:2%"
-            button-container
-          >
-            <button
-              on:click={handleReject(item.paper_id)}
-              style="background-color:red;">Reject</button
+            <div
+              class="two-column"
+              style="display: block;margin-top:2%"
+              button-container
             >
-            <button
-              on:click={handleAccept(item.paper_id)}
-              style="background-color:green;">Accept</button
-            >
+              <button
+                on:click={handleReject(item.paper_id)}
+                style="background-color:red;">Reject</button
+              >
+              <button
+                on:click={handleAccept(item.paper_id)}
+                style="background-color:green;">Accept</button
+              >
+            </div>
           </div>
-        </div>
-
         </div>
       {/each}
     </div>

@@ -135,12 +135,14 @@
           >View Submissions</button
         >
         <button
-          class="btn btn-neutral"
+          class="btn btn-neutral ml-8"
           on:click={() =>
             goto(
               `/${user_id}/conference/viewPosterSubmission/${conference_id}`
             )}>View Poster Submissions</button
         >
+        <br />
+        <br />
         <button
           class="btn btn-success"
           on:click={() =>
@@ -148,11 +150,13 @@
           >Create a workshop</button
         >
         <button
-          class="btn btn-neutral"
+          class="btn btn-neutral ml-7"
           on:click={() =>
             goto(`/${user_id}/conference/view_workshop/${conference_id}`)}
           >View Workshops</button
         >
+        <br />
+        <br />
         <button
           class="btn btn-success"
           on:click={() =>
@@ -160,11 +164,13 @@
           >Edit Conference</button
         >
         <button
-          class="btn btn-neutral"
+          class="btn btn-neutral ml-8"
           on:click={() =>
             goto(`/${user_id}/conference/inviteSpeaker/${conference_id}`)}
           >Invite KeyNote Speaker</button
         >
+        <br />
+        <br />
         <!-- <button
           on:click={() =>
             goto(`/${user_id}/conference/popular_workshop/${conference_id}`)}
@@ -172,17 +178,19 @@
         > -->
       {:else if data.status == "Open"}
         <button
-          class="btn btn-neutral"
+          class="btn btn-success"
           on:click={() =>
             goto(`/${user_id}/conference/submitPaper/${conference_id}`)}
           >Submit a Paper</button
         >
         <button
-          class="btn btn-success"
+          class="btn btn-success ml-10"
           on:click={() =>
             goto(`/${user_id}/conference/submitPoster/${conference_id}`)}
           >Submit a Poster</button
         >
+        <br />
+        <br />
         <button
           class="btn btn-neutral"
           on:click={() =>
@@ -190,11 +198,13 @@
           >My submissions</button
         >
         <button
-          class="btn btn-neutral"
+          class="btn btn-neutral ml-7"
           on:click={() =>
             goto(`/${user_id}/conference/myPostersubmission/${conference_id}`)}
           >My Poster submissions</button
         >
+        <br />
+        <br />
         <button
           class="btn btn-neutral"
           on:click={() =>

@@ -69,62 +69,79 @@
       <div class="header">
         <h2>You have not reviewed any paper yet</h2>
       </div>
-    {/if }
+    {/if}
 
     <div class="cards">
       {#each data as item}
-        
-      <div class="card bg-gray-200 shadow-xl mt-10">
-        <div class="card-body">
-          <h2 style="margin-top: 20px;">{item.paper_title}</h2>
-          <h3 style="margin-top: 20px;">Related field: {item.related_fields}</h3>
-          <h3 style="margin-top: 20px;">Abstract : {item.abstract}</h3>
-          <h3 style="margin-top: 20px;">PDF link : <a href={item.pdf_link}> view pdf </a></h3>
+        <div class="card bg-gray-200 shadow-xl mt-10">
+          <div class="card-body">
+            <h2 style="margin-top: 20px;">{item.paper_title}</h2>
+            <h3 style="margin-top: 20px;">
+              Related field: {item.related_fields}
+            </h3>
+            <h3 style="margin-top: 20px;">Abstract : {item.abstract}</h3>
+            <h3 style="margin-top: 20px;">
+              PDF link : <a href={item.pdf_link}> view pdf </a>
+            </h3>
 
-          {#if item.review_status == "reviewed"}
-            {#if item.paper_status == "revise"}
-              <h3 style="margin-top: 20px;">
-                Review status: <b style="color:red"
-                  >{item.review_status} but need Revise</b
-                >
-              </h3>
-
-              <h4 style="margin-top: 20px;">
-                <b>Current review: </b>
-                <p style="white-space: pre-wrap;">{item.review}</p>
-              </h4>
-              {#if item.submission_status == "closed"}
+            {#if item.review_status == "reviewed"}
+              {#if item.paper_status == "revise"}
                 <h3 style="margin-top: 20px;">
-                  <a class="btn btn-primary" href="/{user_id}/review/{item.paper_id}">Review Again</a>
+                  Review status: <b style="color:red"
+                    >{item.review_status} but need Revise</b
+                  >
                 </h3>
-              {:else}
-                <h4 style="color: red, margin-top: 20px;">
-                  Note: You can review this paper after Date: {item
-                    .submission_deadline.date} & Time: {item.submission_deadline
-                    .time}
+
+                <h4 style="margin-top: 20px;">
+                  <b>Current review: </b>
+                  <p style="white-space: pre-wrap;">{item.review}</p>
                 </h4>
+                {#if item.submission_status == "closed"}
+                  <h3 style="margin-top: 20px;">
+                    <a
+                      class="btn btn-success"
+                      href="/{user_id}/review/{item.paper_id}">Review Again</a
+                    >
+                  </h3>
+                {:else}
+                  <h4 style="color: red, margin-top: 20px;">
+                    Note: You can review this paper after Date: {item
+                      .submission_deadline.date} & Time: {item
+                      .submission_deadline.time}
+                  </h4>
+                {/if}
+              {:else}
+                <h3 style="margin-top: 20px;">
+                  Review status: <b style="color:green">{item.review_status}</b>
+                  <p style="margin-top: 20px;">
+                    <b> Rating: </b>
+                    {item.rating}
+                  </p>
+                  <p style="white-space: pre-wrap; margin-top: 20px">
+                    <b> Review: </b>
+                    {item.review}
+                  </p>
+                  <h3 style="margin-top: 20px;">
+                    <a
+                      class="btn btn-success"
+                      href="/{user_id}/review/{item.paper_id}">Edit review</a
+                    >
+                  </h3>
+                </h3>
               {/if}
             {:else}
               <h3 style="margin-top: 20px;">
-                Review status: <b style="color:green">{item.review_status}</b>
-                <p style="margin-top: 20px;"><b> Rating: </b> {item.rating}</p>
-                <p style="white-space: pre-wrap; margin-top: 20px">
-                  <b> Review: </b>
-                  {item.review}
-                </p>
-                <h3 style="margin-top: 20px;">
-                  <a class="btn btn-primary" href="/{user_id}/review/{item.paper_id}">Edit review</a>
-                </h3>
+                Review status: <b style="color:red">{item.review_status}</b>
+              </h3>
+              <h3 style="margin-top: 20px;">
+                <a
+                  class="btn btn-success"
+                  href="/{user_id}/review/{item.paper_id}">Give review</a
+                >
               </h3>
             {/if}
-          {:else}
-            <h3 style="margin-top: 20px;">
-              Review status: <b style="color:red">{item.review_status}</b>
-            </h3>
-            <h3 style="margin-top: 20px;"><a class="btn btn-primary" href="/{user_id}/review/{item.paper_id}">Give review</a></h3>
-          {/if}
+          </div>
         </div>
-      </div>
       {/each}
     </div>
   </main>
@@ -201,7 +218,6 @@
 
   h1 {
   }
-
 
   nav {
     float: left;

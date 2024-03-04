@@ -6,15 +6,17 @@
   import { goto } from "$app/navigation";
   import "/src/app.css";
 
-
   async function createUser() {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND}/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND}/auth/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     const data = await response.json();
 
@@ -41,9 +43,6 @@
     expertise: null,
     password: null,
   };
-
-
-
 
   function handleSubmit() {
     formData.expertise = expertise;
@@ -76,51 +75,44 @@
   function removeItemLink(index) {
     personal_links = personal_links.filter((_, i) => i != index);
   }
-
-
 </script>
 
 <main>
-
   <h1>Create an user</h1>
 
   <div class="form">
     <div class="form-control">
       <label for="first_name">First Name:</label>
-      <input
-        type="text"
-        id="first_name"
-        bind:value={formData.first_name}
-      />
+      <input type="text" id="first_name" bind:value={formData.first_name} />
     </div>
 
     <div class="form-control">
       <label for="last_name">Last Name:</label>
 
-      <input
-        type="text"
-        id="clast_name"
-        bind:value={formData.last_name}
-      />
+      <input type="text" id="clast_name" bind:value={formData.last_name} />
     </div>
 
     <div class="form-control">
       <label for="date_of_birth">Date of Birth:</label>
-      <input type="date" id="date_of_birth" bind:value={formData.date_of_birth} />
+      <input
+        type="date"
+        id="date_of_birth"
+        bind:value={formData.date_of_birth}
+      />
     </div>
 
     <div class="form-control">
       <label for="current_institution">Current Affiliation:</label>
-      <input type="text" id="current_institution" bind:value={formData.current_institution} />
+      <input
+        type="text"
+        id="current_institution"
+        bind:value={formData.current_institution}
+      />
     </div>
 
     <div class="form-control">
       <label for="email">Email:</label>
-      <input
-        type="text"
-        id="email"
-        bind:value={formData.email}
-      />
+      <input type="text" id="email" bind:value={formData.email} />
     </div>
 
     <div class="form-control">
@@ -149,22 +141,15 @@
     <div class="form-control">
       <input type="text" bind:value={link} style="width:30%" />
       <div style="margin-top: 1px;" class="card-actions justify">
-        <button class="btn btn-primary" on:click={handleAddLink} >
-          Add
-        </button>
+        <button class="btn btn-success" on:click={handleAddLink}> Add </button>
       </div>
     </div>
 
-    
     <div class="form-control">
       <label for="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        bind:value={formData.password}
-      />
+      <input type="password" id="password" bind:value={formData.password} />
     </div>
-    
+
     <div class="form-control">
       <label for="password">Confirm Password:</label>
       <input
@@ -200,11 +185,9 @@
     <div class="form-control">
       <input type="text" bind:value={addfield} style="width:30%" />
       <div style="margin-top: 1px;" class="card-actions justify">
-
-      <button on:click={handleAddExpertise} class="btn btn-primary">
-        Add
-      </button>
-
+        <button on:click={handleAddExpertise} class="btn btn-success">
+          Add
+        </button>
       </div>
     </div>
 

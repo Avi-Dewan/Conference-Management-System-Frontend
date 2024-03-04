@@ -197,12 +197,14 @@
           {:else if item.status == "revise"}
             <div>
               {#each item.reviews as review, idx}
+                <hr class="border-t-2 border-gray-300 my-6" />
                 <p>
                   {#if review.review != null}
                     Reviewer {idx + 1} said:
                     <p style="white-space: pre-wrap;">{review.review}</p>
                   {/if}
                 </p>
+                <hr class="border-t-2 border-gray-300 my-6" />
               {/each}
             </div>
             {#if item.submission_status == "open"}
@@ -221,21 +223,22 @@
           {:else}
             <hr />
             {#each item.reviews as review, idx}
+              <hr class="border-t-2 border-gray-300 my-6" />
               <div>
                 Reviewer {idx + 1}:
                 <p>
                   {#if review.review != null}
+                    {#if review.rating != null}
+                      <b>Rating: {review.rating}</b>
+                    {/if}
                     <p style="white-space: pre-wrap;">
                       Review: {review.review}
                     </p>
-                    {#if review.rating != null}
-                      <p>rating: {review.rating}</p>
-                    {/if}
                   {:else}
                     <p>Review: None</p>
                   {/if}
                 </p>
-                <hr />
+                <hr class="border-t-2 border-gray-300 my-6" />
               </div>
             {/each}
           {/if}

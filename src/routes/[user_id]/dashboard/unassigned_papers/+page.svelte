@@ -81,28 +81,27 @@
         </div>
 
         <div class="card">
-            {#each unassigned_papers as item}
-              <div class="card bg-gray-200 shadow-xl mt-10">
-                <div class="card-body">
-                  <hr />
-                  <h3>Paper Title: {item.paper_title}</h3>
-                  <h4>Authors: {item.authors}</h4>
-                  <h4>Related Fields: {item.related_fields}</h4>
-                  <h4>Conference name: {item.conference_title}</h4>
-                  <div style="margin-top: 20px;" class="card-actions justify">
-
-                  <button class="btn btn-primary"
+          {#each unassigned_papers as item}
+            <div class="card bg-gray-200 shadow-xl mt-10">
+              <div class="card-body">
+                <hr />
+                <h3>Paper Title: {item.paper_title}</h3>
+                <h4>Authors: {item.authors}</h4>
+                <h4>Related Fields: {item.related_fields}</h4>
+                <h4>Conference name: {item.conference_title}</h4>
+                <div style="margin-top: 20px;" class="card-actions justify">
+                  <button
+                    class="btn btn-success"
                     on:click={() => {
                       handleViewPaper(item.paper_id);
                     }}>View details</button
                   >
-                  </div>
                 </div>
               </div>
-              <hr />
-            {/each}
+            </div>
+            <hr />
+          {/each}
         </div>
-        
       {/if}
     </div>
   {/if}

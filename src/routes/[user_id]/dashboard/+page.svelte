@@ -100,7 +100,7 @@
 
                 <div style="margin-top: 20px;" class="card-actions justify">
                   <button
-                    class="btn btn-primary"
+                    class="btn btn-success"
                     on:click={() => {
                       handleViewConference(item.conference_id);
                     }}>View Conference</button
@@ -109,7 +109,7 @@
                 {#if item.paper_count_with_no_reviewer_assigned != 0}
                   <div style="margin-top: 20px;" class="card-actions justify">
                     <button
-                      class="btn btn-primary"
+                      class="btn btn-success"
                       on:click={() => {
                         handleUnassignedReviewer(item.conference_id);
                       }}>View papers with unassigned reviewer</button
@@ -119,7 +119,7 @@
                 {#if item.paper_count_with_pending_review != 0}
                   <div style="margin-top: 20px;" class="card-actions justify">
                     <button
-                      class="btn btn-primary"
+                      class="btn btn-success"
                       on:click={() => {
                         handlePendingReview(item.conference_id);
                       }}>View papers with pending reviews</button

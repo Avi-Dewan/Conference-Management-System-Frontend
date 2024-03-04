@@ -120,7 +120,7 @@
             {/if}
             <div style="margin-top: 20px;" class="card-actions justify">
               <button
-                class="btn btn-primary"
+                class="btn btn-success"
                 on:click={() =>
                   goto(
                     `/${user_id}/conference/conference_list/all/${item.conference_id}`
